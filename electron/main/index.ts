@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, globalShortcut, screen, Menu } from 'electron'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
@@ -43,8 +43,11 @@ const preload = path.join(__dirname, '../preload/index.mjs')
 const indexHtml = path.join(RENDERER_DIST, 'index.html')
 
 async function createWindow() {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize
   win = new BrowserWindow({
     title: 'Main window',
+    width: width * 0.4,
+    height: height * 0.5,
     icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
       preload,
@@ -55,12 +58,49 @@ async function createWindow() {
       // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
       // contextIsolation: false,
     },
+    // transparent: true,
+    // TODO publish 时需要隐藏标题栏
+    // titleBarStyle: 'hidden',
+    // 无边框窗口，隐藏标题和菜单栏
+    frame: false,
   })
 
-  if (VITE_DEV_SERVER_URL) { // #298
+  // 隐藏菜单栏
+  // Menu.setApplicationMenu(null)
+  // for mac
+  // Menu.setApplicationMenu(Menu.buildFromTemplate([]))
+
+  // 禁用手动最大化
+  win.setMaximizable(false)
+  // 禁用手动调整窗口大小
+  // win.setResizable(false)
+  // 不在任务栏中显示
+  win.setSkipTaskbar(true)
+
+  // 窗口失焦时，隐藏窗口
+  win.on('blur', () => {
+    win.hide()
+  })
+
+  // 注册快捷键激活/隐藏窗口
+  globalShortcut.register('Alt+Shift+C', () => {
+    if (!win) {
+      createWindow()
+      return
+    }
+    console.log('Alt+Shift+C', win.isVisible())
+    if (win.isVisible()) {
+      win.hide()
+    } else {
+      win.show()
+    }
+  })
+
+  if (VITE_DEV_SERVER_URL) {
+    // #298
     win.loadURL(VITE_DEV_SERVER_URL)
     // Open devTool if the app is not packaged
-    win.webContents.openDevTools()
+    // win.webContents.openDevTools()
   } else {
     win.loadFile(indexHtml)
   }

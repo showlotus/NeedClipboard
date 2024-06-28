@@ -3,25 +3,34 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <div>
-    <a href="https://www.electronjs.org/" target="_blank">
-      <img src="./assets/electron.svg" class="logo electron" alt="Electron logo" />
-    </a>
-    <a href="https://vitejs.dev/" target="_blank">
-      <img src="./assets/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div
+    class="drag-area"
+    style="
+      height: 100px;
+      border-radius: 10px;
+      border: 2px dashed orange;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+    "
+  >
+    可拖动区域
   </div>
-  <HelloWorld msg="Electron + Vite + Vue" />
-  <div class="flex-center">
-    Place static files into the <code>/public</code> folder
-    <img style="width: 2.4em; margin-left: .4em;" src="/logo.svg" alt="Logo">
+  <div class="content">
+    <HelloWorld msg="Electron + Vite + Vue" />
   </div>
 </template>
 
 <style>
+.drag-area {
+  -webkit-app-region: drag;
+}
+
+.content {
+  -webkit-app-region: no-drag;
+}
+
 .flex-center {
   display: flex;
   align-items: center;
@@ -36,7 +45,7 @@ import HelloWorld from './components/HelloWorld.vue'
 }
 
 .logo.electron:hover {
-  filter: drop-shadow(0 0 2em #9FEAF9);
+  filter: drop-shadow(0 0 2em #9feaf9);
 }
 
 .logo:hover {
