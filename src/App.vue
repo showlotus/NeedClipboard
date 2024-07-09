@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
+
+window.ipcRenderer.on('clipboard-change', (_event, ...args) => {
+  console.log(...args)
+})
 </script>
 
 <template>

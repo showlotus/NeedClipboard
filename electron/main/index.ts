@@ -1,4 +1,13 @@
-import { app, BrowserWindow, shell, ipcMain, globalShortcut, screen, Menu } from 'electron'
+import {
+  app,
+  BrowserWindow,
+  shell,
+  ipcMain,
+  globalShortcut,
+  screen,
+  Menu,
+  webContents
+} from 'electron'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
@@ -6,6 +15,14 @@ import os from 'node:os'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const NativeClipboard = require('../../packages/native-clipboard')
+
+console.log(NativeClipboard)
+
+// TODO 监听剪贴板变化，更新 Store，通知 View 更新
+NativeClipboard.startWatching(() => {
+  win?.webContents.send('clipboard-change', NativeClipboard.getClipboardType())
+})
 
 // The built directory structure
 //
@@ -46,11 +63,11 @@ async function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
   win = new BrowserWindow({
     title: 'Main window',
-    width: width * 0.4,
-    height: height * 0.5,
+    // width: width * 0.4,
+    // height: height * 0.5,
     icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
-      preload,
+      preload
       // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
       // nodeIntegration: true,
 
@@ -62,7 +79,7 @@ async function createWindow() {
     // TODO publish 时需要隐藏标题栏
     // titleBarStyle: 'hidden',
     // 无边框窗口，隐藏标题和菜单栏
-    frame: false,
+    frame: false
   })
 
   // 隐藏菜单栏
@@ -100,7 +117,7 @@ async function createWindow() {
     // #298
     win.loadURL(VITE_DEV_SERVER_URL)
     // Open devTool if the app is not packaged
-    // win.webContents.openDevTools()
+    win.webContents.openDevTools()
   } else {
     win.loadFile(indexHtml)
   }
@@ -148,8 +165,8 @@ ipcMain.handle('open-win', (_, arg) => {
     webPreferences: {
       preload,
       nodeIntegration: true,
-      contextIsolation: false,
-    },
+      contextIsolation: false
+    }
   })
 
   if (VITE_DEV_SERVER_URL) {

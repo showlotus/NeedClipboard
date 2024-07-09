@@ -1,0 +1,19 @@
+{
+  "name": "native-clipboard",
+  "version": "0.0.1",
+  "description": "",
+  "main": "build/Release/native-clipboard.node",
+  "scripts": {
+    "build": "node-gyp configure build",
+    "rebuild": "rm -rf ./build && node-gyp configure build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "gypfile": true,
+  "devDependencies": {
+    "bindings": "^1.5.0",
+    "node-addon-api": "^8.0.0",
+    "node-gyp": "^10.1.0"
+  }
+}
