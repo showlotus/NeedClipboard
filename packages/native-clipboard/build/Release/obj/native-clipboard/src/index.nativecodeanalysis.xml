@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\showlotus\Desktop\WinCode\transfer-station\2024\0628-clipboard-history\packages\native-clipboard\src\</FILEPATH>
+      <FILENAME>index.cpp</FILENAME>
+      <LINE>13</LINE>
+      <COLUMN>17</COLUMN>
+    </SFA>
+    <DEFECTCODE>6244</DEFECTCODE>
+    <DESCRIPTION>“hwnd”的局部声明遮蔽了此前位于“7”行(“c:\users\showlotus\desktop\wincode\transfer-station\2024\0628-clipboard-history\packages\native-clipboard\src\index.cpp”中)的声明。</DESCRIPTION>
+    <FUNCTION>WindowProc</FUNCTION>
+    <DECORATED>?WindowProc@@YA_JPEAUHWND__@@I_K_J@Z</DECORATED>
+    <FUNCLINE>13</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>C:\Users\showlotus\Desktop\WinCode\transfer-station\2024\0628-clipboard-history\packages\native-clipboard\src\</FILEPATH>
+        <FILENAME>index.cpp</FILENAME>
+        <LINE>7</LINE>
+        <COLUMN>5</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\showlotus\Desktop\WinCode\transfer-station\2024\0628-clipboard-history\packages\native-clipboard\node_modules\node-addon-api\</FILEPATH>
+      <FILENAME>napi-inl.h</FILENAME>
+      <LINE>6069</LINE>
+      <COLUMN>21</COLUMN>
+    </SFA>
+    <DEFECTCODE>6244</DEFECTCODE>
+    <DESCRIPTION>“tsfn”的局部声明遮蔽了此前位于“11”行(“c:\users\showlotus\desktop\wincode\transfer-station\2024\0628-clipboard-history\packages\native-clipboard\src\index.cpp”中)的声明。</DESCRIPTION>
+    <FUNCTION>Napi::ThreadSafeFunction::New</FUNCTION>
+    <DECORATED>??$New@PEBDXV&lt;lambda_eb981a1dd1025b8bfef4a1ab2294faff&gt;@@X@ThreadSafeFunction@Napi@@CA?AV01@PEAUnapi_env__@@AEBVFunction@1@AEBVObject@1@PEBD_K4PEAXV&lt;lambda_eb981a1dd1025b8bfef4a1ab2294faff&gt;@@5P6AX055@Z@Z</DECORATED>
+    <FUNCLINE>6055</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>C:\Users\showlotus\Desktop\WinCode\transfer-station\2024\0628-clipboard-history\packages\native-clipboard\src\</FILEPATH>
+        <FILENAME>index.cpp</FILENAME>
+        <LINE>11</LINE>
+        <COLUMN>25</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT>
+</DEFECTS>
