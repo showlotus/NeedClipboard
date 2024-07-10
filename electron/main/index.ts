@@ -6,7 +6,9 @@ import {
   globalShortcut,
   screen,
   Menu,
-  webContents
+  webContents,
+  Tray,
+  nativeImage
 } from 'electron'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
@@ -56,6 +58,7 @@ if (!app.requestSingleInstanceLock()) {
 }
 
 let win: BrowserWindow | null = null
+let tray: Tray | null = null
 const preload = path.join(__dirname, '../preload/index.mjs')
 const indexHtml = path.join(RENDERER_DIST, 'index.html')
 
@@ -92,7 +95,7 @@ async function createWindow() {
   // 禁用手动调整窗口大小
   // win.setResizable(false)
   // 不在任务栏中显示
-  win.setSkipTaskbar(true)
+  // win.setSkipTaskbar(true)
 
   // 窗口失焦时，隐藏窗口
   win.on('blur', () => {
@@ -110,6 +113,25 @@ async function createWindow() {
       win.hide()
     } else {
       win.show()
+    }
+  })
+
+  const registerEsc = () => {
+    if (globalShortcut.isRegistered('Esc')) {
+      return
+    }
+    console.log('register Esc')
+    globalShortcut.register('Esc', () => {
+      win.hide()
+    })
+  }
+
+  registerEsc()
+  win.on('show', registerEsc)
+  win.on('hide', () => {
+    if (globalShortcut.isRegistered('Esc')) {
+      console.log('unregister Esc')
+      globalShortcut.unregister('Esc')
     }
   })
 
@@ -133,6 +155,17 @@ async function createWindow() {
     return { action: 'deny' }
   })
   // win.webContents.on('will-navigate', (event, url) => { }) #344
+
+  // TODO 创建系统托盘
+  tray = new Tray(path.join(process.env.VITE_PUBLIC, 'electron.ico'))
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Item1', type: 'radio' },
+    { label: 'Item2', type: 'radio' },
+    { label: 'Item3', type: 'radio', checked: true },
+    { label: 'Item4', type: 'radio' }
+  ])
+  tray.setToolTip('NeedClipboard')
+  tray.setContextMenu(contextMenu)
 }
 
 app.whenReady().then(createWindow)

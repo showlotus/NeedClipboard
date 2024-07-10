@@ -25,6 +25,16 @@ npm install --global --production windows-build-tools@4.0.0
 
 ## log
 
+![Alt text](c:/Users/y30047738/Downloads/electron.ico)
+
+### 07/10
+
+- 系统托盘需要展示的菜单栏功能：
+  - 开机启动
+  -
+  - 退出
+- 如何删除记录。
+
 ### 07/04
 
 - 试了一下，直接用 `Base64` 格式展示，图片大小也不是很大，而且方便存储。刚好上次预研，看了一下如何把数据存储在本机上，找到一个库 `electron-store`，可以以 JSON 的格式记录，这样刚好记录 `Base64` 格式。
