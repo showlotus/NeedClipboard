@@ -14,6 +14,11 @@ import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import os from 'node:os'
+import ElectronStore from 'electron-store'
+
+const SettingsStore = new ElectronStore({
+  name: 'settings'
+})
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -46,6 +51,8 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   ? path.join(process.env.APP_ROOT, 'public')
   : RENDERER_DIST
 
+process.argv.push('--openAsHidden')
+
 // Disable GPU Acceleration for Windows 7
 if (os.release().startsWith('6.1')) app.disableHardwareAcceleration()
 
@@ -62,12 +69,29 @@ let tray: Tray | null = null
 const preload = path.join(__dirname, '../preload/index.mjs')
 const indexHtml = path.join(RENDERER_DIST, 'index.html')
 
+// TODO 设置开机自启
+if (app.isPackaged || true) {
+  app.setLoginItemSettings({
+    openAtLogin: true,
+    args: ['--openAsHidden']
+  })
+}
+
+if (app.isPackaged || true) {
+  const { openAtLogin } = app.getLoginItemSettings({
+    args: ['--openAsHidden']
+  })
+  console.log('openAtLogin', openAtLogin, process.argv)
+}
+
 async function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
   win = new BrowserWindow({
     title: 'Main window',
     // width: width * 0.4,
     // height: height * 0.5,
+    width: 1400,
+    height: 800,
     icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
       preload
@@ -95,7 +119,7 @@ async function createWindow() {
   // 禁用手动调整窗口大小
   // win.setResizable(false)
   // 不在任务栏中显示
-  // win.setSkipTaskbar(true)
+  win.setSkipTaskbar(true)
 
   // 窗口失焦时，隐藏窗口
   win.on('blur', () => {
@@ -113,25 +137,6 @@ async function createWindow() {
       win.hide()
     } else {
       win.show()
-    }
-  })
-
-  const registerEsc = () => {
-    if (globalShortcut.isRegistered('Esc')) {
-      return
-    }
-    console.log('register Esc')
-    globalShortcut.register('Esc', () => {
-      win.hide()
-    })
-  }
-
-  registerEsc()
-  win.on('show', registerEsc)
-  win.on('hide', () => {
-    if (globalShortcut.isRegistered('Esc')) {
-      console.log('unregister Esc')
-      globalShortcut.unregister('Esc')
     }
   })
 
@@ -159,13 +164,85 @@ async function createWindow() {
   // TODO 创建系统托盘
   tray = new Tray(path.join(process.env.VITE_PUBLIC, 'electron.ico'))
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'Item1', type: 'radio' },
-    { label: 'Item2', type: 'radio' },
-    { label: 'Item3', type: 'radio', checked: true },
-    { label: 'Item4', type: 'radio' }
+    {
+      label: '开机启动',
+      type: 'checkbox',
+      checked: true,
+      click(e) {
+        console.log('Startup', e.checked)
+      }
+    },
+    { label: '', type: 'separator' },
+    {
+      // label: 'System preference',
+      label: '跟随系统',
+      type: 'radio',
+      checked: true,
+      click(e) {
+        console.log('Theme choose System preference')
+      }
+    },
+    {
+      // label: 'Light',
+      label: '浅色',
+      type: 'radio',
+      click(e) {
+        console.log('Theme choose Light')
+      }
+    },
+    {
+      // label: 'Dark',
+      label: '暗色',
+      type: 'radio',
+      click(e) {
+        console.log('Theme choose Dark')
+      }
+    },
+    { label: '', type: 'separator' },
+    {
+      label: '退出',
+      type: 'normal',
+      click() {
+        app.quit()
+      }
+    }
   ])
   tray.setToolTip('NeedClipboard')
   tray.setContextMenu(contextMenu)
+
+  const registerEsc = () => {
+    if (globalShortcut.isRegistered('Esc')) {
+      return
+    }
+    console.log('register Esc')
+    globalShortcut.register('Esc', () => {
+      win.hide()
+    })
+  }
+
+  registerEsc()
+  win.on('show', registerEsc)
+  win.on('hide', () => {
+    if (globalShortcut.isRegistered('Esc')) {
+      console.log('unregister Esc')
+      globalShortcut.unregister('Esc')
+    }
+  })
+
+  // TODO 开机启动时隐藏窗口
+  win.once('ready-to-show', () => {
+    console.log(process.argv.includes('--openAsHidden'))
+    if (!process.argv.includes('--openAsHidden')) {
+      // win.show()
+    }
+  })
+
+  console.log(app.getPath('userData'))
+
+  ipcMain.handle('save-store', (_event, ...args) => {
+    console.log(args)
+    SettingsStore.set('a', args)
+  })
 }
 
 app.whenReady().then(createWindow)
@@ -173,6 +250,12 @@ app.whenReady().then(createWindow)
 app.on('window-all-closed', () => {
   win = null
   if (process.platform !== 'darwin') app.quit()
+})
+
+app.on('before-quit', () => {
+  // TODO 关闭剪贴板监听
+  NativeClipboard.stopWatching()
+  console.log('before quit')
 })
 
 app.on('second-instance', () => {

@@ -4,6 +4,10 @@ import HelloWorld from './components/HelloWorld.vue'
 window.ipcRenderer.on('clipboard-change', (_event, ...args) => {
   console.log(...args)
 })
+
+const handleSaveStore = () => {
+  window.ipcRenderer.invoke('save-store', 'aaa')
+}
 </script>
 
 <template>
@@ -23,7 +27,11 @@ window.ipcRenderer.on('clipboard-change', (_event, ...args) => {
   </div>
   <div class="content">
     <HelloWorld msg="Electron + Vite + Vue" />
+
+    <button @click="handleSaveStore">save to Store</button>
   </div>
+
+  <h1 class="text-3xl font-bold underline">Hello world!</h1>
 </template>
 
 <style>

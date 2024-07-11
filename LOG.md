@@ -30,8 +30,11 @@ npm install --global --production windows-build-tools@4.0.0
 ### 07/10
 
 - 系统托盘需要展示的菜单栏功能：
-  - 开机启动
-  -
+  - 开机启动，官方 API [getLoginItemSettings](https://www.electronjs.org/zh/docs/latest/api/app#appgetloginitemsettingsoptions-macos-windows)
+  - 主题切换
+    - 跟随系统
+    - 浅色
+    - 暗色
   - 退出
 - 如何删除记录。
 
