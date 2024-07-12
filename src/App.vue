@@ -67,7 +67,7 @@ const toggleTheme = (theme: 'system' | 'light' | 'dark') => {
 
     <button @click="handleSaveStore">Save Store</button>
     <button
-      class="rounded-md bg-indigo-500 text-white"
+      class="text-emerald-500 bg-red-200 dark:text-red-300 dark:bg-green-300"
       @click="handleSaveRecord"
     >
       Save Record
@@ -99,24 +99,5 @@ const toggleTheme = (theme: 'system' | 'light' | 'dark') => {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-.logo.electron:hover {
-  filter: drop-shadow(0 0 2em #9feaf9);
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
 }
 </style>
