@@ -28,7 +28,7 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.19",
     "dexie": "^4.0.8",
-    "electron": "^29.1.1",
+    "electron": "^31.2.0",
     "electron-builder": "^24.13.3",
     "electron-store": "^10.0.0",
     "postcss": "^8.4.39",
