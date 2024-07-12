@@ -8,17 +8,14 @@ import {
   Menu,
   webContents,
   Tray,
-  nativeImage
+  nativeImage,
+  nativeTheme
 } from 'electron'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import os from 'node:os'
 import ElectronStore from 'electron-store'
-
-const SettingsStore = new ElectronStore({
-  name: 'settings'
-})
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -84,8 +81,27 @@ if (app.isPackaged || true) {
   console.log('openAtLogin', openAtLogin, process.argv)
 }
 
+const SettingsStore = new ElectronStore({
+  name: 'settings'
+})
+
+const RecordStore = new ElectronStore({
+  cwd: 'Records'
+})
+
+ipcMain.handle('save-store', (_event, ...args) => {
+  console.log(args)
+  SettingsStore.set('a', args)
+})
+
+ipcMain.handle('save-record', (_event, ...args) => {
+  console.log(args)
+  // RecordStore.set('a', args)
+})
+
 async function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
+  console.log(width, height)
   win = new BrowserWindow({
     title: 'Main window',
     // width: width * 0.4,
@@ -106,7 +122,10 @@ async function createWindow() {
     // TODO publish 时需要隐藏标题栏
     // titleBarStyle: 'hidden',
     // 无边框窗口，隐藏标题和菜单栏
-    frame: false
+    frame: false,
+    // 设置高斯模糊
+    // TODO 会导致打开窗口时有闪烁问题
+    backgroundMaterial: 'acrylic'
   })
 
   // 隐藏菜单栏
@@ -117,13 +136,13 @@ async function createWindow() {
   // 禁用手动最大化
   win.setMaximizable(false)
   // 禁用手动调整窗口大小
-  // win.setResizable(false)
+  win.setResizable(false)
   // 不在任务栏中显示
   win.setSkipTaskbar(true)
 
-  // 窗口失焦时，隐藏窗口
+  // TODO 窗口失焦时，隐藏窗口
   win.on('blur', () => {
-    win.hide()
+    // win.hide()
   })
 
   // 注册快捷键激活/隐藏窗口
@@ -162,6 +181,24 @@ async function createWindow() {
   // win.webContents.on('will-navigate', (event, url) => { }) #344
 
   // TODO 创建系统托盘
+
+  const language = SettingsStore.get('language')
+  const isZh = language === 'zh_CN'
+  const updateLanguage = (language: 'zh_CN' | 'en_US') => {
+    SettingsStore.set('language', language)
+    win.webContents.send('change-language', language)
+  }
+  // 注册获取当前语言的事件，用于初始化语言
+  ipcMain.handleOnce('get-language', () => {
+    return Promise.resolve(SettingsStore.get('language'))
+  })
+  ipcMain.handle('set-language', (_event, language) => {
+    updateLanguage(language)
+  })
+  ipcMain.handle('set-theme', (_event, theme) => {
+    nativeTheme.themeSource = theme
+  })
+
   tray = new Tray(path.join(process.env.VITE_PUBLIC, 'electron.ico'))
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -169,7 +206,29 @@ async function createWindow() {
       type: 'checkbox',
       checked: true,
       click(e) {
+        // 设置开机自启
+        app.setLoginItemSettings({
+          openAtLogin: e.checked,
+          args: ['--openAsHidden']
+        })
         console.log('Startup', e.checked)
+      }
+    },
+    { label: '', type: 'separator' },
+    {
+      label: 'zh_CN',
+      type: 'radio',
+      checked: isZh,
+      click(e) {
+        updateLanguage('zh_CN')
+      }
+    },
+    {
+      label: 'en_US',
+      type: 'radio',
+      checked: !isZh,
+      click(e) {
+        updateLanguage('en_US')
       }
     },
     { label: '', type: 'separator' },
@@ -179,6 +238,7 @@ async function createWindow() {
       type: 'radio',
       checked: true,
       click(e) {
+        nativeTheme.themeSource = 'system'
         console.log('Theme choose System preference')
       }
     },
@@ -187,6 +247,7 @@ async function createWindow() {
       label: '浅色',
       type: 'radio',
       click(e) {
+        nativeTheme.themeSource = 'light'
         console.log('Theme choose Light')
       }
     },
@@ -195,6 +256,7 @@ async function createWindow() {
       label: '暗色',
       type: 'radio',
       click(e) {
+        nativeTheme.themeSource = 'dark'
         console.log('Theme choose Dark')
       }
     },
@@ -221,7 +283,10 @@ async function createWindow() {
   }
 
   registerEsc()
-  win.on('show', registerEsc)
+  win.on('show', () => {
+    win.webContents.send('render')
+    registerEsc()
+  })
   win.on('hide', () => {
     if (globalShortcut.isRegistered('Esc')) {
       console.log('unregister Esc')
@@ -233,16 +298,11 @@ async function createWindow() {
   win.once('ready-to-show', () => {
     console.log(process.argv.includes('--openAsHidden'))
     if (!process.argv.includes('--openAsHidden')) {
-      // win.show()
+      win.show()
     }
   })
 
   console.log(app.getPath('userData'))
-
-  ipcMain.handle('save-store', (_event, ...args) => {
-    console.log(args)
-    SettingsStore.set('a', args)
-  })
 }
 
 app.whenReady().then(createWindow)

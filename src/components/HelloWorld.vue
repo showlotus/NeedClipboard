@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 defineProps<{ msg: string }>()
+
+const { t } = useI18n()
 
 const count = ref(0)
 </script>
@@ -12,8 +15,7 @@ const count = ref(0)
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>
     <p>
-      Edit
-      <code>components/HelloWorld.vue</code> to test HMR
+      {{ t('hi') }}
     </p>
   </div>
 </template>

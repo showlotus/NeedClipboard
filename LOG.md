@@ -25,7 +25,27 @@ npm install --global --production windows-build-tools@4.0.0
 
 ## log
 
-![Alt text](c:/Users/y30047738/Downloads/electron.ico)
+## 07/12
+
+- 设置的配置文件借助 `electron-store` 存储在 （[app.getPath('userData')](https://www.electronjs.org/zh/docs/latest/api/app#appgetpathname)）下的 `settings.json` 中。
+  ```json
+  {
+    // 开机启动
+    "openAtLogin": true,
+    // 主题
+    "theme": "system", // "light" or "dark"
+    // 语言
+    "language": "zh_CN", // "en_US"
+    // 最大保留天数
+    "maxRetainDays": 7, // 30 or 90 or 365 or Infinity/Never
+    // 激活快捷键
+    "shortcutKey": "Alt+Shift+C"
+  }
+  ```
+- 预研：
+  - 设置背景高斯模糊（不能设置全局背景色，否则模糊不生效）。
+  - 任务栏右键菜单动态切换主题，改个属性就能实现，简简单单 ~
+  - 借助 `vue-i18n` 实现语言切换。
 
 ### 07/10
 
