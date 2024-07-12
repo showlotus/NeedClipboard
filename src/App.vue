@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import HelloWorld from './components/HelloWorld.vue'
+import DataBase from './components/DataBase.vue'
 import { computed, getCurrentInstance, onMounted } from 'vue'
 
 const { t } = useI18n()
@@ -62,6 +63,7 @@ const toggleTheme = (theme: 'system' | 'light' | 'dark') => {
   >
     可拖动区域
   </div>
+  <DataBase />
   <div class="content">
     <HelloWorld :msg="msg" />
 
