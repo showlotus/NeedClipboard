@@ -29,6 +29,7 @@ npm install --global --production windows-build-tools@4.0.0
 
 - 设置的配置文件借助 `electron-store` 存储在 （[app.getPath('userData')](https://www.electronjs.org/zh/docs/latest/api/app#appgetpathname)）下的 `settings.json` 中。
   ```json
+  // settings.json
   {
     // 开机启动
     "openAtLogin": true,
@@ -46,6 +47,47 @@ npm install --global --production windows-build-tools@4.0.0
   - 设置背景高斯模糊（不能设置全局背景色，否则模糊不生效）。
   - 任务栏右键菜单动态切换主题，改个属性就能实现，简简单单 ~
   - 借助 `vue-i18n` 实现语言切换。
+- 剪贴板记录存储，主要分为三种格式：
+
+  - 纯文本：
+
+    ```json
+    {
+      "data": "abcdefg",
+      "Content type": "Text",
+      "Characters": 234
+    }
+    ```
+
+  - 文件：
+
+    ```json
+    {
+      "data": null,
+      "Content type": "File",
+      "Path": "~/xx/xxx...src/demo.png",
+      "File size": "16 KB"
+    }
+    ```
+
+  - 图片：
+
+    ```json
+    {
+      "data": "data:image/jpeg;base64...",
+      "Content type": "Image",
+      "Dimensions": "200×400",
+      "Image size": "33 KB"
+    }
+    ```
+
+- 因为涉及到大数据的存储，使用 `JSON` 的话，不利于查询，就查了解决方案，找到两个库：
+
+  - localForage：https://github.com/localForage/localForage 可以以键值对的形式存储 JS 中的数据类型。
+  - Dexie.js：https://github.com/dexie/Dexie.js 可以进行一些数据库的操作，功能更强大一点。因为要考虑到查询到功能，于是就采用这个库。可以在应用退出前，根据配置的 _最大保留天数_ 清理数据库中过期的数据。
+
+    - [dexie-website](https://github.com/dexie/dexie-website)
+    - 参考文档：https://blog.csdn.net/hjb2722404/article/details/118670300
 
 ### 07/10
 
