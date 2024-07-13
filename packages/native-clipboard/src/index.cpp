@@ -49,19 +49,9 @@ void ClipboardWatcherThread() {
 
   RegisterClass(&wc);
 
-  hwnd = CreateWindowEx(
-    0,
-    CLASS_NAME,
-    "Clipboard Watcher",
-    WS_OVERLAPPEDWINDOW,
-    CW_USEDEFAULT,
-    CW_USEDEFAULT,
-    CW_USEDEFAULT,
-    CW_USEDEFAULT,
-    NULL,
-    NULL,
-    GetModuleHandle(NULL),
-    NULL);
+  hwnd = CreateWindowEx(0, CLASS_NAME, "Clipboard Watcher", WS_OVERLAPPEDWINDOW,
+                        CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+                        CW_USEDEFAULT, NULL, NULL, GetModuleHandle(NULL), NULL);
 
   nextClipboardViewer = SetClipboardViewer(hwnd);
 
@@ -98,32 +88,34 @@ Napi::Value StopWatching(const Napi::CallbackInfo& info) {
 Napi::Array GetClipboardType(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
   std::string type = "unknown";
-  Napi::Array filePaths = Napi::Array::new(env);
+  Napi::Array filePaths = Napi::Array::new (env);
   // std::vector<std::wstring> filePaths;
 
-  #if defined(_WIN32)
-    if (OpenClipboard(NULL)) {
-      if (IsClipboardFormatAvailable(CF_TEXT)) {
-        type = "Text";
-      } else if (IsClipboardFormatAvailable(CF_BITMAP)) {
-        type = "Image";
-      } else if (IsClipboardFormatAvailable(CF_HDROP)) {
-        HDROP hDrop = (HDROP)GetClipboardData(CF_HDROP);
-        if (hDrop != NULL) {
-          UINT fileCount = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
-          // 如果复制了多个文件，需要返回多个文件对应的路径
-          for (int i = 0; i < fileCount; ++i) {
-            char filePath[MAX_PATH];
-            DragQueryFile(hDrop, i, filePath, MAX_PATH);
-            filePaths.Set(i, Napi::String::New(env, reinterpret_cast<const char16_t*>(filePath)));
-            // filePaths.push_back(filePath);
-          }
+#if defined(_WIN32)
+  if (OpenClipboard(NULL)) {
+    if (IsClipboardFormatAvailable(CF_TEXT)) {
+      type = "Text";
+    } else if (IsClipboardFormatAvailable(CF_BITMAP)) {
+      type = "Image";
+    } else if (IsClipboardFormatAvailable(CF_HDROP)) {
+      HDROP hDrop = (HDROP)GetClipboardData(CF_HDROP);
+      if (hDrop != NULL) {
+        UINT fileCount = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
+        // 如果复制了多个文件，需要返回多个文件对应的路径
+        for (int i = 0; i < fileCount; ++i) {
+          char filePath[MAX_PATH];
+          DragQueryFile(hDrop, i, filePath, MAX_PATH);
+          filePaths.Set(i,
+                        Napi::String::New(
+                          env, reinterpret_cast<const char16_t*>(filePath)));
+          // filePaths.push_back(filePath);
         }
-        type = "File";
       }
-      CloseClipboard();
+      type = "File";
     }
-  #endif
+    CloseClipboard();
+  }
+#endif
 
   Napi::Array result = Napi::Array::New(env, 2);
   result.Set((uint32_t)0, Napi::String::New(env, type));
