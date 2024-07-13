@@ -36,12 +36,21 @@ void SaveClipboardContent() {
     return;
   }
 
-  HANDLE hData = GetClipboardData(CF_BITMAP);
-  if (hData) {
+  HDROP hDrop = (HDROP)GetClipboardData(CF_HDROP);
+  if (hDrop != NULL) {
+    UINT fileCount = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
+    // std::vector<std::wstring> filePaths;
+    // 如果复制了多个文件，需要返回多个文件对应的路径
+    for (int i = 0; i < fileCount; ++i) {
+      char filePath[MAX_PATH];
+      DragQueryFile(hDrop, i, filePath, MAX_PATH);
+      // filePaths.push_back(filePath);
+      std::cout << filePath << std::endl;
+    }
     // Add the bitmap handle to clipboard history
-    clipboardHistory.AddItem(hData);
+    // clipboardHistory.AddItem(hData);
   } else {
-    std::cerr << "No bitmap found in clipboard." << std::endl;
+    std::cerr << "No file found in clipboard." << std::endl;
   }
 
   CloseClipboard();

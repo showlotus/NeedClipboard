@@ -9,7 +9,8 @@ import {
   webContents,
   Tray,
   nativeImage,
-  nativeTheme
+  nativeTheme,
+  clipboard
 } from 'electron'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
@@ -25,7 +26,21 @@ console.log(NativeClipboard)
 
 // TODO 监听剪贴板变化，更新 Store，通知 View 更新
 NativeClipboard.startWatching(() => {
-  win?.webContents.send('clipboard-change', NativeClipboard.getClipboardType())
+  // TODO 检测与上一次剪贴板内容的区别
+  const [type, path] = NativeClipboard.getClipboardType()
+  const data = { type } as any
+  if (type === 'File') {
+    data.path = path
+  } else if (type === 'Image') {
+    const img = clipboard.readImage()
+    data.size = img.getSize()
+    data.img = img
+    data.miniUrl = img.resize({ height: 28, quality: 'good' }).toDataURL()
+    data.url = img.toDataURL()
+  } else if (type === 'Text') {
+    data.content = clipboard.readText()
+  }
+  win?.webContents.send('clipboard-change', data)
 })
 
 // The built directory structure
@@ -180,8 +195,6 @@ async function createWindow() {
   })
   // win.webContents.on('will-navigate', (event, url) => { }) #344
 
-  // TODO 创建系统托盘
-
   const language = SettingsStore.get('language')
   const isZh = language === 'zh_CN'
   const updateLanguage = (language: 'zh_CN' | 'en_US') => {
@@ -199,7 +212,12 @@ async function createWindow() {
     nativeTheme.themeSource = theme
   })
 
+  // TODO 创建系统托盘
   tray = new Tray(path.join(process.env.VITE_PUBLIC, 'electron.ico'))
+  // 点击系统托盘图标时，打开窗口
+  tray.on('click', () => {
+    !win.isVisible() && win.show()
+  })
   const contextMenu = Menu.buildFromTemplate([
     {
       label: '开机启动',

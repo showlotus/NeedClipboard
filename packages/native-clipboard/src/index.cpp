@@ -98,7 +98,8 @@ Napi::Value StopWatching(const Napi::CallbackInfo& info) {
 Napi::Array GetClipboardType(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
   std::string type = "unknown";
-  std::string path = "";
+  Napi::Array filePaths = Napi::Array::new(env);
+  // std::vector<std::wstring> filePaths;
 
   #if defined(_WIN32)
     if (OpenClipboard(NULL)) {
@@ -111,10 +112,11 @@ Napi::Array GetClipboardType(const Napi::CallbackInfo& info) {
         if (hDrop != NULL) {
           UINT fileCount = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
           // 如果复制了多个文件，需要返回多个文件对应的路径
-          if (fileCount > 0) {
+          for (int i = 0; i < fileCount; ++i) {
             char filePath[MAX_PATH];
-            DragQueryFile(hDrop, 0, filePath, MAX_PATH);
-            path += filePath;
+            DragQueryFile(hDrop, i, filePath, MAX_PATH);
+            filePaths.Set(i, Napi::String::New(env, reinterpret_cast<const char16_t*>(filePath)));
+            // filePaths.push_back(filePath);
           }
         }
         type = "File";
@@ -125,7 +127,7 @@ Napi::Array GetClipboardType(const Napi::CallbackInfo& info) {
 
   Napi::Array result = Napi::Array::New(env, 2);
   result.Set((uint32_t)0, Napi::String::New(env, type));
-  result.Set((uint32_t)1, Napi::String::New(env, path));
+  result.Set((uint32_t)1, filePaths);
   return result;
 }
 

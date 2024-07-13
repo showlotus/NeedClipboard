@@ -24,7 +24,7 @@ window.ipcRenderer.invoke('get-language').then((language) => {
 })
 
 window.ipcRenderer.on('clipboard-change', (_event, ...args) => {
-  console.log(...args)
+  console.log('clipboard-change', ...args)
 })
 
 window.ipcRenderer.on('render', () => {
