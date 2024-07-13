@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{EB644651-73BD-5835-956A-3ADE9FC5E9D0}</ProjectGuid>
+    <ProjectGuid>{8A064CA7-A217-A85B-6905-B62BCD069647}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>native-clipboard</RootNamespace>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
@@ -48,7 +48,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\transfer-station\2024\0628-clipboard-history\packages\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus -std:c++17 %(AdditionalOptions)</AdditionalOptions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <BufferSecurityCheck>true</BufferSecurityCheck>
@@ -85,13 +85,13 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\transfer-station\2024\0628-clipboard-history\packages\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=native-clipboard;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;NAPI_CPP_EXCEPTIONS;_HAS_EXCEPTIONS=1;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\transfer-station\2024\0628-clipboard-history\packages\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus -std:c++17 %(AdditionalOptions)</AdditionalOptions>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -131,7 +131,7 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\transfer-station\2024\0628-clipboard-history\packages\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.15.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=native-clipboard;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;NAPI_CPP_EXCEPTIONS;_HAS_EXCEPTIONS=1;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
@@ -142,11 +142,11 @@
     <ClCompile Include="..\src\index.cpp">
       <ObjectFileName>$(IntDir)\src\index.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="C:\Users\showlotus\Desktop\WinCode\transfer-station\2024\0628-clipboard-history\packages\native-clipboard\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
+    <ClCompile Include="C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="node_modules\node-addon-api\node_addon_api_except.vcxproj">
-      <Project>{B466F093-9210-F58D-06AA-A2BE86AA0CF0}</Project>
+      <Project>{77A462C6-FD03-6329-3668-E49F17446A4E}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

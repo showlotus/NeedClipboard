@@ -2,10 +2,10 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\showlotus\Desktop\WinCode\transfer-station\2024\0628-clipboard-history\packages\native-clipboard\build\Release\node_addon_api_except</FullPath>
+      <FullPath>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\build\Release\node_addon_api_except</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>C:\Users\showlotus\Desktop\WinCode\transfer-station\2024\0628-clipboard-history\packages\native-clipboard\build\Release\native-clipboard.node</FullPath>
+      <FullPath>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\build\Release\native-clipboard.node</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

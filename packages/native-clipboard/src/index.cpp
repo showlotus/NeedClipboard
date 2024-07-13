@@ -88,8 +88,7 @@ Napi::Value StopWatching(const Napi::CallbackInfo& info) {
 Napi::Array GetClipboardType(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
   std::string type = "unknown";
-  Napi::Array filePaths = Napi::Array::new (env);
-  // std::vector<std::wstring> filePaths;
+  Napi::Array filePaths = Napi::Array::New(env);
 
 #if defined(_WIN32)
   if (OpenClipboard(NULL)) {
@@ -105,10 +104,7 @@ Napi::Array GetClipboardType(const Napi::CallbackInfo& info) {
         for (int i = 0; i < fileCount; ++i) {
           char filePath[MAX_PATH];
           DragQueryFile(hDrop, i, filePath, MAX_PATH);
-          filePaths.Set(i,
-                        Napi::String::New(
-                          env, reinterpret_cast<const char16_t*>(filePath)));
-          // filePaths.push_back(filePath);
+          filePaths.Set(i, Napi::String::New(env, filePath));
         }
       }
       type = "File";

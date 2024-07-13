@@ -425,7 +425,7 @@
     "globalconfig": "C:\\Users\\showlotus\\AppData\\Roaming\\npm\\etc\\npmrc",
     "global_prefix": "C:\\Users\\showlotus\\AppData\\Roaming\\npm",
     "init_module": "C:\\Users\\showlotus\\.npm-init.js",
-    "local_prefix": "C:\\Users\\showlotus\\Desktop\\WinCode\\transfer-station\\2024\\0628-clipboard-history\\packages\\native-clipboard",
+    "local_prefix": "C:\\Users\\showlotus\\Desktop\\WinCode\\NeedClipboard\\packages\\native-clipboard",
     "node_gyp": "C:\\Program Files\\nodejs\\node_modules\\npm\\node_modules\\node-gyp\\bin\\node-gyp.js",
     "npm_version": "10.7.0",
     "prefix": "C:\\Users\\showlotus\\AppData\\Roaming\\npm",
