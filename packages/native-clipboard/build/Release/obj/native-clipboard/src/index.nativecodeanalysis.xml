@@ -23,6 +23,92 @@
   </DEFECT>
   <DEFECT>
     <SFA>
+      <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
+      <FILENAME>index.cpp</FILENAME>
+      <LINE>143</LINE>
+      <COLUMN>15</COLUMN>
+    </SFA>
+    <DEFECTCODE>6011</DEFECTCODE>
+    <DESCRIPTION>取消对 NULL 指针“df”的引用。</DESCRIPTION>
+    <FUNCTION>SetClipboardFiles</FUNCTION>
+    <DECORATED>?SetClipboardFiles@@YAXAEBV?$vector@V?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@V?$allocator@V?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@@2@@std@@@Z</DECORATED>
+    <FUNCLINE>122</FUNCLINE>
+    <PROBABILITY>1</PROBABILITY>
+    <RANK>4</RANK>
+    <CATEGORY>
+      <RULECATEGORY>mspft</RULECATEGORY>
+    </CATEGORY>
+    <PATH>
+      <SFA>
+        <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
+        <FILENAME>index.cpp</FILENAME>
+        <LINE>123</LINE>
+        <COLUMN>8</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
+        <FILENAME>index.cpp</FILENAME>
+        <LINE>127</LINE>
+        <COLUMN>18</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
+        <FILENAME>index.cpp</FILENAME>
+        <LINE>130</LINE>
+        <COLUMN>11</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
+        <FILENAME>index.cpp</FILENAME>
+        <LINE>131</LINE>
+        <COLUMN>28</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
+        <FILENAME>index.cpp</FILENAME>
+        <LINE>134</LINE>
+        <COLUMN>14</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
+        <FILENAME>index.cpp</FILENAME>
+        <LINE>136</LINE>
+        <COLUMN>12</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
+        <FILENAME>index.cpp</FILENAME>
+        <LINE>137</LINE>
+        <COLUMN>8</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
+        <FILENAME>index.cpp</FILENAME>
+        <LINE>142</LINE>
+        <COLUMN>15</COLUMN>
+        <KEYEVENT>
+          <ID>1</ID>
+          <KIND>declaration</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>“df”可能为 NULL</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
+        <FILENAME>index.cpp</FILENAME>
+        <LINE>143</LINE>
+        <COLUMN>15</COLUMN>
+        <KEYEVENT>
+          <ID>2</ID>
+          <KIND>usage</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>已取消对“df”的引用，但可能仍为 NULL</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+    </PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
       <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\node_modules\node-addon-api\</FILEPATH>
       <FILENAME>napi-inl.h</FILENAME>
       <LINE>6126</LINE>

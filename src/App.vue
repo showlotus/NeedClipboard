@@ -2,6 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import HelloWorld from './components/HelloWorld.vue'
 import DataBase from './components/DataBase.vue'
+import Copy from './components/Copy.vue'
 import { computed, getCurrentInstance, onMounted } from 'vue'
 
 const { t } = useI18n()
@@ -65,6 +66,7 @@ const toggleTheme = (theme: 'system' | 'light' | 'dark') => {
   </div>
   <DataBase />
   <div class="content">
+    <Copy />
     <HelloWorld :msg="msg" />
 
     <button @click="handleSaveStore">Save Store</button>

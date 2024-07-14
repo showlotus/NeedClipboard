@@ -15,6 +15,7 @@ import {
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+import fs from 'node:fs'
 import os from 'node:os'
 import ElectronStore from 'electron-store'
 
@@ -112,6 +113,15 @@ ipcMain.handle('save-store', (_event, ...args) => {
 ipcMain.handle('save-record', (_event, ...args) => {
   console.log(args)
   // RecordStore.set('a', args)
+})
+
+ipcMain.handle('update-clipboard', (_event, files) => {
+  const filePaths = files.map(
+    // (filePath) => `file://${encodeURI(filePath.replace(/\\/g, '/'))}`
+    (filePath) => filePath + '\0'
+  )
+  console.log(filePaths)
+  NativeClipboard.writeFilesToClipboard(files)
 })
 
 async function createWindow() {

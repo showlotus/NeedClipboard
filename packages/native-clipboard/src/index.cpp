@@ -119,6 +119,64 @@ Napi::Array GetClipboardType(const Napi::CallbackInfo& info) {
   return result;
 }
 
+void SetClipboardFiles(const std::vector<std::wstring>& filePaths) {
+    if (!OpenClipboard(nullptr)) {
+        return;
+    }
+
+    EmptyClipboard();
+
+    // Calculate the total size needed for the DROPFILES structure
+    size_t totalSize = sizeof(DROPFILES);
+    for (const auto& path : filePaths) {
+        totalSize += (path.size() + 1) * sizeof(wchar_t); // Size of each path including null terminator
+    }
+    totalSize += sizeof(wchar_t); // Additional null terminator for the end of the list
+
+    HGLOBAL hGlobal = GlobalAlloc(GMEM_MOVEABLE, totalSize);
+    if (!hGlobal) {
+        CloseClipboard();
+        return;
+    }
+
+    DROPFILES* df = static_cast<DROPFILES*>(GlobalLock(hGlobal));
+    df->pFiles = sizeof(DROPFILES);
+    df->fWide = TRUE; // Unicode file paths
+
+    wchar_t* ptr = reinterpret_cast<wchar_t*>(reinterpret_cast<BYTE*>(df) + sizeof(DROPFILES));
+    for (const auto& path : filePaths) {
+        wcscpy(ptr, path.c_str());
+        ptr += path.size() + 1;
+    }
+    *ptr = L'\0'; // End of the list
+
+    GlobalUnlock(hGlobal);
+    SetClipboardData(CF_HDROP, hGlobal);
+    CloseClipboard();
+}
+
+Napi::Value WriteFilesToClipboard(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+
+    if (!info[0].IsArray()) {
+        Napi::TypeError::New(env, "Array expected").ThrowAsJavaScriptException();
+        return env.Null();
+    }
+
+    Napi::Array filePathsArray = info[0].As<Napi::Array>();
+    std::vector<std::wstring> filePaths;
+
+    for (uint32_t i = 0; i < filePathsArray.Length(); ++i) {
+        std::string filePath = filePathsArray.Get(i).As<Napi::String>().Utf8Value();
+        std::wstring wFilePath(filePath.begin(), filePath.end());
+        filePaths.push_back(wFilePath);
+    }
+
+    SetClipboardFiles(filePaths);
+
+    return env.Null();
+}
+
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
   exports.Set(Napi::String::New(env, "startWatching"),
               Napi::Function::New(env, StartWatching));
@@ -126,6 +184,8 @@ Napi::Object Init(Napi::Env env, Napi::Object exports) {
               Napi::Function::New(env, StopWatching));
   exports.Set(Napi::String::New(env, "getClipboardType"),
               Napi::Function::New(env, GetClipboardType));
+  exports.Set(Napi::String::New(env, "writeFilesToClipboard"),
+              Napi::Function::New(env, WriteFilesToClipboard));
   return exports;
 }
 
