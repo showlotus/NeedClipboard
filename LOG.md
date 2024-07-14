@@ -10,6 +10,7 @@
 > - https://github.com/nodejs/node-addon-api/blob/main/doc/setup.md （官方文档给力，打包 + 调用终于不报错了） !!!!!!!
 
 > - Node Addon Api: https://github.com/nodejs/node-addon-api/blob/main/doc/README.md
+> - 微软剪贴板 Api: https://learn.microsoft.com/zh-cn/windows/win32/dataxchg/clipboard
 
 ```shell
 npm install --global --production windows-build-tools@4.0.0
@@ -25,21 +26,15 @@ npm install --global --production windows-build-tools@4.0.0
 
 ## log
 
+### 07/14
+
+- Electron 将多个文件复制到剪贴板，试了好多种方法，都不太行。于是该用通过 C++ 实现，无敌的 C++ ！！！
+- 以及从剪贴板中获取文件路径时乱码了，又是通过 C++ 处理的。
+- 遇到一个问题，将 base64 写入剪贴板后，回导致图片变大。得想办法处理一下。
+
 ### 07/13
 
 - 剪贴板格式对标 Raycast 再新增两种：Link、Color。
-
-  - Link：链接
-
-    ```json
-    {}
-    ```
-
-  - Color：颜色
-
-    ```json
-    {}
-    ```
 
 - 数据库表设计：设计一个主表记录一些公有属性字段，以及主键，还有若干不同类型的其他表，针对不同类型记录对应类型的特殊字段。
 
@@ -106,10 +101,11 @@ npm install --global --production windows-build-tools@4.0.0
 
   - LinkTable，记录 Content Type 为 `Link` 类型的数据
 
-    | 字段名  |   类型   |             描述              |
-    | :-----: | :------: | :---------------------------: |
-    |   id    | `Number` | 外键，来源自 `ClipboardTable` |
-    | content | `String` |           文本内容            |
+    |   字段名   |   类型   |             描述              |
+    | :--------: | :------: | :---------------------------: |
+    |     id     | `Number` | 外键，来源自 `ClipboardTable` |
+    |  content   | `String` |           文本内容            |
+    | characters | `Number` |            字符数             |
 
   - ColorTable，记录 Content Type 为 `Color` 类型的数据
 
