@@ -25,14 +25,14 @@
     <SFA>
       <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
       <FILENAME>index.cpp</FILENAME>
-      <LINE>143</LINE>
+      <LINE>199</LINE>
       <COLUMN>15</COLUMN>
     </SFA>
     <DEFECTCODE>6011</DEFECTCODE>
     <DESCRIPTION>取消对 NULL 指针“df”的引用。</DESCRIPTION>
     <FUNCTION>SetClipboardFiles</FUNCTION>
     <DECORATED>?SetClipboardFiles@@YAXAEBV?$vector@V?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@V?$allocator@V?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@@2@@std@@@Z</DECORATED>
-    <FUNCLINE>122</FUNCLINE>
+    <FUNCLINE>178</FUNCLINE>
     <PROBABILITY>1</PROBABILITY>
     <RANK>4</RANK>
     <CATEGORY>
@@ -42,49 +42,49 @@
       <SFA>
         <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
         <FILENAME>index.cpp</FILENAME>
-        <LINE>123</LINE>
+        <LINE>179</LINE>
         <COLUMN>8</COLUMN>
       </SFA>
       <SFA>
         <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
         <FILENAME>index.cpp</FILENAME>
-        <LINE>127</LINE>
+        <LINE>183</LINE>
         <COLUMN>18</COLUMN>
       </SFA>
       <SFA>
         <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
         <FILENAME>index.cpp</FILENAME>
-        <LINE>130</LINE>
+        <LINE>186</LINE>
         <COLUMN>11</COLUMN>
       </SFA>
       <SFA>
         <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
         <FILENAME>index.cpp</FILENAME>
-        <LINE>131</LINE>
+        <LINE>187</LINE>
         <COLUMN>28</COLUMN>
       </SFA>
       <SFA>
         <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
         <FILENAME>index.cpp</FILENAME>
-        <LINE>134</LINE>
+        <LINE>190</LINE>
         <COLUMN>14</COLUMN>
       </SFA>
       <SFA>
         <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
         <FILENAME>index.cpp</FILENAME>
-        <LINE>136</LINE>
+        <LINE>192</LINE>
         <COLUMN>12</COLUMN>
       </SFA>
       <SFA>
         <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
         <FILENAME>index.cpp</FILENAME>
-        <LINE>137</LINE>
+        <LINE>193</LINE>
         <COLUMN>8</COLUMN>
       </SFA>
       <SFA>
         <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
         <FILENAME>index.cpp</FILENAME>
-        <LINE>142</LINE>
+        <LINE>198</LINE>
         <COLUMN>15</COLUMN>
         <KEYEVENT>
           <ID>1</ID>
@@ -96,7 +96,7 @@
       <SFA>
         <FILEPATH>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\src\</FILEPATH>
         <FILENAME>index.cpp</FILENAME>
-        <LINE>143</LINE>
+        <LINE>199</LINE>
         <COLUMN>15</COLUMN>
         <KEYEVENT>
           <ID>2</ID>

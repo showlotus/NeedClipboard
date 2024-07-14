@@ -115,14 +115,10 @@ ipcMain.handle('save-record', (_event, ...args) => {
   // RecordStore.set('a', args)
 })
 
-ipcMain.handle('update-clipboard', (_event, files) => {
-  const filePaths = files.map(
-    // (filePath) => `file://${encodeURI(filePath.replace(/\\/g, '/'))}`
-    (filePath) => filePath + '\0'
-  )
-  console.log(filePaths)
+ipcMain.handle('update-clipboard-file', (_event, files) => {
   NativeClipboard.writeFilesToClipboard(files)
 })
+ipcMain.handle('update-clipboard-image', (_event, image) => {})
 
 async function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize

@@ -64,6 +64,54 @@ void ClipboardWatcherThread() {
   DestroyWindow(hwnd);
 }
 
+std::vector<std::wstring> GetClipboardFiles() {
+    std::vector<std::wstring> filePaths;
+
+    if (!OpenClipboard(nullptr)) {
+        return filePaths;
+    }
+
+    HANDLE hData = GetClipboardData(CF_HDROP);
+    if (hData) {
+        HDROP hDrop = static_cast<HDROP>(GlobalLock(hData));
+        if (hDrop) {
+            UINT fileCount = DragQueryFileW(hDrop, 0xFFFFFFFF, nullptr, 0);
+            for (UINT i = 0; i < fileCount; ++i) {
+                UINT pathLen = DragQueryFileW(hDrop, i, nullptr, 0) + 1;
+                std::wstring filePath(pathLen, L'\0');
+                DragQueryFileW(hDrop, i, &filePath[0], pathLen);
+                filePath.resize(pathLen - 1); // Remove the trailing null character
+                filePaths.push_back(filePath);
+            }
+            GlobalUnlock(hData);
+        }
+    }
+    CloseClipboard();
+    return filePaths;
+}
+
+Napi::Value ReadFilesFromClipboard(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+    std::vector<std::wstring> filePaths = GetClipboardFiles();
+    Napi::Array result = Napi::Array::New(env, filePaths.size());
+
+    for (size_t i = 0; i < filePaths.size(); ++i) {
+        std::string filePath(filePaths[i].begin(), filePaths[i].end());
+        result[i] = Napi::String::New(env, filePath);
+    }
+
+    return result;
+}
+
+// Helper function to convert wstring to UTF-8 string
+std::string WStringToUtf8(const std::wstring& wstr) {
+    if (wstr.empty()) return std::string();
+    int sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), nullptr, 0, nullptr, nullptr);
+    std::string strTo(sizeNeeded, 0);
+    WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), &strTo[0], sizeNeeded, nullptr, nullptr);
+    return strTo;
+}
+
 Napi::Value StartWatching(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
 
@@ -99,12 +147,20 @@ Napi::Array GetClipboardType(const Napi::CallbackInfo& info) {
     } else if (IsClipboardFormatAvailable(CF_HDROP)) {
       HDROP hDrop = (HDROP)GetClipboardData(CF_HDROP);
       if (hDrop != NULL) {
-        UINT fileCount = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
-        // 如果复制了多个文件，需要返回多个文件对应的路径
-        for (int i = 0; i < fileCount; ++i) {
-          char filePath[MAX_PATH];
-          DragQueryFile(hDrop, i, filePath, MAX_PATH);
-          filePaths.Set(i, Napi::String::New(env, filePath));
+        
+
+        // UINT fileCount = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
+        // // 如果复制了多个文件，需要返回多个文件对应的路径
+        // for (int i = 0; i < fileCount; ++i) {
+        //   char filePath[MAX_PATH];
+        //   DragQueryFile(hDrop, i, filePath, MAX_PATH);
+        //   filePaths.Set(i, Napi::String::New(env, filePath));
+        // }
+
+        std::vector<std::wstring> files = GetClipboardFiles();
+        for (size_t i = 0; i < files.size(); ++i) {
+          std::string filePath = WStringToUtf8(files[i]);
+          filePaths[i] = Napi::String::New(env, filePath);
         }
       }
       type = "File";
