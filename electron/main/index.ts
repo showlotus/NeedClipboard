@@ -118,7 +118,17 @@ ipcMain.handle('save-record', (_event, ...args) => {
 ipcMain.handle('update-clipboard-file', (_event, files) => {
   NativeClipboard.writeFilesToClipboard(files)
 })
-ipcMain.handle('update-clipboard-image', (_event, image) => {})
+ipcMain.handle('update-clipboard-image', (_event, image) => {
+  // const img = nativeImage.createFromDataURL(image)
+
+  const base64Data = image.replace(/^data:image\/\w+;base64,/, '')
+  const imageBuffer = Buffer.from(base64Data, 'base64')
+  const img = nativeImage.createFromBuffer(imageBuffer)
+  clipboard.writeImage(img)
+})
+ipcMain.handle('update-clipboard-text', (_event, text) => {
+  clipboard.writeText(text)
+})
 
 async function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
