@@ -35,7 +35,9 @@ NativeClipboard.startWatching(() => {
   } else if (type === 'Image') {
     const img = clipboard.readImage()
     data.size = img.getSize()
-    data.img = img
+    data.bitmap = img.toBitmap()
+    data.png = img.toPNG()
+    data.jpg = img.toJPEG(100)
     data.miniUrl = img.resize({ height: 28, quality: 'good' }).toDataURL()
     data.url = img.toDataURL()
   } else if (type === 'Text') {
@@ -123,7 +125,18 @@ ipcMain.handle('update-clipboard-image', (_event, image) => {
 
   const base64Data = image.replace(/^data:image\/\w+;base64,/, '')
   const imageBuffer = Buffer.from(base64Data, 'base64')
+  // const tempFilePath = path.join(__dirname, 'temp_image.png')
+  // fs.writeFileSync(tempFilePath, imageBuffer)
   const img = nativeImage.createFromBuffer(imageBuffer)
+  clipboard.writeImage(img)
+})
+ipcMain.handle('update-clipboard-image-buffer', (_event, data) => {
+  const img = nativeImage.createFromBuffer(data.image.jpg)
+  clipboard.writeImage(img)
+})
+ipcMain.handle('update-clipboard-image-url', (_event, data) => {
+  console.log(data.image.url.length)
+  const img = nativeImage.createFromDataURL(data.image.url)
   clipboard.writeImage(img)
 })
 ipcMain.handle('update-clipboard-text', (_event, text) => {

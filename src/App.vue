@@ -4,6 +4,7 @@ import HelloWorld from './components/HelloWorld.vue'
 import DataBase from './components/DataBase.vue'
 import Copy from './components/Copy.vue'
 import { computed, getCurrentInstance, onMounted } from 'vue'
+import db from './database'
 
 const { t } = useI18n()
 
@@ -24,8 +25,23 @@ window.ipcRenderer.invoke('get-language').then((language) => {
   updateLocaleLanguage(language)
 })
 
-window.ipcRenderer.on('clipboard-change', (_event, ...args) => {
-  console.log('clipboard-change', ...args)
+window.ipcRenderer.on('clipboard-change', (_event, data) => {
+  console.log('clipboard-change', data)
+
+  if (data.type === 'Image') {
+    // console.log(data.img.getBitmap())
+    // return
+    db.image.bulkAdd([
+      {
+        image: {
+          url: data.url,
+          bitmap: data.bitmap,
+          png: data.png,
+          jpg: data.jpg
+        }
+      }
+    ])
+  }
 })
 
 window.ipcRenderer.on('render', () => {
