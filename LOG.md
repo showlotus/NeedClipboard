@@ -36,6 +36,8 @@ npm install --global --production windows-build-tools@4.0.0
   - 输入框回车时，更新全局快捷键
   - 输入框失焦时，重新注册所有快捷键
 - `Alt` + `D` 触发不了，也没法录制，很怪！
+- 添加 eslint 配置
+- 想加一个单元测试，但是看了看 electron 官方推荐的好像有点麻烦。如果实在要搞的话，就用官方推荐的再加上 Vitest 去做测试。不过首要前提是，要写好测试用例，打算先写一个文档版的，后续无论做不做单元测试，都以这个文档版的为准。
 
 ### 07/15
 
@@ -223,4 +225,4 @@ npm install --global --production windows-build-tools@4.0.0
 ### 07/01
 
 - 本来想弄一个工作区的，结果死活弄不好，不是这报错就是那报错，算了，放弃了.....
-- [clang-format config](https://www.cnblogs.com/oloroso/p/14699855.html)
+- 格式化 C++ 代码配置 [clang-format config](https://www.cnblogs.com/oloroso/p/14699855.html)
