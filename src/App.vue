@@ -4,7 +4,7 @@ import HelloWorld from './components/HelloWorld.vue'
 import DataBase from './components/DataBase.vue'
 import Copy from './components/Copy.vue'
 import Shortcut from './components/Shortcut.vue'
-import { computed, getCurrentInstance, onBeforeMount } from 'vue'
+import { computed, getCurrentInstance } from 'vue'
 import db from './database'
 
 const { t } = useI18n()

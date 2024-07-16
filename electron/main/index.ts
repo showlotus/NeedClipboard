@@ -85,14 +85,14 @@ const preload = path.join(__dirname, '../preload/index.mjs')
 const indexHtml = path.join(RENDERER_DIST, 'index.html')
 
 // TODO 设置开机自启
-if (app.isPackaged || true) {
+if (app.isPackaged) {
   app.setLoginItemSettings({
     openAtLogin: true,
     args: ['--openAsHidden']
   })
 }
 
-if (app.isPackaged || true) {
+if (app.isPackaged) {
   const { openAtLogin } = app.getLoginItemSettings({
     args: ['--openAsHidden']
   })
@@ -305,7 +305,7 @@ async function createWindow() {
       label: 'zh_CN',
       type: 'radio',
       checked: isZh,
-      click(e) {
+      click() {
         updateLanguage('zh_CN')
       }
     },
@@ -313,7 +313,7 @@ async function createWindow() {
       label: 'en_US',
       type: 'radio',
       checked: !isZh,
-      click(e) {
+      click() {
         updateLanguage('en_US')
       }
     },
@@ -323,7 +323,7 @@ async function createWindow() {
       label: '跟随系统',
       type: 'radio',
       checked: true,
-      click(e) {
+      click() {
         nativeTheme.themeSource = 'system'
         console.log('Theme choose System preference')
       }
@@ -332,7 +332,7 @@ async function createWindow() {
       // label: 'Light',
       label: '浅色',
       type: 'radio',
-      click(e) {
+      click() {
         nativeTheme.themeSource = 'light'
         console.log('Theme choose Light')
       }
@@ -341,7 +341,7 @@ async function createWindow() {
       // label: 'Dark',
       label: '暗色',
       type: 'radio',
-      click(e) {
+      click() {
         nativeTheme.themeSource = 'dark'
         console.log('Theme choose Dark')
       }
