@@ -3,7 +3,8 @@ import { useI18n } from 'vue-i18n'
 import HelloWorld from './components/HelloWorld.vue'
 import DataBase from './components/DataBase.vue'
 import Copy from './components/Copy.vue'
-import { computed, getCurrentInstance, onMounted } from 'vue'
+import Shortcut from './components/Shortcut.vue'
+import { computed, getCurrentInstance, onBeforeMount } from 'vue'
 import db from './database'
 
 const { t } = useI18n()
@@ -80,6 +81,7 @@ const toggleTheme = (theme: 'system' | 'light' | 'dark') => {
   >
     可拖动区域
   </div>
+  <Shortcut />
   <DataBase />
   <div class="content">
     <Copy />

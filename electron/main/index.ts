@@ -102,6 +102,10 @@ if (app.isPackaged || true) {
 const SettingsStore = new ElectronStore({
   name: 'settings'
 })
+// TODO 配置为空时，设置默认值
+if (!SettingsStore.get('shortcutKey')) {
+  SettingsStore.set('shortcutKey', 'Alt+Shift+C')
+}
 
 const RecordStore = new ElectronStore({
   cwd: 'Records'
@@ -142,6 +146,51 @@ ipcMain.handle('update-clipboard-image-url', (_event, data) => {
 ipcMain.handle('update-clipboard-text', (_event, text) => {
   clipboard.writeText(text)
 })
+
+// 修改全局快捷键
+ipcMain.handle('update-shortcut', (_event, keys) => {
+  console.log(keys)
+  SettingsStore.set('shortcutKey', keys.join('+'))
+})
+ipcMain.handle('unregister-all-shortcut', (_event) => {
+  unregisterShortcut()
+})
+ipcMain.handle('register-all-shortcut', (_event) => {
+  registerShortcut()
+})
+
+// 注册快捷键
+function registerShortcut() {
+  registerEsc()
+  const key = SettingsStore.get('shortcutKey')
+  console.log('registerShortcut', key)
+  // 注册快捷键激活/隐藏窗口
+  globalShortcut.register(key, () => {
+    if (!win) {
+      createWindow()
+      return
+    }
+    console.log(key, win.isVisible())
+    if (win.isVisible()) {
+      win.hide()
+    } else {
+      win.show()
+    }
+  })
+}
+// 失效快捷键
+function unregisterShortcut() {
+  globalShortcut.unregisterAll()
+}
+function registerEsc() {
+  if (globalShortcut.isRegistered('Esc')) {
+    return
+  }
+  console.log('register Esc')
+  globalShortcut.register('Esc', () => {
+    win.hide()
+  })
+}
 
 async function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
@@ -186,21 +235,7 @@ async function createWindow() {
 
   // TODO 窗口失焦时，隐藏窗口
   win.on('blur', () => {
-    // win.hide()
-  })
-
-  // 注册快捷键激活/隐藏窗口
-  globalShortcut.register('Alt+Shift+C', () => {
-    if (!win) {
-      createWindow()
-      return
-    }
-    console.log('Alt+Shift+C', win.isVisible())
-    if (win.isVisible()) {
-      win.hide()
-    } else {
-      win.show()
-    }
+    win.hide()
   })
 
   if (VITE_DEV_SERVER_URL) {
@@ -319,17 +354,7 @@ async function createWindow() {
   tray.setToolTip('NeedClipboard')
   tray.setContextMenu(contextMenu)
 
-  const registerEsc = () => {
-    if (globalShortcut.isRegistered('Esc')) {
-      return
-    }
-    console.log('register Esc')
-    globalShortcut.register('Esc', () => {
-      win.hide()
-    })
-  }
-
-  registerEsc()
+  registerShortcut()
   win.on('show', () => {
     win.webContents.send('render')
     registerEsc()
