@@ -107,6 +107,10 @@ if (!SettingsStore.get('shortcutKey')) {
   SettingsStore.set('shortcutKey', 'Alt+Shift+C')
 }
 
+SettingsStore.onDidChange('shortcutKey', (newVal, oldVal) => {
+  console.log('shortcutKey changed', newVal, oldVal)
+})
+
 const RecordStore = new ElectronStore({
   cwd: 'Records'
 })
