@@ -104,7 +104,7 @@ const SettingsStore = new ElectronStore({
 })
 // TODO 配置为空时，设置默认值
 if (!SettingsStore.get('shortcutKey')) {
-  SettingsStore.set('shortcutKey', 'Alt+Shift+C')
+  SettingsStore.set('shortcutKey', 'Alt+C')
 }
 
 SettingsStore.onDidChange('shortcutKey', (newVal, oldVal) => {
@@ -154,7 +154,13 @@ ipcMain.handle('update-clipboard-text', (_event, text) => {
 // 修改全局快捷键
 ipcMain.handle('update-shortcut', (_event, keys) => {
   console.log(keys)
+  // 判断快捷键是否冲突
+  const key = keys.join('+')
+  if (globalShortcut.isRegistered(key)) {
+    return Promise.resolve(false)
+  }
   SettingsStore.set('shortcutKey', keys.join('+'))
+  return Promise.resolve(true)
 })
 ipcMain.handle('unregister-all-shortcut', (_event) => {
   unregisterShortcut()
@@ -219,10 +225,10 @@ async function createWindow() {
     // TODO publish 时需要隐藏标题栏
     // titleBarStyle: 'hidden',
     // 无边框窗口，隐藏标题和菜单栏
-    frame: false,
+    frame: false
     // 设置高斯模糊
     // TODO 会导致打开窗口时有闪烁问题
-    backgroundMaterial: 'acrylic'
+    // backgroundMaterial: 'mica' // mica acrylic
   })
 
   // 隐藏菜单栏

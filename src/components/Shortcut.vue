@@ -26,12 +26,15 @@ const handleFocus = () => {
   window.ipcRenderer.invoke('unregister-all-shortcut')
 }
 const handleBlur = () => {
+  console.log('blur')
   // TODO 重新注册全局快捷键
   window.ipcRenderer.invoke('register-all-shortcut')
 }
 const formatKey = (key: string) => {
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
     return key.slice(5)
+  } else if (key === 'Meta') {
+    return 'Super'
   }
   return key.replace(/^[\s\S]/, (val) => val.toUpperCase())
 }
@@ -39,9 +42,18 @@ const handleKeydown = (e: KeyboardEvent) => {
   if (e.key === 'Enter') {
     // TODO 重新设置当前全局快捷键
     // 首先判断是否冲突，若冲突则提示，否则提示修改成功
-    window.ipcRenderer.invoke('update-shortcut', Array.from(keys.values()))
-    console.log('Enter', Array.from(keys.values()))
-    ;(e.target as HTMLInputElement).blur()
+    const value = Array.from(keys.values())
+    window.ipcRenderer.invoke('update-shortcut', value).then((res) => {
+      console.log('修改快捷键是否成功', res)
+      if (res) {
+        console.log('Enter', value)
+        const target = e.target as HTMLInputElement
+        target.value = ''
+        target.blur()
+      } else {
+        alert('快捷键冲突：' + value)
+      }
+    })
   } else {
     // 重新录制，清空上次录制的键
     if (keydownKeys.size === 0) {
