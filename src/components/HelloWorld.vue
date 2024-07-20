@@ -13,6 +13,7 @@ const count = ref(0)
   <h1>{{ msg }}</h1>
 
   <div class="card">
+    <!-- <img src="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" /> -->
     <button type="button" @click="count++">count is {{ count }}</button>
     <p>
       {{ t('hi') }}

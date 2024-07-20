@@ -3,6 +3,10 @@
 #include <windows.h>
 #include <iostream>
 #include <thread>
+#include <vector>
+// #include "listener.h"
+// #include "stop.h"
+// #include "getapp.h"
 
 HWND hwnd;
 HWND nextClipboardViewer;
@@ -233,6 +237,129 @@ Napi::Value WriteFilesToClipboard(const Napi::CallbackInfo& info) {
     return env.Null();
 }
 
+void PasteClipboardContentByMockKeyboard() {
+    // Simulate CTRL+V key press
+    INPUT inputs[4] = {};
+
+    // Press CTRL
+    inputs[0].type = INPUT_KEYBOARD;
+    inputs[0].ki.wVk = VK_CONTROL;
+
+    // Press V
+    inputs[1].type = INPUT_KEYBOARD;
+    inputs[1].ki.wVk = 'V';
+
+    // Release V
+    inputs[2].type = INPUT_KEYBOARD;
+    inputs[2].ki.wVk = 'V';
+    inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+
+    // Release CTRL
+    inputs[3].type = INPUT_KEYBOARD;
+    inputs[3].ki.wVk = VK_CONTROL;
+    inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+
+    SendInput(4, inputs, sizeof(INPUT));
+}
+
+
+// void PasteClipboardContent() {
+//   if (OpenClipboard(NULL)) {
+//       HANDLE hData = GetClipboardData(CF_TEXT);
+//       if (hData != NULL) {
+//           char* pszText = static_cast<char*>(GlobalLock(hData));
+//           if (pszText != NULL) {
+//               std::string text(pszText);
+//               GlobalUnlock(hData);
+//               HWND hwndActive = GetForegroundWindow();
+//               if (hwndActive != NULL) {
+//                   DWORD processId;
+//                   GetWindowThreadProcessId(hwndActive, &processId);
+//                   HANDLE hProcess = OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_WRITE, FALSE, processId);
+//                   if (hProcess != NULL) {
+//                       SIZE_T bytesWritten;
+//                       LPVOID pRemoteBuf = VirtualAllocEx(hProcess, NULL, text.size() + 1, MEM_COMMIT, PAGE_READWRITE);
+//                       if (pRemoteBuf != NULL) {
+//                           WriteProcessMemory(hProcess, pRemoteBuf, text.c_str(), text.size() + 1, &bytesWritten);
+//                           SendMessage(hwndActive, WM_SETTEXT, 0, (LPARAM)pRemoteBuf);
+//                           VirtualFreeEx(hProcess, pRemoteBuf, 0, MEM_RELEASE);
+//                       }
+//                       CloseHandle(hProcess);
+//                   }
+//               }
+//           }
+//       }
+//       CloseClipboard();
+//   }
+// }
+
+Napi::Value GetWindowHandle(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+
+    HWND hwnd = GetForegroundWindow(); // 获取当前活动窗口句柄
+
+    std::string title;
+    DWORD pid = 0;
+
+    if (hwnd != NULL) {
+        char buffer[256];
+        title.clear();
+
+        // 获取窗口标题
+        if (GetWindowText(hwnd, buffer, sizeof(buffer))) {
+            title = buffer;
+        }
+
+        // 获取进程ID
+        GetWindowThreadProcessId(hwnd, &pid);
+    }
+
+    Napi::Object result = Napi::Object::New(env);
+    result.Set("handle", Napi::String::New(env, std::to_string(reinterpret_cast<uintptr_t>(hwnd))));
+    result.Set("title", Napi::String::New(env, title));
+    result.Set("pid", Napi::Number::New(env, pid));
+
+    return result;
+}
+
+// 获取光标所在窗口的信息
+// Napi::Value GetCursorAppInfo(const Napi::CallbackInfo& info) {
+//     Napi::Env env = info.Env();
+
+//     // 获取光标所在窗口的句柄
+//     POINT pt;
+//     GetCursorPos(&pt);
+//     HWND hwnd = WindowFromPoint(pt);
+
+//     std::string title;
+//     DWORD pid = 0;
+//     std::string iconPath;
+
+//     if (hwnd != NULL) {
+//         char buffer[256];
+//         title.clear();
+
+//         // 获取窗口标题
+//         if (GetWindowText(hwnd, buffer, sizeof(buffer))) {
+//             title = buffer;
+//         }
+
+//         // 获取进程ID
+//         GetWindowThreadProcessId(hwnd, &pid);
+
+//         // 获取窗口图标
+//         iconPath = GetWindowIconPath(hwnd);
+//     }
+
+//     Napi::Object result = Napi::Object::New(env);
+//     result.Set("handle", Napi::String::New(env, std::to_string(reinterpret_cast<uintptr_t>(hwnd))));
+//     result.Set("title", Napi::String::New(env, title));
+//     result.Set("pid", Napi::Number::New(env, pid));
+//     result.Set("icon", Napi::String::New(env, iconPath));
+
+//     return result;
+// }
+
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
   exports.Set(Napi::String::New(env, "startWatching"),
               Napi::Function::New(env, StartWatching));
@@ -242,6 +369,16 @@ Napi::Object Init(Napi::Env env, Napi::Object exports) {
               Napi::Function::New(env, GetClipboardType));
   exports.Set(Napi::String::New(env, "writeFilesToClipboard"),
               Napi::Function::New(env, WriteFilesToClipboard));
+  // exports.Set(Napi::String::New(env, "pasteClipboardContent"),
+  //             Napi::Function::New(env, PasteClipboardContent));
+  exports.Set(Napi::String::New(env, "getWindowHandle"),
+              Napi::Function::New(env, GetWindowHandle));
+  // exports.Set(Napi::String::New(env, "startListeningHandle"),
+  //             Napi::Function::New(env, StartListening));
+  // exports.Set(Napi::String::New(env, "stopListeningHandle"),
+  //             Napi::Function::New(env, StopListening));
+  // exports.Set(Napi::String::New(env, "getCursorAppInfo"),
+  //             Napi::Function::New(env, GetCursorAppInfo));
   return exports;
 }
 
