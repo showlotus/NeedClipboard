@@ -28,3 +28,6 @@ dist-electron
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
+
+# vscode
+.vscode/c_cpp_properties.json
