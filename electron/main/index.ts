@@ -21,8 +21,18 @@ import ElectronStore from 'electron-store'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const NativeClipboard = require('../../packages/native-clipboard')
-
+// const NativeClipboard = require('../../packages/native-clipboard')
+// in mac development
+const NativeClipboard = {
+  startWatching(callback: () => void) {
+    callback()
+  },
+  getClipboardType() {
+    return [] as any
+  },
+  writeFilesToClipboard(..._args: any[]) {},
+  stopWatching() {}
+}
 console.log(NativeClipboard)
 
 // TODO 监听剪贴板变化，更新 Store，通知 View 更新
@@ -43,7 +53,7 @@ NativeClipboard.startWatching(() => {
   } else if (type === 'Text') {
     data.content = clipboard.readText()
   }
-  win?.webContents.send('clipboard-change', data)
+  // win?.webContents.send('clipboard-change', data)
 })
 
 // The built directory structure
