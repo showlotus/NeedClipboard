@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import { formatI18nJson } from '../src/i18n'
 
-describe('formatI18nJson', () => {
+describe('test formatI18nJson', () => {
   test('empty object', () => {
     expect(formatI18nJson({})).toEqual({})
   })
