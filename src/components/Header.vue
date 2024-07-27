@@ -1,19 +1,27 @@
 <template>
-  <div class="flex">
-    <el-input></el-input>
-    <el-select v-model="value" placeholder="Select" style="width: 240px">
-      <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
+  <div class="flex gap-4 drag">
+    <div class="flex-1 w-0 flex">
+      <custom-input
+        v-model="keyword"
+        autofocus
+        maxlength="10"
+        class="w-auto no-drag"
       />
-    </el-select>
+    </div>
+    <custom-select
+      ref="customSelectRef"
+      v-model="value"
+      :options="options"
+      placeholder="Select"
+      class="w-40 no-drag"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+
+const keyword = ref('')
 
 const value = ref('all')
 const options = [
@@ -42,10 +50,46 @@ const options = [
     label: 'Colors Only'
   }
 ]
+
+const zhOptions = [
+  {
+    value: 'all',
+    label: '所有类型'
+  },
+  {
+    value: 'text',
+    label: '仅文本'
+  },
+  {
+    value: 'image',
+    label: '仅图片'
+  },
+  {
+    value: 'file',
+    label: '仅文件'
+  },
+  {
+    value: 'link',
+    label: '仅链接'
+  },
+  {
+    value: 'color',
+    label: '仅颜色'
+  }
+]
+
+const customSelectRef = ref()
+
+// 禁用某些按键的默认行为
+document.addEventListener('keydown', (e) => {
+  console.log(e.key)
+  if (['Tab'].includes(e.key)) {
+    e.preventDefault()
+    return false
+  }
+})
+
+// TODO 绑定快捷键
 </script>
 
-<style>
-.el-popper__arrow {
-  display: none;
-}
-</style>
+<style></style>

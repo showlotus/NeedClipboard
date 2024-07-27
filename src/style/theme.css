@@ -1,0 +1,9 @@
+:root {
+  --el-color-primary: #333;
+  --el-border-color: #121212;
+  --el-border-color-hover: #121212;
+}
+
+html.dark {
+  --el-color-primary: white;
+}

@@ -18,7 +18,9 @@
   },
   "code-runner.executorMap": {
     "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
-    "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt -lpsapi -lgdi32 -luser32 && $dir$fileNameWithoutExt",
+    "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt -lpsapi -lgdi32 -luser32 && $dir$fileNameWithoutExt"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
   }
-
 }

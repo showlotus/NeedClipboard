@@ -1,0 +1,14 @@
+{
+  "NC.xx": {
+    "zh_CN": "xx",
+    "en_US": "xx"
+  },
+  "NC.yy": {
+    "zh_CN": "yy",
+    "en_US": "yy"
+  },
+  "NC.hello": {
+    "zh_CN": "你好 世界！",
+    "en_US": "hello world!"
+  }
+}

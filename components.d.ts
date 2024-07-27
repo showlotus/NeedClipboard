@@ -8,10 +8,11 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Copy: typeof import('./src/components/Copy.vue')['default']
+    CustomInput: typeof import('./src/components/CustomInput.vue')['default']
+    CustomSelect: typeof import('./src/components/CustomSelect.vue')['default']
     DataBase: typeof import('./src/components/DataBase.vue')['default']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElOption: typeof import('element-plus/es')['ElOption']
-    ElOptionGroup: typeof import('element-plus/es')['ElOptionGroup']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     Header: typeof import('./src/components/Header.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
