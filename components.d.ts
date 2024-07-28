@@ -22,4 +22,7 @@ declare module 'vue' {
     Shortcut: typeof import('./src/components/Shortcut.vue')['default']
     View: typeof import('./src/components/View.vue')['default']
   }
+  export interface ComponentCustomProperties {
+    vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
+  }
 }

@@ -4,8 +4,8 @@
       <custom-input
         v-model="keyword"
         autofocus
-        maxlength="10"
-        class="w-auto no-drag"
+        placeholder="please input something..."
+        class="no-drag"
       />
     </div>
     <custom-select
@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
-const keyword = ref('')
+const keyword = ref('xxxx')
 
 const value = ref('all')
 const options = [
@@ -51,7 +51,7 @@ const options = [
   }
 ]
 
-const zhOptions = [
+const options_zh = [
   {
     value: 'all',
     label: '所有类型'

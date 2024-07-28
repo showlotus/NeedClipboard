@@ -28,7 +28,7 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   options: () => []
 })
-const model = defineModel({ default: '' })
+const model = defineModel<string>({ default: '' })
 const attrs = useAttrs()
 
 const instance = getCurrentInstance()
@@ -38,6 +38,10 @@ console.log(instance)
 <style lang="scss">
 .el-select__wrapper.is-focused {
   box-shadow: 0 0 0 1px var(--el-border-color) inset;
+}
+
+.el-select__placeholder {
+  font-weight: 500;
 }
 
 .custom-select-popper {
@@ -52,7 +56,7 @@ console.log(instance)
   .el-select-dropdown__item {
     margin: 2px 8px;
     padding: 0 8px;
-    border-radius: 8px;
+    border-radius: 6px;
   }
 }
 </style>

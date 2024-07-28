@@ -2,23 +2,17 @@
 
 <template>
   <div class="w-full h-full flex flex-col">
-    <div class="drag p-4">
-      <Header />
-    </div>
-    <div class="w-full flex flex-1">
-      <div class="w-2/5 border-yellow-500 border">
-        <List />
-      </div>
+    <Header
+      class="drag pt-3 pb-3 pl-4 pr-4 border-b border-[--el-border-color]"
+    />
+    <div class="w-full flex flex-1 h-0">
+      <List class="w-2/5 h-full border-r border-[--el-border-color]" />
       <div class="flex-1 flex flex-col">
-        <div class="flex-1 border-cyan-500 border">
-          <View />
-        </div>
-        <div class="flex-1 border-purple-500 border">
-          <Info />
-        </div>
+        <View class="flex-1" />
+        <Info class="flex-1 border-t border-[--el-border-color]" />
       </div>
     </div>
-    <div class="h-16 border-pink-500 border">
+    <div class="h-14 border-t border-[--el-border-color]">
       <Setting />
     </div>
   </div>
