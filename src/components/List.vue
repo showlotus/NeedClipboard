@@ -30,6 +30,9 @@ import dayjs from 'dayjs'
 const activeId = ref()
 const previewId = ref()
 let id = 1
+
+// const
+
 const genMockData = (n: number, createDate = new Date()) => {
   return new Array(n).fill(0).map((v, i) => {
     return {
@@ -52,8 +55,18 @@ const genMockData = (n: number, createDate = new Date()) => {
  * Long Ago         很久以前
  */
 
-console.log(dayjs().format('YYYY/MM/DD HH:mm:ss'))
-console.log(dayjs().startOf('month').format('YYYY/MM/DD HH:mm:ss'))
+console.log('today', dayjs().format('YYYY/MM/DD HH:mm:ss'))
+console.log('yesterday', dayjs().set('day', 0).format('YYYY/MM/DD HH:mm:ss'))
+console.log('this week', dayjs().set('day', -1).format('YYYY/MM/DD HH:mm:ss'))
+console.log('last week', dayjs().format('YYYY/MM/DD HH:mm:ss'))
+console.log(
+  'this month',
+  dayjs().startOf('month').format('YYYY/MM/DD HH:mm:ss')
+)
+console.log('last month', dayjs('2024/06/01').format('YYYY/MM/DD HH:mm:ss'))
+console.log('this year', dayjs('2024/05/01').format('YYYY/MM/DD HH:mm:ss'))
+console.log('last year', dayjs('2023/07/29').format('YYYY/MM/DD HH:mm:ss'))
+console.log('long ago', dayjs('2022/07/29').format('YYYY/MM/DD HH:mm:ss'))
 
 const list = ref([
   {
