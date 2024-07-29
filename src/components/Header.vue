@@ -19,9 +19,10 @@
 </template>
 
 <script lang="ts" setup>
+import hotkeys from 'hotkeys-js'
 import { ref } from 'vue'
 
-const keyword = ref('xxxx')
+const keyword = ref('')
 
 const value = ref('all')
 const options = [
@@ -81,12 +82,9 @@ const options_zh = [
 const customSelectRef = ref()
 
 // 禁用某些按键的默认行为
-document.addEventListener('keydown', (e) => {
-  console.log(e.key)
-  if (['Tab'].includes(e.key)) {
-    e.preventDefault()
-    return false
-  }
+hotkeys('tab', (e) => {
+  e.preventDefault()
+  return false
 })
 
 // TODO 绑定快捷键

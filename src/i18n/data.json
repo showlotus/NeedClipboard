@@ -10,5 +10,42 @@
   "NC.hello": {
     "zh_CN": "你好 世界！",
     "en_US": "hello world!"
+  },
+
+  "NC.today": {
+    "zh_CN": "今天",
+    "en_US": "Today"
+  },
+  "NC.yesterday": {
+    "zh_CN": "昨天",
+    "en_US": "Yesterday"
+  },
+  "NC.thiWeek": {
+    "zh_CN": "本周",
+    "en_US": "This Week"
+  },
+  "NC.lastWeek": {
+    "zh_CN": "上周",
+    "en_US": "Last Week"
+  },
+  "NC.thisMonth": {
+    "zh_CN": "本月",
+    "en_US": "This Month"
+  },
+  "NC.lastMonth": {
+    "zh_CN": "上个月",
+    "en_US": "Last Month"
+  },
+  "NC.thisYear": {
+    "zh_CN": "本年",
+    "en_US": "This Year"
+  },
+  "NC.lastYear": {
+    "zh_CN": "去年",
+    "en_US": "Last Year"
+  },
+  "NC.longAgo": {
+    "zh_CN": "很久以前",
+    "en_US": "Long Ago"
   }
 }

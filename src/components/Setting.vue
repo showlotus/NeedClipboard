@@ -1,11 +1,11 @@
 <template>
-  <div>
-    Setting
+  <div class="flex items-center gap-2 select-none">
+    <div>logo</div>
 
-    <button class="bg-blue-500 p-2 rounded" @click="toggleLightTheme">
+    <button class="bg-blue-300 p-0.5 rounded" @click="toggleLightTheme">
       light
     </button>
-    <button class="bg-green-500 p-2 rounded" @click="toggleDarkTheme">
+    <button class="bg-green-300 p-0.5 rounded" @click="toggleDarkTheme">
       dark
     </button>
   </div>

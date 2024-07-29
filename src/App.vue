@@ -12,9 +12,9 @@
         <Info class="flex-1 border-t border-[--el-border-color]" />
       </div>
     </div>
-    <div class="h-14 border-t border-[--el-border-color]">
-      <Setting />
-    </div>
+    <Setting
+      class="h-10 pl-4 pr-4 pt-1 pb-1 border-t border-[--el-border-color]"
+    />
   </div>
 </template>
 

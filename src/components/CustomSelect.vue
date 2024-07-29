@@ -1,5 +1,6 @@
 <template>
   <el-select
+    ref="elSelectRef"
     v-model="model"
     v-bind="attrs"
     class="custom-select"
@@ -15,7 +16,8 @@
 </template>
 
 <script lang="ts" setup>
-import { getCurrentInstance, useAttrs } from 'vue'
+import { ref, useAttrs } from 'vue'
+import hotkeys from 'hotkeys-js'
 
 interface Option {
   label: string
@@ -31,8 +33,11 @@ withDefaults(defineProps<Props>(), {
 const model = defineModel<string>({ default: '' })
 const attrs = useAttrs()
 
-const instance = getCurrentInstance()
-console.log(instance)
+const elSelectRef = ref()
+hotkeys('ctrl+p', () => {
+  elSelectRef.value?.focus()
+  elSelectRef.value?.toggleMenu()
+})
 </script>
 
 <style lang="scss">
@@ -41,7 +46,7 @@ console.log(instance)
 }
 
 .el-select__placeholder {
-  font-weight: 500;
+  /* font-weight: 600; */
 }
 
 .custom-select-popper {
@@ -57,6 +62,7 @@ console.log(instance)
     margin: 2px 8px;
     padding: 0 8px;
     border-radius: 6px;
+    /* font-weight: 600; */
   }
 }
 </style>

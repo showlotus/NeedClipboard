@@ -3,7 +3,16 @@
 @tailwind utilities;
 
 :root {
-  /* font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
+  /* TODO 不同系统下字体选用 */
+  /* font-family:
+    ui-monospace,
+    SFMono-Regular,
+    SF Mono,
+    Menlo,
+    Consolas,
+    Liberation Mono,
+    monospace; */
+  font-family: Inter, system-ui, Avenir, 'consolas', Menlo;
   line-height: 1.5;
   font-weight: 400;
 

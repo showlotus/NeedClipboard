@@ -5,8 +5,7 @@
   --nc-item-color-active: #e0e0e0;
 
   --el-color-primary: #333;
-  /* --el-border-color: #c5c5c5; */
-  --el-border-color-hover: #c5c5c5;
+  --el-border-color-hover: var(--el-border-color);
   --el-fill-color-light: var(--nc-item-color-active);
   --el-text-color-regular: #333;
 }

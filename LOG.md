@@ -26,6 +26,14 @@ npm install --global --production windows-build-tools@4.0.0
 
 ## log
 
+### 07/29
+
+- 安装 `dayjs`、`hotkeys-js`
+
+  ```shell
+  pnpm add -D dayjs hotkeys-js
+  ```
+
 ### 07/28
 
 - 把界面布局整了整，tailwindcss 用的是越来越顺手了，以及两种主题的色调。

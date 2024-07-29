@@ -230,12 +230,12 @@ async function createWindow() {
       // Consider using contextBridge.exposeInMainWorld
       // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
       // contextIsolation: false,
-    },
+    }
     // transparent: true,
     // TODO publish 时需要隐藏标题栏
     // titleBarStyle: 'hidden',
     // 无边框窗口，隐藏标题和菜单栏
-    frame: false
+    // frame: false
     // 设置高斯模糊
     // TODO 会导致打开窗口时有闪烁问题
     // backgroundMaterial: 'mica' // mica acrylic
@@ -250,8 +250,8 @@ async function createWindow() {
   win.setMaximizable(false)
   // 禁用手动调整窗口大小
   win.setResizable(false)
-  // 不在任务栏中显示
-  win.setSkipTaskbar(true)
+  // TODO 不在任务栏中显示
+  // win.setSkipTaskbar(true)
 
   // TODO 窗口失焦时，隐藏窗口
   win.on('blur', () => {
