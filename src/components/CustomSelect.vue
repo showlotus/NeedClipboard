@@ -35,7 +35,11 @@ const attrs = useAttrs()
 
 const elSelectRef = ref()
 hotkeys('ctrl+p', () => {
-  elSelectRef.value?.focus()
+  if (!elSelectRef.value.expanded) {
+    elSelectRef.value?.focus()
+  } else {
+    elSelectRef.value?.blur()
+  }
   elSelectRef.value?.toggleMenu()
 })
 </script>

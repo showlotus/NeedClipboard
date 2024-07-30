@@ -64,7 +64,7 @@ hotkeys('/', (e) => {
   }
 
   :deep(.el-input__inner) {
-    font-weight: bold;
+    /* font-weight: bold; */
   }
 }
 </style>
