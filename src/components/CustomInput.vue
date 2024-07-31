@@ -25,31 +25,18 @@ const isFocus = ref(false)
 
 const handleFocus = () => {
   isFocus.value = true
-  // bindDocEvent('keydown', (e: Event) => {
-  //   if ([EVENT_CODE.up, EVENT_CODE.down].includes((e as KeyboardEvent).key)) {
-  //     // e.preventDefault()
-  //   }
-  // })
-  // hotkeys.unbind('/')
 }
 
 const handleBlur = () => {
   isFocus.value = false
-  // hotkeys('/')
 }
-
-// bindDocEvent('keydown', (e: Event) => {
-//   const key = (e as KeyboardEvent).key
-//   if (key === '/' && !isFocus.value) {
-//     elInputRef.value?.focus()
-//     e.preventDefault()
-//   }
-// })
 
 hotkeys('/', (e) => {
   if (!isFocus.value) {
-    e.preventDefault()
+    e?.preventDefault()
+    const length = model.value.length
     elInputRef.value?.focus()
+    elInputRef.value?.input.setSelectionRange(length, length)
   }
 })
 </script>

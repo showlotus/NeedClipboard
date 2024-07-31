@@ -5,7 +5,7 @@
         v-model="keyword"
         autofocus
         placeholder="please input something..."
-        class="no-drag"
+        class="no-drag min-w-80"
       />
     </div>
     <custom-select

@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, useAttrs } from 'vue'
+import { ref, useAttrs, watch } from 'vue'
 import hotkeys from 'hotkeys-js'
 
 interface Option {
@@ -34,12 +34,17 @@ const model = defineModel<string>({ default: '' })
 const attrs = useAttrs()
 
 const elSelectRef = ref()
-hotkeys('ctrl+p', () => {
-  if (!elSelectRef.value.expanded) {
-    elSelectRef.value?.focus()
-  } else {
-    elSelectRef.value?.blur()
+watch(
+  () => elSelectRef.value?.expanded,
+  (newVal) => {
+    if (!newVal) {
+      hotkeys.trigger('/')
+    }
   }
+)
+hotkeys.filter = () => true
+hotkeys('ctrl+p', () => {
+  elSelectRef.value?.focus()
   elSelectRef.value?.toggleMenu()
 })
 </script>

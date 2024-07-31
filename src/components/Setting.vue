@@ -20,7 +20,7 @@ const toggleDarkTheme = () => {
   document.querySelector('html')?.classList.add('dark')
   window.ipcRenderer.invoke('set-theme', 'dark')
 }
-// toggleDarkTheme()
+toggleDarkTheme()
 </script>
 
 <style scoped></style>

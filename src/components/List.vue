@@ -99,14 +99,14 @@ const getCurrItemEl = () => {
   ) as HTMLElement
 }
 hotkeys('up', (e) => {
+  e.preventDefault()
   previewId.value--
   getCurrItemEl().scrollIntoView({ behavior: 'smooth', block: 'center' })
-  e.preventDefault()
 })
 hotkeys('down', (e) => {
+  e.preventDefault()
   previewId.value++
   getCurrItemEl().scrollIntoView({ behavior: 'smooth', block: 'center' })
-  e.preventDefault()
 })
 hotkeys('enter', () => {})
 </script>

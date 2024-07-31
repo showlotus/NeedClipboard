@@ -223,13 +223,15 @@ async function createWindow() {
     height: 800,
     icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
-      preload
+      preload,
       // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
       // nodeIntegration: true,
 
       // Consider using contextBridge.exposeInMainWorld
       // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
       // contextIsolation: false,
+      // 禁用拼写检查
+      spellcheck: false
     }
     // transparent: true,
     // TODO publish 时需要隐藏标题栏

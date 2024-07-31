@@ -26,6 +26,10 @@ npm install --global --production windows-build-tools@4.0.0
 
 ## log
 
+### 07/31
+
+- 输入框自动聚焦，以及下拉菜单快捷键触发。
+
 ### 07/29
 
 - 安装 `dayjs`、`hotkeys-js`
