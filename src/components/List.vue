@@ -24,8 +24,11 @@
 
 <script lang="ts" setup>
 import { getCurrentInstance, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import hotkeys from 'hotkeys-js'
 import dayjs from 'dayjs'
+import { isToday } from '../utils/date'
+const { t } = useI18n()
 
 const activeId = ref()
 const previewId = ref()
@@ -55,18 +58,56 @@ const genMockData = (n: number, createDate = new Date()) => {
  * Long Ago         很久以前
  */
 
+const groupMap = {
+  'NC.today': {
+    match: isToday,
+    data: []
+  },
+  'NC.yesterday': [],
+  'NC.thiWeek': [],
+  'NC.lastWeek': [],
+  'NC.thisMonth': [],
+  'NC.lastMonth': [],
+  'NC.thisYear': [],
+  'NC.lastYear': [],
+  'NC.longAgo': []
+}
+
 console.log('today', dayjs().format('YYYY/MM/DD HH:mm:ss'))
-console.log('yesterday', dayjs().set('day', 0).format('YYYY/MM/DD HH:mm:ss'))
-console.log('this week', dayjs().set('day', -1).format('YYYY/MM/DD HH:mm:ss'))
-console.log('last week', dayjs().format('YYYY/MM/DD HH:mm:ss'))
+console.log('yesterday', dayjs().set('date', 0).format('YYYY/MM/DD HH:mm:ss'))
+console.log(
+  'this week',
+  dayjs()
+    .set('date', 2 - dayjs().get('day'))
+    .format('YYYY/MM/DD HH:mm:ss')
+)
+console.log(
+  'last week',
+  dayjs()
+    .set('date', 1 - dayjs().get('day'))
+    .format('YYYY/MM/DD HH:mm:ss')
+)
 console.log(
   'this month',
   dayjs().startOf('month').format('YYYY/MM/DD HH:mm:ss')
 )
-console.log('last month', dayjs('2024/06/01').format('YYYY/MM/DD HH:mm:ss'))
+console.log(
+  'last month',
+  dayjs().set('month', dayjs().get('date')).format('YYYY/MM/DD HH:mm:ss')
+)
 console.log('this year', dayjs('2024/05/01').format('YYYY/MM/DD HH:mm:ss'))
 console.log('last year', dayjs('2023/07/29').format('YYYY/MM/DD HH:mm:ss'))
 console.log('long ago', dayjs('2022/07/29').format('YYYY/MM/DD HH:mm:ss'))
+
+// console.log(dayjs().add(1, 'day'))
+// console.log(dayjs().subtract(1, 'day'))
+// console.log(dayjs().isSame('2024/08/01', 'date'))
+console.log(dayjs().subtract(dayjs().get('day') - 1, 'day'))
+console.log(dayjs().subtract(0, 'day'))
+console.log(dayjs().add(7 - dayjs().get('day'), 'day'))
+console.log(dayjs().isSame('2024/08/01 00:00:00', 'month'))
+// console.log(dayjs().startOf('week').format('YYYY/MM/DD HH:mm:ss'))
+// console.log(dayjs().endOf('week').format('YYYY/MM/DD HH:mm:ss'))
 
 const list = ref([
   {

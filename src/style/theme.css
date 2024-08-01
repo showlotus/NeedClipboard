@@ -1,5 +1,5 @@
 :root {
-  color: #333;
+  color: #212121;
   /* background-color: #f1f1f1; */
   --nc-item-color-hover: #eee;
   --nc-item-color-active: #e0e0e0;
@@ -7,7 +7,7 @@
   --el-color-primary: #333;
   --el-border-color-hover: var(--el-border-color);
   --el-fill-color-light: var(--nc-item-color-active);
-  --el-text-color-regular: #333;
+  --el-text-color-regular: #212121;
 }
 
 html.dark {

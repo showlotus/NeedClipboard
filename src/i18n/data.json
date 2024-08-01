@@ -20,8 +20,8 @@
     "zh_CN": "昨天",
     "en_US": "Yesterday"
   },
-  "NC.thiWeek": {
-    "zh_CN": "本周",
+  "NC.thisWeek": {
+    "zh_CN": "这周",
     "en_US": "This Week"
   },
   "NC.lastWeek": {
@@ -37,7 +37,7 @@
     "en_US": "Last Month"
   },
   "NC.thisYear": {
-    "zh_CN": "本年",
+    "zh_CN": "今年",
     "en_US": "This Year"
   },
   "NC.lastYear": {
