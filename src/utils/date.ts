@@ -45,17 +45,17 @@ export const isThisMonth: ValidateDate = (date) => {
 }
 
 export const isLastMonth: ValidateDate = (date) => {
-  return true
+  return dayjs().subtract(1, 'month').isSame(date, 'month')
 }
 
 export const isThisYear: ValidateDate = (date) => {
-  return true
+  return dayjs().isSame(date, 'year')
 }
 
 export const isLastYear: ValidateDate = (date) => {
-  return true
+  return dayjs().subtract(1, 'year').isSame(date, 'year')
 }
 
 export const isLongAgo: ValidateDate = (date) => {
-  return true
+  return dayjs(date).isBefore(dayjs().subtract(2, 'year').endOf('year'))
 }

@@ -1,19 +1,29 @@
 :root {
   color: #212121;
-  /* background-color: #f1f1f1; */
-  --nc-item-color-hover: #eee;
-  --nc-item-color-active: #e0e0e0;
+  background-color: #f1f1f1;
+  /* --nc-item-color-hover: #eee;
+  --nc-item-color-active: #e0e0e0; */
+  --nc-item-color-hover: #e5e5e5;
+  --nc-item-color-active: #d9d9d9;
+  --nc-group-label-color: #696969;
 
   --el-color-primary: #333;
+  --el-border-color: #dbdada;
   --el-border-color-hover: var(--el-border-color);
   --el-fill-color-light: var(--nc-item-color-active);
   --el-text-color-regular: #212121;
+  --el-border-color-light: var(--el-border-color);
+  --el-input-bg-color: #f1f1f1;
+  --el-fill-color-blank: #f1f1f1;
+  --el-bg-color-overlay: #e8e8e8;
 }
 
 html.dark {
   color: #f2f2f2;
+  background-color: unset;
   --nc-item-color-hover: #222;
   --nc-item-color-active: #333;
+  --nc-group-label-color: #9d9d9d;
 
   --el-color-primary: #f2f2f2;
   --el-border-color-hover: #4c4d4f;

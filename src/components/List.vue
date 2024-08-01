@@ -1,7 +1,11 @@
 <template>
   <el-scrollbar v-infinite-scroll="loadMore" class="overflow-y-auto pb-0">
     <div v-for="group in list" :key="group.label">
-      <div class="mt-4 ml-4 mb-2 text-xs">{{ group.label }}</div>
+      <div
+        class="mt-4 ml-4 mb-2 text-xs font-bold text-[--nc-group-label-color]"
+      >
+        {{ group.label }}
+      </div>
       <div
         v-for="item in group.data"
         :key="item.id"
@@ -23,28 +27,22 @@
 </template>
 
 <script lang="ts" setup>
-import { getCurrentInstance, ref } from 'vue'
+import { computed, getCurrentInstance, nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import hotkeys from 'hotkeys-js'
 import dayjs from 'dayjs'
-import { isToday } from '../utils/date'
+import {
+  isLastMonth,
+  isLastWeek,
+  isLastYear,
+  isLongAgo,
+  isThisMonth,
+  isThisWeek,
+  isThisYear,
+  isToday,
+  isYesterday
+} from '../utils/date'
 const { t } = useI18n()
-
-const activeId = ref()
-const previewId = ref()
-let id = 1
-
-// const
-
-const genMockData = (n: number, createDate = new Date()) => {
-  return new Array(n).fill(0).map((v, i) => {
-    return {
-      id: ++id,
-      desc: `${i}`.repeat(i + 1),
-      createDate
-    }
-  })
-}
 
 /**
  * Today            今天
@@ -58,75 +56,129 @@ const genMockData = (n: number, createDate = new Date()) => {
  * Long Ago         很久以前
  */
 
-const groupMap = {
-  'NC.today': {
-    match: isToday,
-    data: []
-  },
-  'NC.yesterday': [],
-  'NC.thiWeek': [],
-  'NC.lastWeek': [],
-  'NC.thisMonth': [],
-  'NC.lastMonth': [],
-  'NC.thisYear': [],
-  'NC.lastYear': [],
-  'NC.longAgo': []
+const groupMap = new Map([
+  [
+    'NC.today',
+    {
+      match: isToday,
+      data: []
+    }
+  ],
+  [
+    'NC.yesterday',
+    {
+      match: isYesterday,
+      data: []
+    }
+  ],
+  [
+    'NC.thisWeek',
+    {
+      match: isThisWeek,
+      data: []
+    }
+  ],
+  [
+    'NC.lastWeek',
+    {
+      match: isLastWeek,
+      data: []
+    }
+  ],
+  [
+    'NC.thisMonth',
+    {
+      match: isThisMonth,
+      data: []
+    }
+  ],
+  [
+    'NC.lastMonth',
+    {
+      match: isLastMonth,
+      data: []
+    }
+  ],
+  [
+    'NC.thisYear',
+    {
+      match: isThisYear,
+      data: []
+    }
+  ],
+  [
+    'NC.lastYear',
+    {
+      match: isLastYear,
+      data: []
+    }
+  ],
+  [
+    'NC.longAgo',
+    {
+      match: isLongAgo,
+      data: []
+    }
+  ]
+])
+
+const list = ref<any[]>([])
+const allList = ref<any[]>([])
+const activeIndex = ref(-1)
+const activeId = ref()
+const previewId = computed(() => {
+  if (activeIndex.value > -1) {
+    return allList.value[activeIndex.value].id
+  }
+  return null
+})
+
+const formatOriginData = (data: any[]) => {
+  data.sort((a, b) => (a.createDate < b.createDate ? 1 : -1))
+  data.forEach((v) => {
+    for (const { match, data } of groupMap.values()) {
+      if (match(v.createDate)) {
+        ;(data as any[]).push(v)
+        break
+      }
+    }
+  })
+
+  const res = [] as any[]
+  groupMap.forEach((val, key) => {
+    if (val.data.length) {
+      res.push({
+        label: t(key),
+        data: val.data
+      })
+      allList.value.push(...val.data)
+    }
+  })
+  console.log(res)
+  console.log(allList.value)
+  list.value = res
+  activeIndex.value = 0
+  activeId.value = allList.value[0].id
 }
 
-console.log('today', dayjs().format('YYYY/MM/DD HH:mm:ss'))
-console.log('yesterday', dayjs().set('date', 0).format('YYYY/MM/DD HH:mm:ss'))
-console.log(
-  'this week',
-  dayjs()
-    .set('date', 2 - dayjs().get('day'))
-    .format('YYYY/MM/DD HH:mm:ss')
-)
-console.log(
-  'last week',
-  dayjs()
-    .set('date', 1 - dayjs().get('day'))
-    .format('YYYY/MM/DD HH:mm:ss')
-)
-console.log(
-  'this month',
-  dayjs().startOf('month').format('YYYY/MM/DD HH:mm:ss')
-)
-console.log(
-  'last month',
-  dayjs().set('month', dayjs().get('date')).format('YYYY/MM/DD HH:mm:ss')
-)
-console.log('this year', dayjs('2024/05/01').format('YYYY/MM/DD HH:mm:ss'))
-console.log('last year', dayjs('2023/07/29').format('YYYY/MM/DD HH:mm:ss'))
-console.log('long ago', dayjs('2022/07/29').format('YYYY/MM/DD HH:mm:ss'))
+let id = 1
+const genMockData = (n: number) => {
+  return new Array(n).fill(0).map((v, i) => {
+    return {
+      id: ++id,
+      desc: btoa(`${i}`.repeat(i + 1)),
+      createDate: dayjs()
+        .subtract(Math.floor(Math.random() * 100), 'day')
+        .format('YYYY/MM/DD HH:mm:ss')
+    }
+  })
+}
+formatOriginData(genMockData(20))
 
-// console.log(dayjs().add(1, 'day'))
-// console.log(dayjs().subtract(1, 'day'))
-// console.log(dayjs().isSame('2024/08/01', 'date'))
-console.log(dayjs().subtract(dayjs().get('day') - 1, 'day'))
-console.log(dayjs().subtract(0, 'day'))
-console.log(dayjs().add(7 - dayjs().get('day'), 'day'))
-console.log(dayjs().isSame('2024/08/01 00:00:00', 'month'))
-// console.log(dayjs().startOf('week').format('YYYY/MM/DD HH:mm:ss'))
-// console.log(dayjs().endOf('week').format('YYYY/MM/DD HH:mm:ss'))
-
-const list = ref([
-  {
-    // label: 'Today',
-    label: '今天',
-    data: genMockData(10)
-  },
-  {
-    // label: 'Yesterday',
-    label: '昨天',
-    data: genMockData(4)
-  }
-])
 const handleClick = (id: number) => {
   activeId.value = id
-  previewId.value = id
-}
-const handleMouseenter = (id: number) => {
-  previewId.value = id
+  const idx = allList.value.findIndex((v) => v.id === id)
+  activeIndex.value = idx
 }
 
 const loadMore = () => {
@@ -141,15 +193,25 @@ const getCurrItemEl = () => {
 }
 hotkeys('up', (e) => {
   e.preventDefault()
-  previewId.value--
-  getCurrItemEl().scrollIntoView({ behavior: 'smooth', block: 'center' })
+  if (activeIndex.value === 0) {
+    return
+  }
+  activeIndex.value--
+  getCurrItemEl().scrollIntoView({ block: 'center' })
 })
 hotkeys('down', (e) => {
   e.preventDefault()
-  previewId.value++
-  getCurrItemEl().scrollIntoView({ behavior: 'smooth', block: 'center' })
+  if (activeIndex.value === allList.value.length - 1) {
+    return
+  }
+  activeIndex.value++
+  getCurrItemEl().scrollIntoView({ block: 'center' })
 })
-hotkeys('enter', () => {})
+hotkeys('enter', () => {
+  if (activeIndex.value > -1) {
+    activeId.value = allList.value[activeIndex.value].id
+  }
+})
 </script>
 
 <style scoped></style>

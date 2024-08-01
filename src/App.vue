@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { getCurrentInstance } from 'vue'
+
+getCurrentInstance()!.proxy!.$i18n.locale = 'en_US'
+</script>
 
 <template>
   <div class="w-full h-full flex flex-col">
