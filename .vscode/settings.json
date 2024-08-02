@@ -22,5 +22,6 @@
   },
   "editor.quickSuggestions": {
     "strings": "on"
-  }
+  },
+  "cSpell.words": ["mouseleave", "mousemove"]
 }

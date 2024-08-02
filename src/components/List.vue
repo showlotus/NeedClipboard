@@ -1,28 +1,30 @@
 <template>
-  <el-scrollbar v-infinite-scroll="loadMore" class="overflow-y-auto pb-0">
-    <div v-for="group in list" :key="group.label">
-      <div
-        class="mt-4 ml-4 mb-2 text-xs font-bold text-[--nc-group-label-color]"
-      >
-        {{ group.label }}
+  <el-scrollbar>
+    <div v-infinite-scroll="loadMore" :infinite-scroll-immediate="false">
+      <div v-for="group in list" :key="group.label">
+        <div
+          class="mt-4 ml-4 mb-2 text-xs font-bold text-[--nc-group-label-color]"
+        >
+          {{ group.label }}
+        </div>
+        <div
+          v-for="item in group.data"
+          :key="item.id"
+          :data-id="item.id"
+          class="mx-2.5 px-2 h-10 leading-10 rounded-md text-ellipsis overflow-hidden whitespace-nowrap select-none"
+          :class="{
+            'bg-[--nc-item-color-active]': activeId === item.id,
+            'bg-[--nc-item-color-hover]':
+              activeId !== item.id && previewId === item.id,
+            'hover:bg-[--nc-item-color-hover]': activeId !== item.id
+          }"
+          @click="handleClick(item.id)"
+        >
+          {{ item.desc }}
+        </div>
       </div>
-      <div
-        v-for="item in group.data"
-        :key="item.id"
-        :data-id="item.id"
-        class="ml-2 mr-2 pl-2 pr-2 h-10 leading-10 rounded-md text-ellipsis overflow-hidden whitespace-nowrap select-none"
-        :class="{
-          'bg-[--nc-item-color-active]': activeId === item.id,
-          'bg-[--nc-item-color-hover]':
-            activeId !== item.id && previewId === item.id,
-          'hover:bg-[--nc-item-color-hover]': activeId !== item.id
-        }"
-        @click="handleClick(item.id)"
-      >
-        {{ item.desc }}
-      </div>
+      <div class="mb-2"></div>
     </div>
-    <div class="mb-2"></div>
   </el-scrollbar>
 </template>
 
@@ -124,7 +126,7 @@ const groupMap = new Map([
 
 const list = ref<any[]>([])
 const allList = ref<any[]>([])
-const activeIndex = ref(-1)
+const activeIndex = ref(0)
 const activeId = ref()
 const previewId = computed(() => {
   if (activeIndex.value > -1) {
@@ -145,6 +147,9 @@ const formatOriginData = (data: any[]) => {
   })
 
   const res = [] as any[]
+  if (list.value.length) {
+    list.value[list.value.length - 1]
+  }
   groupMap.forEach((val, key) => {
     if (val.data.length) {
       res.push({
@@ -156,33 +161,86 @@ const formatOriginData = (data: any[]) => {
   })
   console.log(res)
   console.log(allList.value)
-  list.value = res
-  activeIndex.value = 0
+  list.value = list.value.concat(res)
+  console.log(list.value)
+  // 合并相同 label 下的 data
+  for (let i = list.value.length - 1; i >= 0; i--) {
+    const headIdx = list.value.findIndex((v) => v.label === list.value[i].label)
+    if (headIdx > -1 && headIdx !== i) {
+      list.value[headIdx].data.push(...list.value[i])
+      list.value.splice(i, 1)
+    }
+  }
   activeId.value = allList.value[0].id
+
+  // clear groupMap
+  groupMap.forEach((val) => {
+    val.data = []
+  })
 }
 
 let id = 1
-const genMockData = (n: number) => {
+const genMockData = (n: number, date?: string) => {
   return new Array(n).fill(0).map((v, i) => {
     return {
       id: ++id,
       desc: btoa(`${i}`.repeat(i + 1)),
-      createDate: dayjs()
-        .subtract(Math.floor(Math.random() * 100), 'day')
-        .format('YYYY/MM/DD HH:mm:ss')
+      createDate:
+        date ||
+        dayjs()
+          .subtract(Math.floor(Math.random() * 100), 'day')
+          .format('YYYY/MM/DD HH:mm:ss')
     }
   })
 }
-formatOriginData(genMockData(20))
+formatOriginData(genMockData(10))
+const loadMore = () => {
+  console.log('loadMore')
 
+  formatOriginData(genMockData(5, '2020/01/01 01:00:00'))
+}
+
+const throttle = (callback: (...args: any[]) => void, wait = 200) => {
+  let timer = null as any
+  return function (this: any, ...args: any[]) {
+    if (timer) {
+      return
+    }
+    timer = setTimeout(() => {
+      callback.apply(this, args)
+      clearTimeout(timer)
+      timer = null
+    }, wait)
+  }
+}
+
+const debounce = (callback: (...args: any[]) => void, wait = 200) => {
+  let timer = null as any
+  return function (this: any, ...args: any[]) {
+    if (timer) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      callback.apply(this, args)
+      clearTimeout(timer)
+      timer = null
+    }, wait)
+  }
+}
+
+const hideScrollbar = debounce(() => {
+  const el = instance?.proxy!.$el as HTMLDivElement
+  el.dispatchEvent(new Event('mouseleave'))
+}, 1000)
+const showScrollbar = throttle(() => {
+  const el = instance?.proxy!.$el as HTMLDivElement
+  el.dispatchEvent(new Event('mousemove'))
+  hideScrollbar()
+})
 const handleClick = (id: number) => {
   activeId.value = id
   const idx = allList.value.findIndex((v) => v.id === id)
   activeIndex.value = idx
-}
-
-const loadMore = () => {
-  console.log('loadMore')
 }
 
 const instance = getCurrentInstance()
@@ -192,6 +250,7 @@ const getCurrItemEl = () => {
   ) as HTMLElement
 }
 hotkeys('up', (e) => {
+  showScrollbar()
   e.preventDefault()
   if (activeIndex.value === 0) {
     return
@@ -200,6 +259,7 @@ hotkeys('up', (e) => {
   getCurrItemEl().scrollIntoView({ block: 'center' })
 })
 hotkeys('down', (e) => {
+  showScrollbar()
   e.preventDefault()
   if (activeIndex.value === allList.value.length - 1) {
     return
@@ -214,4 +274,4 @@ hotkeys('enter', () => {
 })
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

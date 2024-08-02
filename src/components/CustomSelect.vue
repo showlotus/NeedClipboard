@@ -5,6 +5,9 @@
     v-bind="attrs"
     class="custom-select"
     popper-class="custom-select-popper"
+    :popper-options="{
+      offset: 8
+    }"
   >
     <el-option
       v-for="item in options"

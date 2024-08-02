@@ -2,12 +2,12 @@
   <div class="flex items-center gap-2 select-none">
     <div>logo</div>
 
-    <button class="bg-blue-300 p-0.5 rounded" @click="toggleLightTheme">
+    <span class="bg-blue-300 p-0.5 rounded" @click="toggleLightTheme">
       light
-    </button>
-    <button class="bg-green-300 p-0.5 rounded" @click="toggleDarkTheme">
+    </span>
+    <span class="bg-green-300 p-0.5 rounded" @click="toggleDarkTheme">
       dark
-    </button>
+    </span>
   </div>
 </template>
 
