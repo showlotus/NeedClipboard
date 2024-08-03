@@ -12,12 +12,12 @@ import { getCurrentInstance } from 'vue'
     <div class="w-full flex flex-1 h-0">
       <List class="w-2/5 h-full border-r border-[--el-border-color] relative" />
       <div class="flex-1 flex flex-col">
-        <View class="flex-1" />
-        <Info class="flex-1 border-t border-[--el-border-color]" />
+        <View class="flex-1 h-0" />
+        <Info class="flex-1 h-0 border-t border-[--el-border-color]" />
       </div>
     </div>
     <Setting
-      class="h-10 pl-4 pr-4 pt-1 pb-1 border-t border-[--el-border-color]"
+      class="h-20 pl-4 pr-4 pt-1 pb-1 border-t border-[--el-border-color]"
     />
   </div>
 </template>

@@ -15,13 +15,16 @@ declare module 'vue' {
     ElOption: typeof import('element-plus/es')['ElOption']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']
+    FileView: typeof import('./src/components/view/FileView.vue')['default']
     Header: typeof import('./src/components/Header.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    ImageView: typeof import('./src/components/view/ImageView.vue')['default']
     Info: typeof import('./src/components/Info.vue')['default']
     List: typeof import('./src/components/List.vue')['default']
     Setting: typeof import('./src/components/Setting.vue')['default']
     Shortcut: typeof import('./src/components/Shortcut.vue')['default']
-    View: typeof import('./src/components/View.vue')['default']
+    TextView: typeof import('./src/components/view/TextView.vue')['default']
+    View: typeof import('./src/components/view/index.vue')['default']
   }
   export interface ComponentCustomProperties {
     vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']

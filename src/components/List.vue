@@ -14,8 +14,6 @@
           class="mx-2.5 px-2 h-10 leading-10 rounded-md text-ellipsis overflow-hidden whitespace-nowrap select-none"
           :class="{
             'bg-[--nc-item-color-active]': activeId === item.id,
-            'bg-[--nc-item-color-hover]':
-              activeId !== item.id && previewId === item.id,
             'hover:bg-[--nc-item-color-hover]': activeId !== item.id
           }"
           @click="handleClick(item.id)"
@@ -44,7 +42,12 @@ import {
   isToday,
   isYesterday
 } from '../utils/date'
+import { userRecordStore } from '@/stores/record'
+
 const { t } = useI18n()
+const record = userRecordStore()
+
+console.log(record)
 
 /**
  * Today            今天
@@ -127,7 +130,9 @@ const groupMap = new Map([
 const list = ref<any[]>([])
 const allList = ref<any[]>([])
 const activeIndex = ref(0)
-const activeId = ref()
+const activeId = computed(() => {
+  return allList.value[activeIndex.value]?.id
+})
 const previewId = computed(() => {
   if (activeIndex.value > -1) {
     return allList.value[activeIndex.value].id
@@ -136,6 +141,13 @@ const previewId = computed(() => {
 })
 
 const formatOriginData = (data: any[]) => {
+  // clear
+  list.value = []
+  allList.value = []
+  groupMap.forEach((val) => {
+    val.data = []
+  })
+
   data.sort((a, b) => (a.createDate < b.createDate ? 1 : -1))
   data.forEach((v) => {
     for (const { match, data } of groupMap.values()) {
@@ -147,57 +159,45 @@ const formatOriginData = (data: any[]) => {
   })
 
   const res = [] as any[]
-  if (list.value.length) {
-    list.value[list.value.length - 1]
-  }
+  const allRes = [] as any[]
   groupMap.forEach((val, key) => {
     if (val.data.length) {
       res.push({
         label: t(key),
         data: val.data
       })
-      allList.value.push(...val.data)
+      allRes.push(...val.data)
     }
   })
   console.log(res)
-  console.log(allList.value)
-  list.value = list.value.concat(res)
-  console.log(list.value)
-  // 合并相同 label 下的 data
-  for (let i = list.value.length - 1; i >= 0; i--) {
-    const headIdx = list.value.findIndex((v) => v.label === list.value[i].label)
-    if (headIdx > -1 && headIdx !== i) {
-      list.value[headIdx].data.push(...list.value[i])
-      list.value.splice(i, 1)
-    }
+  list.value = res
+  allList.value = allRes
+}
+
+const genMockData = (() => {
+  let id = 1
+  return (n: number, date?: string) => {
+    return new Array(n).fill(0).map((v, i) => {
+      return {
+        id: ++id,
+        desc: btoa(`${i}`.repeat(i + 1)),
+        createDate:
+          date ||
+          dayjs()
+            .subtract(Math.floor(Math.random() * 100), 'day')
+            .format('YYYY/MM/DD HH:mm:ss')
+      }
+    })
   }
-  activeId.value = allList.value[0].id
-
-  // clear groupMap
-  groupMap.forEach((val) => {
-    val.data = []
-  })
-}
-
-let id = 1
-const genMockData = (n: number, date?: string) => {
-  return new Array(n).fill(0).map((v, i) => {
-    return {
-      id: ++id,
-      desc: btoa(`${i}`.repeat(i + 1)),
-      createDate:
-        date ||
-        dayjs()
-          .subtract(Math.floor(Math.random() * 100), 'day')
-          .format('YYYY/MM/DD HH:mm:ss')
-    }
-  })
-}
+})()
 formatOriginData(genMockData(10))
+
 const loadMore = () => {
   console.log('loadMore')
+  const data = genMockData(5, '2020/01/01 01:00:00')
+  formatOriginData(allList.value.concat(data))
 
-  formatOriginData(genMockData(5, '2020/01/01 01:00:00'))
+  scrollIntoView()
 }
 
 const throttle = (callback: (...args: any[]) => void, wait = 200) => {
@@ -238,7 +238,7 @@ const showScrollbar = throttle(() => {
   hideScrollbar()
 })
 const handleClick = (id: number) => {
-  activeId.value = id
+  // activeId.value = id
   const idx = allList.value.findIndex((v) => v.id === id)
   activeIndex.value = idx
 }
@@ -249,6 +249,13 @@ const getCurrItemEl = () => {
     `div[data-id="${previewId.value}"]`
   ) as HTMLElement
 }
+const scrollIntoView = () => {
+  nextTick(() => {
+    getCurrItemEl().scrollIntoView({
+      block: 'center'
+    })
+  })
+}
 hotkeys('up', (e) => {
   showScrollbar()
   e.preventDefault()
@@ -256,7 +263,7 @@ hotkeys('up', (e) => {
     return
   }
   activeIndex.value--
-  getCurrItemEl().scrollIntoView({ block: 'center' })
+  scrollIntoView()
 })
 hotkeys('down', (e) => {
   showScrollbar()
@@ -265,12 +272,10 @@ hotkeys('down', (e) => {
     return
   }
   activeIndex.value++
-  getCurrItemEl().scrollIntoView({ block: 'center' })
+  scrollIntoView()
 })
 hotkeys('enter', () => {
-  if (activeIndex.value > -1) {
-    activeId.value = allList.value[activeIndex.value].id
-  }
+  console.log(allList.value[activeIndex.value])
 })
 </script>
 

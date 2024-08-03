@@ -6,6 +6,7 @@
   --nc-item-color-hover: #e5e5e5;
   --nc-item-color-active: #d9d9d9;
   --nc-group-label-color: #696969;
+  --nc-info-border-color: #ddd;
 
   --el-color-primary: #333;
   --el-border-color: #cbcbca;
@@ -27,6 +28,7 @@ html.dark {
   --nc-item-color-hover: #222;
   --nc-item-color-active: #333;
   --nc-group-label-color: #9d9d9d;
+  --nc-info-border-color: #2a2a2a;
 
   --el-color-primary: #f2f2f2;
   --el-border-color-hover: #4c4d4f;

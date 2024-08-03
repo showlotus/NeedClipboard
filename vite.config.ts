@@ -5,6 +5,8 @@ import electron from 'vite-plugin-electron/simple'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import svgLoader from 'vite-svg-loader'
+import { resolve } from 'path'
 import pkg from './package.json'
 
 // https://vitejs.dev/config/
@@ -16,8 +18,14 @@ export default defineConfig(({ command }) => {
   const sourcemap = isServe || !!process.env.VSCODE_DEBUG
 
   return {
+    resolve: {
+      alias: {
+        '@': resolve(__dirname, 'src')
+      }
+    },
     plugins: [
       vue(),
+      svgLoader(),
       AutoImport({
         resolvers: [ElementPlusResolver()]
       }),
