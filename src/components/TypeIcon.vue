@@ -1,17 +1,17 @@
 <template>
-  <component :is="dynamicSvg" class="w-5 h-5" />
+  <component :is="dynamicSvg" class="w-6 h-6 p-0.5" />
 </template>
 
 <script lang="ts" setup>
-import TextSvg from '@/assets/icons/Text.svg?component'
-import ImageSvg from '@/assets/icons/Image.svg?component'
-import LinkSvg from '@/assets/icons/Link.svg?component'
-import FileSvg from '@/assets/icons/File.svg?component'
-import FolderListSvg from '@/assets/icons/Folder-List.svg?component'
-import FolderSvg from '@/assets/icons/Folder.svg?component'
+import TextSvg from '@/assets/icons/text.svg?component'
+import ImageSvg from '@/assets/icons/image.svg?component'
+import LinkSvg from '@/assets/icons/link.svg?component'
+import FileSvg from '@/assets/icons/file.svg?component'
+import FolderFileSvg from '@/assets/icons/folder-file.svg?component'
+import FolderSvg from '@/assets/icons/folder.svg?component'
 import { computed } from 'vue'
 
-type Type = 'Text' | 'Image' | 'Link' | 'File' | 'FileList' | 'Folder'
+type Type = 'Text' | 'Image' | 'Link' | 'File' | 'FolderFile' | 'Folder'
 
 interface Props {
   type: Type
@@ -28,8 +28,8 @@ const dynamicSvg = computed(() => {
     return LinkSvg
   } else if (props.type === 'File') {
     return FileSvg
-  } else if (props.type === 'FileList') {
-    return FolderListSvg
+  } else if (props.type === 'FolderFile') {
+    return FolderFileSvg
   } else if (props.type === 'Folder') {
     return FolderSvg
   }

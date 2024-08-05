@@ -178,7 +178,7 @@ const formatOriginData = (data: any[]) => {
 
 const genMockData = (() => {
   let id = 1
-  const types = ['Text', 'Image', 'Link', 'File', 'FileList', 'Folder']
+  const types = ['Text', 'Image', 'Link', 'File', 'FolderFile', 'Folder']
   return (n: number, date?: string) => {
     return new Array(n).fill(0).map((v, i) => {
       return {
