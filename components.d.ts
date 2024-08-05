@@ -24,6 +24,7 @@ declare module 'vue' {
     Setting: typeof import('./src/components/Setting.vue')['default']
     Shortcut: typeof import('./src/components/Shortcut.vue')['default']
     TextView: typeof import('./src/components/view/TextView.vue')['default']
+    TypeIcon: typeof import('./src/components/TypeIcon.vue')['default']
     View: typeof import('./src/components/view/index.vue')['default']
   }
   export interface ComponentCustomProperties {

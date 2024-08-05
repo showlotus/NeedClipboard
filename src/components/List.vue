@@ -11,13 +11,14 @@
           v-for="item in group.data"
           :key="item.id"
           :data-id="item.id"
-          class="mx-2.5 px-2 h-10 leading-10 rounded-md text-ellipsis overflow-hidden whitespace-nowrap select-none"
+          class="mx-2.5 px-2 h-10 leading-10 rounded-md text-ellipsis overflow-hidden whitespace-nowrap select-none flex items-center gap-4"
           :class="{
             'bg-[--nc-item-color-active]': activeId === item.id,
             'hover:bg-[--nc-item-color-hover]': activeId !== item.id
           }"
           @click="handleClick(item.id)"
         >
+          <TypeIcon :type="item.type" />
           {{ item.desc }}
         </div>
       </div>
@@ -43,6 +44,7 @@ import {
   isYesterday
 } from '../utils/date'
 import { userRecordStore } from '@/stores/record'
+import TypeIcon from './TypeIcon.vue'
 
 const { t } = useI18n()
 const record = userRecordStore()
@@ -176,11 +178,13 @@ const formatOriginData = (data: any[]) => {
 
 const genMockData = (() => {
   let id = 1
+  const types = ['Text', 'Image', 'Link', 'File', 'FileList', 'Folder']
   return (n: number, date?: string) => {
     return new Array(n).fill(0).map((v, i) => {
       return {
         id: ++id,
         desc: btoa(`${i}`.repeat(i + 1)),
+        type: types[i % 6],
         createDate:
           date ||
           dayjs()
