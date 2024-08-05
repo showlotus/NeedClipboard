@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full w-full py-2 flex justify-center items-center">
+  <div class="h-full w-full flex justify-center items-center">
     <img :src="url" alt="" class="h-full" />
   </div>
 </template>
