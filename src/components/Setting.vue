@@ -1,6 +1,14 @@
 <template>
   <div class="flex justify-between items-center gap-2 select-none">
-    <div>logo</div>
+    <!-- logo -->
+    <div
+      class="py-1 px-1 flex items-center gap-2 rounded hover:bg-[--nc-item-color-hover]"
+    >
+      <span class="w-5 h-5 inline-block rounded bg-[crimson]"></span>
+      <span class="pr-1 text-sm text-[--nc-group-label-color]"
+        >Need Clipboard</span
+      >
+    </div>
 
     <CodeBlock value="light" @click="toggleLightTheme" />
     <CodeBlock value="dark" @click="toggleDarkTheme" />

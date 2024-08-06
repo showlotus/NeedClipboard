@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center w-5 h-5">
+  <div class="flex justify-center items-center w-6 h-6">
     <component :is="dynamicSvg" />
   </div>
 </template>
@@ -35,7 +35,7 @@ const dynamicSvg = computed(() => {
   } else if (props.type === 'FolderFile') {
     return h(FolderFileSvg, { class: 'w-5' })
   }
-  return {}
+  return h('span')
 })
 </script>
 

@@ -3,5 +3,5 @@
 			Created with Pixso.
 	</desc>
 	<defs/>
-	<path id="Folder-List" d="M80 480L480 480L480 240L400 240L260 240L200 160L160 160L80 160L80 480ZM160 160L160 80L320 80L400 160L400 240M400 160L320 160L320 80" stroke="currentColor" stroke-opacity="1.000000" stroke-width="30.000000" stroke-linejoin="round"/>
+	<path id="Folder-List" d="M80 480L480 480L480 240L400 240L260 240L200 160L160 160L80 160L80 480ZM160 160L160 80L320 80L400 160L400 240M400 160L320 160L320 80" stroke="currentColor" stroke-opacity="1.000000" stroke-width="30" stroke-linejoin="round"/>
 </svg>
