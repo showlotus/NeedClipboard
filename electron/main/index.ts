@@ -181,7 +181,7 @@ ipcMain.handle('register-all-shortcut', (_event) => {
 
 // 注册快捷键
 function registerShortcut() {
-  registerEsc()
+  // registerEsc()
   const key = SettingsStore.get('shortcutKey')
   console.log('registerShortcut', key)
   // 注册快捷键激活/隐藏窗口
@@ -379,7 +379,7 @@ async function createWindow() {
   registerShortcut()
   win.on('show', () => {
     win.webContents.send('render')
-    registerEsc()
+    // registerEsc()
   })
   win.on('hide', () => {
     if (globalShortcut.isRegistered('Esc')) {

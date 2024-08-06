@@ -7,6 +7,10 @@
   --nc-item-color-active: #d9d9d9;
   --nc-group-label-color: #696969;
   --nc-info-border-color: #ddd;
+  --nc-code-font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+  --nc-code-bg-color: var(--nc-item-color-active);
+  --nc-code-bg-active-color: #d0d0d0;
+  --nc-code-color: #656565;
 
   --el-color-primary: #333;
   --el-border-color: #cbcbca;
@@ -29,6 +33,8 @@ html.dark {
   --nc-item-color-active: #333;
   --nc-group-label-color: #9d9d9d;
   --nc-info-border-color: #2a2a2a;
+  --nc-code-bg-active-color: #3f3f3f;
+  --nc-code-color: #a4a4a4;
 
   --el-color-primary: #f2f2f2;
   --el-border-color-hover: #4c4d4f;

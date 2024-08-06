@@ -16,9 +16,7 @@ import { getCurrentInstance } from 'vue'
         <Info class="flex-1 h-0 border-t border-[--el-border-color]" />
       </div>
     </div>
-    <Setting
-      class="h-20 pl-4 pr-4 pt-1 pb-1 border-t border-[--el-border-color]"
-    />
+    <Setting class="h-10 px-2 py-1 border-t border-[--el-border-color]" />
   </div>
 </template>
 

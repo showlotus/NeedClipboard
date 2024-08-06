@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    CodeBlock: typeof import('./src/components/CodeBlock.vue')['default']
     Copy: typeof import('./src/components/Copy.vue')['default']
     CustomInput: typeof import('./src/components/CustomInput.vue')['default']
     CustomSelect: typeof import('./src/components/CustomSelect.vue')['default']
