@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center items-center w-5 h-5">
-    <component :is="dynamicSvg" class="w-4 h-4" />
+    <component :is="dynamicSvg" />
   </div>
 </template>
 
@@ -23,17 +23,17 @@ const props = defineProps<Props>()
 
 const dynamicSvg = computed(() => {
   if (props.type === 'Text') {
-    return TextSvg
+    return h(TextSvg, { class: 'w-[19px]' })
   } else if (props.type === 'Image') {
-    return ImageSvg
+    return h(ImageSvg, { class: 'w-[19px]' })
   } else if (props.type === 'Link') {
-    return LinkSvg
+    return h(LinkSvg, { class: 'w-[19px]' })
   } else if (props.type === 'File') {
-    return FileSvg
+    return h(FileSvg, { class: 'w-[17px]' })
   } else if (props.type === 'Folder') {
-    return FolderSvg
+    return h(FolderSvg, { class: 'w-5' })
   } else if (props.type === 'FolderFile') {
-    return FolderFileSvg
+    return h(FolderFileSvg, { class: 'w-5' })
   }
   return {}
 })

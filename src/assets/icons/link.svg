@@ -1,7 +1,7 @@
-<svg viewBox="0 0 430 350" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg viewBox="0 0 560 560" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<desc>
 			Created with Pixso.
 	</desc>
 	<defs/>
-	<path id="Link" d="M95 335L15 335L15 15L255 15L255 175M335 15L415 15L415 335L175 335L175 175" stroke="currentColor" stroke-opacity="1.000000" stroke-width="30.000000" stroke-linejoin="round" stroke-linecap="round"/>
+	<path id="Link" d="M160 440L80 440L80 120L320 120L320 280M400 120L480 120L480 440L240 440L240 280" stroke="currentColor" stroke-opacity="1.000000" stroke-width="30.000000" stroke-linejoin="round" stroke-linecap="round"/>
 </svg>
