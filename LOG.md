@@ -12,6 +12,8 @@
 > - Node Addon Api: https://github.com/nodejs/node-addon-api/blob/main/doc/README.md
 > - 微软剪贴板 Api: https://learn.microsoft.com/zh-cn/windows/win32/dataxchg/clipboard
 
+> - [如何更新](https://www.electronjs.org/zh/docs/latest/tutorial/%E6%8E%A8%E9%80%81%E6%9B%B4%E6%96%B0%E6%95%99%E7%A8%8B)
+
 ```shell
 npm install --global --production windows-build-tools@4.0.0
 ```
@@ -25,6 +27,12 @@ npm install --global --production windows-build-tools@4.0.0
 ### 如何展示剪贴版中的内容
 
 ## log
+
+### 08/07
+
+- 改了改配色，加上了设置面板，用一个自底向上的抽屉组件来实现。设置面板打开的时候，需要禁用全局快捷键，以及通过 `ESC` 键进行一些快捷操作时，还要选择合适的时机去关闭整个剪贴板，得想想怎么实现比较好，感觉通过一个栈去记录当前的浮层，应该可以实现。
+- 切换到系统主题后，修改当前系统主题也会同步更改剪贴板的主题色。
+- 设置之间的联动，通过在设置面板里修改主题，同步更改整个应用的主题，而且在系统托盘里也能修改。在想需不需要支持在配置文件中修改主题后，也能实现同步？
 
 ### 08/06
 

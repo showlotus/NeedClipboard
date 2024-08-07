@@ -23,13 +23,13 @@ const props = defineProps<Props>()
 
 const dynamicSvg = computed(() => {
   if (props.type === 'Text') {
-    return h(TextSvg, { class: 'w-[19px]' })
+    return h(TextSvg, { class: 'w-5' })
   } else if (props.type === 'Image') {
-    return h(ImageSvg, { class: 'w-[19px]' })
+    return h(ImageSvg, { class: 'w-[22px]' })
   } else if (props.type === 'Link') {
-    return h(LinkSvg, { class: 'w-[19px]' })
+    return h(LinkSvg, { class: 'w-5' })
   } else if (props.type === 'File') {
-    return h(FileSvg, { class: 'w-[17px]' })
+    return h(FileSvg, { class: 'h-[18px]' })
   } else if (props.type === 'Folder') {
     return h(FolderSvg, { class: 'w-5' })
   } else if (props.type === 'FolderFile') {

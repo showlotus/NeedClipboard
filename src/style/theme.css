@@ -3,13 +3,14 @@
   /* --nc-item-color-hover: #eee;
   --nc-item-color-active: #e0e0e0; */
   --nc-bg-color: #f1f1f1;
-  --nc-item-color-hover: #e5e5e5;
-  --nc-item-color-active: #d9d9d9;
+  --nc-bg-color: #fff;
+  --nc-item-color-hover: #f3f3f3;
+  --nc-item-color-active: #e7e7e7;
   --nc-group-label-color: #696969;
   --nc-info-border-color: #ddd;
   --nc-code-font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
   --nc-code-bg-color: var(--nc-item-color-active);
-  --nc-code-bg-active-color: #d0d0d0;
+  --nc-code-bg-active-color: #e1e1e1;
   --nc-code-color: #656565;
 
   --el-color-primary: #333;
@@ -20,15 +21,16 @@
   --el-border-color-light: var(--el-border-color);
   --el-input-bg-color: var(--nc-bg-color);
   --el-fill-color-blank: var(--nc-bg-color);
-  --el-bg-color-overlay: #e8e8e8;
+  --el-bg-color-overlay: var(--nc-bg-color);
+  /* --el-bg-color-overlay: #e8e8e8; */
 
   color: var(--el-text-color-regular);
   background-color: var(--nc-bg-color);
 }
 
 html.dark {
-  color: #f2f2f2;
-  background-color: unset;
+  /* color: #f2f2f2; */
+  --nc-bg-color: #121212;
   --nc-item-color-hover: #222;
   --nc-item-color-active: #333;
   --nc-group-label-color: #9d9d9d;
@@ -38,6 +40,7 @@ html.dark {
 
   --el-color-primary: #f2f2f2;
   --el-border-color-hover: #4c4d4f;
+  --el-bg-color-overlay: var(--nc-bg-color);
   --el-fill-color-light: var(--nc-item-color-active);
   --el-text-color-regular: #f2f2f2;
 }

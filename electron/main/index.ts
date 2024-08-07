@@ -116,9 +116,16 @@ const SettingsStore = new ElectronStore({
 if (!SettingsStore.get('shortcutKey')) {
   SettingsStore.set('shortcutKey', 'Alt+C')
 }
+if (!SettingsStore.get('theme')) {
+  SettingsStore.set('theme', 'system')
+}
 
 SettingsStore.onDidChange('shortcutKey', (newVal, oldVal) => {
   console.log('shortcutKey changed', newVal, oldVal)
+})
+SettingsStore.onDidChange('theme', (newVal, oldVal) => {
+  // nativeTheme.themeSource = newVal
+  console.log('theme changed', newVal, oldVal)
 })
 
 const RecordStore = new ElectronStore({
@@ -295,7 +302,18 @@ async function createWindow() {
     updateLanguage(language)
   })
   ipcMain.handle('set-theme', (_event, theme) => {
+    SettingsStore.set('theme', theme)
     nativeTheme.themeSource = theme
+  })
+  ipcMain.handle('get-theme', (_event) => {
+    const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
+    return Promise.resolve(theme)
+  })
+  nativeTheme.themeSource = SettingsStore.get('theme')
+  win.webContents.send('update-theme', SettingsStore.get('theme'))
+  // 系统主题切换时，通知渲染进程更新视图
+  nativeTheme.on('updated', () => {
+    win.webContents.send('update-theme', SettingsStore.get('theme'))
   })
 
   // TODO 创建系统托盘
@@ -343,6 +361,7 @@ async function createWindow() {
       checked: true,
       click() {
         nativeTheme.themeSource = 'system'
+        SettingsStore.set('theme', 'system')
         console.log('Theme choose System preference')
       }
     },
@@ -352,6 +371,7 @@ async function createWindow() {
       type: 'radio',
       click() {
         nativeTheme.themeSource = 'light'
+        SettingsStore.set('theme', 'light')
         console.log('Theme choose Light')
       }
     },
@@ -361,10 +381,19 @@ async function createWindow() {
       type: 'radio',
       click() {
         nativeTheme.themeSource = 'dark'
+        SettingsStore.set('theme', 'dark')
         console.log('Theme choose Dark')
       }
     },
     { label: '', type: 'separator' },
+    {
+      label: '检查更新',
+      type: 'normal',
+      click() {
+        // TODO 检查更新
+        console.log('检查更新')
+      }
+    },
     {
       label: '退出',
       type: 'normal',

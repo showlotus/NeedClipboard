@@ -28,8 +28,6 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const keys = computed(() => props.value.split(','))
-
-console.log(props)
 </script>
 
 <style scoped></style>
