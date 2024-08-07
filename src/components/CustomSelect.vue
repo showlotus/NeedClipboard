@@ -41,12 +41,12 @@ watch(
   () => elSelectRef.value?.expanded,
   (newVal) => {
     if (!newVal) {
-      hotkeys.trigger('/')
+      hotkeys.trigger('/', 'home')
     }
   }
 )
 hotkeys.filter = () => true
-hotkeys('ctrl+p', () => {
+hotkeys('ctrl+p', 'home', () => {
   elSelectRef.value?.focus()
   elSelectRef.value?.toggleMenu()
 })

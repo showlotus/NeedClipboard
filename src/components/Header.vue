@@ -81,7 +81,7 @@ const options_zh = [
 
 const customSelectRef = ref()
 
-// 禁用某些按键的默认行为
+// 全局禁用某些按键的默认行为
 hotkeys('tab', (e) => {
   e.preventDefault()
   return false

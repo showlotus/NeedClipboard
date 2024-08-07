@@ -35,6 +35,8 @@
 import { useDarkTheme, useLightTheme, useSystemTheme } from '@/utils/theme'
 import { nextTick, ref, watch } from 'vue'
 
+type Theme = 'system' | 'light' | 'dark'
+
 const value = defineModel<boolean>({ default: false })
 
 const toggleLightTheme = () => {
@@ -46,7 +48,7 @@ const toggleDarkTheme = () => {
   window.ipcRenderer.invoke('set-theme', 'dark')
 }
 
-const setting = ref({
+const setting = ref<{ theme: Theme; region: string; type: string }>({
   theme: 'system',
   region: '',
   type: ''

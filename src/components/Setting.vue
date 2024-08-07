@@ -33,19 +33,37 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import hotkeys from 'hotkeys-js'
+import { ref, watch } from 'vue'
 
 const handlePastToClipboard = () => {
-  console.log('Past to Clipboard')
+  hotkeys.trigger('enter', 'home')
 }
 const handlePastToApp = () => {
-  console.log('Past to App')
+  hotkeys.trigger('ctrl+enter', 'home')
 }
 
 const settingVisible = ref(false)
 const handleToggleSettingPanel = () => {
   settingVisible.value = !settingVisible.value
 }
+
+hotkeys('ctrl+s', () => {
+  handleToggleSettingPanel()
+})
+
+watch(
+  settingVisible,
+  (val) => {
+    if (val) {
+      hotkeys.setScope('all')
+    } else {
+      hotkeys.setScope('home')
+      hotkeys.trigger('/', 'home')
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style scoped></style>

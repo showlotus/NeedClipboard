@@ -260,7 +260,7 @@ const scrollIntoView = () => {
     })
   })
 }
-hotkeys('up', (e) => {
+hotkeys('up', 'home', (e) => {
   showScrollbar()
   e.preventDefault()
   if (activeIndex.value === 0) {
@@ -269,7 +269,7 @@ hotkeys('up', (e) => {
   activeIndex.value--
   scrollIntoView()
 })
-hotkeys('down', (e) => {
+hotkeys('down', 'home', (e) => {
   showScrollbar()
   e.preventDefault()
   if (activeIndex.value === allList.value.length - 1) {
@@ -278,8 +278,11 @@ hotkeys('down', (e) => {
   activeIndex.value++
   scrollIntoView()
 })
-hotkeys('enter', () => {
-  console.log(allList.value[activeIndex.value])
+hotkeys('enter', 'home', () => {
+  console.log('Past to Clipboard', allList.value[activeIndex.value])
+})
+hotkeys('ctrl+enter', 'home', () => {
+  console.log('Past to Action App', allList.value[activeIndex.value])
 })
 </script>
 

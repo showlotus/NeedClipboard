@@ -31,7 +31,7 @@ const handleBlur = () => {
   isFocus.value = false
 }
 
-hotkeys('/', (e) => {
+hotkeys('/', 'home', (e) => {
   if (!isFocus.value) {
     e?.preventDefault()
     const length = model.value.length
