@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
 import hotkeys from 'hotkeys-js'
-import { ref } from 'vue'
+import { ref, watch, computed } from 'vue'
 
 const keyword = ref('')
 
@@ -80,14 +80,30 @@ const options_zh = [
 ]
 
 const customSelectRef = ref()
+const elSelectRef = computed(() => {
+  return customSelectRef.value?.elSelectRef
+})
+
+watch(
+  () => elSelectRef.value?.expanded,
+  (newVal) => {
+    if (!newVal) {
+      hotkeys.trigger('/', 'home')
+    }
+  }
+)
+hotkeys.filter = () => true
+hotkeys('ctrl+p', 'home', () => {
+  console.log(elSelectRef)
+  elSelectRef.value?.focus()
+  elSelectRef.value?.toggleMenu()
+})
 
 // 全局禁用某些按键的默认行为
 hotkeys('tab', (e) => {
   e.preventDefault()
   return false
 })
-
-// TODO 绑定快捷键
 </script>
 
 <style></style>

@@ -5,9 +5,6 @@
     v-bind="attrs"
     class="custom-select"
     popper-class="custom-select-popper"
-    :popper-options="{
-      offset: 8
-    }"
   >
     <el-option
       v-for="item in options"
@@ -19,12 +16,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, useAttrs, watch } from 'vue'
-import hotkeys from 'hotkeys-js'
+import { ref, useAttrs } from 'vue'
 
 interface Option {
   label: string
-  value: string
+  value: string | number
 }
 interface Props {
   options: Option[]
@@ -33,22 +29,13 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   options: () => []
 })
-const model = defineModel<string>({ default: '' })
+const model = defineModel<string | number>({ default: '' })
 const attrs = useAttrs()
 
 const elSelectRef = ref()
-watch(
-  () => elSelectRef.value?.expanded,
-  (newVal) => {
-    if (!newVal) {
-      hotkeys.trigger('/', 'home')
-    }
-  }
-)
-hotkeys.filter = () => true
-hotkeys('ctrl+p', 'home', () => {
-  elSelectRef.value?.focus()
-  elSelectRef.value?.toggleMenu()
+
+defineExpose({
+  elSelectRef
 })
 </script>
 

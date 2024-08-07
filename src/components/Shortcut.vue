@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col border p-4 mt-4">
+  <div class="flex flex-col">
     先按所需的组合键，再按 Enter 键。
     <input
       class="border-cyan-300 border-2 p-2 text-center"

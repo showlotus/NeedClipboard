@@ -43,4 +43,8 @@ html.dark {
   --el-bg-color-overlay: var(--nc-bg-color);
   --el-fill-color-light: var(--nc-item-color-active);
   --el-text-color-regular: #f2f2f2;
+
+  .el-switch__core .el-switch__action {
+    background-color: var(--nc-bg-color);
+  }
 }
