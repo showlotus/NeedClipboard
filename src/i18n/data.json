@@ -1,17 +1,4 @@
 {
-  "NC.xx": {
-    "zh_CN": "xx",
-    "en_US": "xx"
-  },
-  "NC.yy": {
-    "zh_CN": "yy",
-    "en_US": "yy"
-  },
-  "NC.hello": {
-    "zh_CN": "你好 世界！",
-    "en_US": "hello world!"
-  },
-
   "NC.today": {
     "zh_CN": "今天",
     "en_US": "Today"
@@ -47,5 +34,71 @@
   "NC.longAgo": {
     "zh_CN": "很久以前",
     "en_US": "Long Ago"
+  },
+
+  "NC.startup": {
+    "zh_CN": "开机启动",
+    "en_US": "Startup"
+  },
+  "NC.themeMode": {
+    "zh_CN": "主题模式",
+    "en_US": "Theme Mode"
+  },
+  "NC.language": {
+    "zh_CN": "语言",
+    "en_US": "Language"
+  },
+  "NC.keepHistoryFor": {
+    "zh_CN": "保留历史记录",
+    "en_US": "Keep History For"
+  },
+  "NC.activateHotkey": {
+    "zh_CN": "激活热键",
+    "en_US": "Activate HotKey"
+  },
+
+  "NC.english": {
+    "zh_CN": "英文",
+    "en_US": "English"
+  },
+  "NC.chinese": {
+    "zh_CN": "中文",
+    "en_US": "Chinese"
+  },
+  "NC.system": {
+    "zh_CN": "跟随系统",
+    "en_US": "System"
+  },
+  "NC.light": {
+    "zh_CN": "浅色",
+    "en_US": "Light"
+  },
+  "NC.dark": {
+    "zh_CN": "深色",
+    "en_US": "Dark"
+  },
+  "NC.sevenDays": {
+    "zh_CN": "7 天",
+    "en_US": "7 Days"
+  },
+  "NC.thirtyDays": {
+    "zh_CN": "30 天",
+    "en_US": "30 Days"
+  },
+  "NC.threeMonths": {
+    "zh_CN": "3 个月",
+    "en_US": "3 Months"
+  },
+  "NC.sixMonths": {
+    "zh_CN": "6 个月",
+    "en_US": "6 Months"
+  },
+  "NC.oneYear": {
+    "zh_CN": "1 年",
+    "en_US": "1 Year"
+  },
+  "NC.unlimited": {
+    "zh_CN": "无限制",
+    "en_US": "Unlimited"
   }
 }

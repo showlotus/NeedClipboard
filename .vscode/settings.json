@@ -23,5 +23,5 @@
   "editor.quickSuggestions": {
     "strings": "on"
   },
-  "cSpell.words": ["mouseleave", "mousemove"]
+  "cSpell.words": ["mouseleave", "mousemove", "pinia"]
 }

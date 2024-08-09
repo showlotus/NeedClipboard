@@ -41,7 +41,7 @@ defineExpose({
 
 <style lang="scss">
 .el-select__wrapper.is-focused {
-  box-shadow: 0 0 0 1px var(--el-border-color) inset;
+  /* box-shadow: 0 0 0 1px var(--el-border-color) inset; */
 }
 
 .el-select__placeholder {

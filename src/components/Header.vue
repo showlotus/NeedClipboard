@@ -100,10 +100,10 @@ hotkeys('ctrl+p', 'home', () => {
 })
 
 // 全局禁用某些按键的默认行为
-hotkeys('tab', (e) => {
-  e.preventDefault()
-  return false
-})
+// hotkeys('tab', 'home', (e) => {
+//   e.preventDefault()
+//   return false
+// })
 </script>
 
 <style></style>

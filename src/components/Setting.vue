@@ -48,7 +48,7 @@ const handleToggleSettingPanel = () => {
   settingVisible.value = !settingVisible.value
 }
 
-hotkeys('ctrl+s', () => {
+hotkeys('ctrl+,', () => {
   handleToggleSettingPanel()
 })
 
