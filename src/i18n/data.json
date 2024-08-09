@@ -35,7 +35,10 @@
     "zh_CN": "很久以前",
     "en_US": "Long Ago"
   },
-
+  "NC.primaryAction": {
+    "zh_CN": "首选行为",
+    "en_US": "Primary Action"
+  },
   "NC.startup": {
     "zh_CN": "开机启动",
     "en_US": "Startup"
@@ -56,7 +59,18 @@
     "zh_CN": "激活热键",
     "en_US": "Activate HotKey"
   },
-
+  "NC.copyToClipboard": {
+    "zh_CN": "复制到剪贴板",
+    "en_US": "Copy to Clipboard"
+  },
+  "NC.pasteToActiveApp": {
+    "zh_CN": "粘贴到活动应用",
+    "en_US": "Paste to Active App"
+  },
+  "NC.pasteToSomeApp": {
+    "zh_CN": "粘贴到 {0}",
+    "en_US": "Paste to {0}"
+  },
   "NC.english": {
     "zh_CN": "英文",
     "en_US": "English"

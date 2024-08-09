@@ -224,7 +224,7 @@ async function createWindow() {
   console.log(width, height)
   win = new BrowserWindow({
     title: 'Main window',
-    // width: width * 0.4,
+    // width: width * 0.5,
     // height: height * 0.5,
     width: 1000,
     height: 800,

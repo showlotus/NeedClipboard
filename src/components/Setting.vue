@@ -7,16 +7,13 @@
       @click="handleToggleSettingPanel"
     >
       <!-- logo -->
-      <span class="w-5 h-5 inline-block rounded bg-[crimson]"></span>
+      <span class="w-5 h-5 inline-block rounded border"></span>
       <span class="pr-1 text-sm">Need Clipboard</span>
     </div>
 
-    <div
-      v-if="!settingVisible"
-      class="flex-1 flex justify-end items-center gap-1"
-    >
+    <div class="flex-1 flex justify-end items-center gap-1">
       <CodeBlock
-        label="Paste to Clipboard"
+        label="Copy to Clipboard"
         value="Enter"
         @click="handlePastToClipboard"
       />

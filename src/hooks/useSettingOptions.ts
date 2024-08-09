@@ -38,10 +38,21 @@ export function useSettingOptions() {
       value: Infinity
     }
   ])
+  const primaryActionOptions = ref([
+    {
+      label: t('NC.copyToClipboard'),
+      value: 'clipboard'
+    },
+    {
+      label: t('NC.pasteToActiveApp'),
+      value: 'app'
+    }
+  ])
 
   return {
     languageOptions,
     themeOptions,
-    keepDaysOptions
+    keepDaysOptions,
+    primaryActionOptions
   }
 }
