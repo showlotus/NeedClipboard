@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { getCurrentInstance } from 'vue'
+import { getCurrentInstance, provide } from 'vue'
 
-// getCurrentInstance()!.proxy!.$i18n.locale = 'en_US'
+const root = getCurrentInstance()
+provide('updateLanguage', (lang: string) => {
+  console.log(root?.proxy)
+  root!.proxy!.$i18n.locale = lang
+})
 </script>
 
 <template>

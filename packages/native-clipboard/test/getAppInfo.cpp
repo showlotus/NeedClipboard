@@ -27,6 +27,7 @@ void GetActiveWindowIconPath() {
     } else {
         std::cerr << "No active window found." << std::endl;
     }
+    std::cout << "------------------------------------------" << std::endl;
 }
 
 void PrintActiveWindowTitle() {

@@ -224,9 +224,9 @@ async function createWindow() {
   console.log(width, height)
   win = new BrowserWindow({
     title: 'Main window',
-    // width: width * 0.5,
+    // width: width * 0.4,
     // height: height * 0.5,
-    width: 1000,
+    width: width * 0.8,
     height: 800,
     icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
@@ -239,12 +239,12 @@ async function createWindow() {
       // contextIsolation: false,
       // 禁用拼写检查
       spellcheck: false
-    }
+    },
     // transparent: true,
     // TODO publish 时需要隐藏标题栏
     // titleBarStyle: 'hidden',
     // 无边框窗口，隐藏标题和菜单栏
-    // frame: false
+    frame: false
     // 设置高斯模糊
     // TODO 会导致打开窗口时有闪烁问题
     // backgroundMaterial: 'mica' // mica acrylic
