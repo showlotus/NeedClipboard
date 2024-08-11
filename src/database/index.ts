@@ -1,4 +1,5 @@
 import Dexie, { EntityTable } from 'dexie'
+import pkg from '../../package.json'
 
 interface Clipboard {
   id: number
@@ -10,7 +11,7 @@ interface Clipboard {
 }
 
 // 创建数据库
-const db = new Dexie('NeedClipboard') as Dexie & {
+const db = new Dexie(pkg.name) as Dexie & {
   clipboard: EntityTable<Clipboard, 'id'>
   image: EntityTable<{ id: number; image: any }, 'id'>
 }
