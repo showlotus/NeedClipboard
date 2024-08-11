@@ -1,18 +1,18 @@
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 export function useSettingOptions() {
   const { t } = useI18n()
-  const languageOptions = ref([
+  const languageOptions = computed(() => [
     { label: t('NC.english'), value: 'en_US' },
     { label: t('NC.chinese'), value: 'zh_CN' }
   ])
-  const themeOptions = ref([
+  const themeOptions = computed(() => [
     { label: t('NC.system'), value: 'system' },
     { label: t('NC.light'), value: 'light' },
     { label: t('NC.dark'), value: 'dark' }
   ])
-  const keepDaysOptions = ref([
+  const keepDaysOptions = computed(() => [
     {
       label: t('NC.sevenDays'),
       value: 7
@@ -38,7 +38,7 @@ export function useSettingOptions() {
       value: Infinity
     }
   ])
-  const primaryActionOptions = ref([
+  const primaryActionOptions = computed(() => [
     {
       label: t('NC.copyToClipboard'),
       value: 'clipboard'

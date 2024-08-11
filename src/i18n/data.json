@@ -35,6 +35,10 @@
     "zh_CN": "很久以前",
     "en_US": "Long Ago"
   },
+  "NC.setting": {
+    "zh_CN": "设置",
+    "en_US": "Setting"
+  },
   "NC.primaryAction": {
     "zh_CN": "首选行为",
     "en_US": "Primary Action"

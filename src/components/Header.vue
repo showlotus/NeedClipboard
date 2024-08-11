@@ -99,11 +99,11 @@ hotkeys('ctrl+p', 'home', () => {
   elSelectRef.value?.toggleMenu()
 })
 
-// 全局禁用某些按键的默认行为
-// hotkeys('tab', 'home', (e) => {
-//   e.preventDefault()
-//   return false
-// })
+// 禁用 tab 的默认行为
+hotkeys('tab', 'home', (e) => {
+  e.preventDefault()
+  return false
+})
 </script>
 
 <style></style>

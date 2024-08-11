@@ -1,6 +1,6 @@
 import data from './data.json'
 
-type Lang = 'zh_CN' | 'en_US'
+export type Lang = 'zh_CN' | 'en_US'
 
 interface OriginData {
   [K: string]: {

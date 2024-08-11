@@ -12,14 +12,14 @@ import './demos/ipc'
 // import './demos/node'
 
 const pinia = createPinia()
-
 const i18n = createI18n({
   legacy: false,
   locale: 'zh_CN',
   messages: i18nConfig
 })
+const app = createApp(App)
 
-createApp(App)
+app
   .use(pinia)
   .use(i18n)
   .mount('#app')

@@ -1,8 +1,9 @@
 <template>
   <div class="flex flex-col">
-    先按所需的组合键，再按 Enter 键。
+    <el-input v-model="model" class="w-full" />
+    <!-- 先按所需的组合键，再按 Enter 键。 -->
     <input
-      class="border-cyan-300 border-2 p-2 text-center"
+      class="text-center h-0"
       type="text"
       @focus="handleFocus"
       @keydown="handleKeydown"
@@ -14,7 +15,10 @@
 </template>
 
 <script setup lang="ts">
+import { EVENT_CODE } from '@/constants/aria'
 import { ref } from 'vue'
+
+const model = defineModel<string>({ default: '' })
 
 const keys = new Set<string>()
 const keydownKeys = new Set<string>()
@@ -31,15 +35,23 @@ const handleBlur = () => {
   window.ipcRenderer.invoke('register-all-shortcut')
 }
 const formatKey = (key: string) => {
-  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
+  if (
+    [
+      EVENT_CODE.left,
+      EVENT_CODE.up,
+      EVENT_CODE.right,
+      EVENT_CODE.down
+    ].includes(key)
+  ) {
     return key.slice(5)
-  } else if (key === 'Meta') {
-    return 'Super'
+  } else if (key === EVENT_CODE.meta) {
+    return EVENT_CODE.super
   }
   return key.replace(/^[\s\S]/, (val) => val.toUpperCase())
 }
 const handleKeydown = (e: KeyboardEvent) => {
-  if (e.key === 'Enter') {
+  const uselessKeys = [EVENT_CODE.esc]
+  if (e.key === EVENT_CODE.enter) {
     // TODO 重新设置当前全局快捷键
     // 首先判断是否冲突，若冲突则提示，否则提示修改成功
     const value = Array.from(keys.values())
@@ -54,7 +66,7 @@ const handleKeydown = (e: KeyboardEvent) => {
         alert('快捷键冲突：' + value)
       }
     })
-  } else {
+  } else if (!uselessKeys.includes(e.key)) {
     // 重新录制，清空上次录制的键
     if (keydownKeys.size === 0) {
       keys.clear()

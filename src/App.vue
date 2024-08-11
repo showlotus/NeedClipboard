@@ -1,12 +1,4 @@
-<script setup lang="ts">
-import { getCurrentInstance, provide } from 'vue'
-
-const root = getCurrentInstance()
-provide('updateLanguage', (lang: string) => {
-  console.log(root?.proxy)
-  root!.proxy!.$i18n.locale = lang
-})
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="w-full h-full flex flex-col">
