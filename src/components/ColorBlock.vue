@@ -1,7 +1,7 @@
 <template>
   <div
-    class="w-full h-full rounded-full shadow-color-block"
-    :style="{ color, backgroundColor: color, borderColor: 'red' }"
+    class="rounded-full border-[2px] border-[--nc-color-block-border-color] group-[.is-active]:border-[--nc-color-block-border-active-color]"
+    :style="{ color, backgroundColor: color }"
   ></div>
 </template>
 

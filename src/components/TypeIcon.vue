@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, h, useAttrs } from 'vue'
+import { computed, h } from 'vue'
 import TextSvg from '@/assets/icons/text.svg?component'
 import ImageSvg from '@/assets/icons/image.svg?component'
 import LinkSvg from '@/assets/icons/link.svg?component'
@@ -30,7 +30,7 @@ interface Props {
 
 const props = defineProps<Props>()
 const ops = {
-  Color: () => h(ColorBlock, { class: 'w-4 h-4', color: props.color }),
+  Color: () => h(ColorBlock, { class: 'w-5 h-5', color: props.color }),
   Text: () => h(TextSvg, { class: 'w-5' }),
   Image: () => h(ImageSvg, { class: 'w-[22px]' }),
   Link: () => h(LinkSvg, { class: 'w-5' }),

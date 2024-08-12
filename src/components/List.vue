@@ -11,8 +11,9 @@
           v-for="item in group.data"
           :key="item.id"
           :data-id="item.id"
-          class="mx-2.5 px-2 h-10 leading-10 rounded-md text-ellipsis overflow-hidden whitespace-nowrap select-none flex items-center gap-2"
+          class="group mx-2.5 px-2 h-10 leading-10 rounded-md text-ellipsis overflow-hidden whitespace-nowrap select-none flex items-center gap-2"
           :class="{
+            'is-active': activeId === item.id,
             'bg-[--nc-item-color-active]': activeId === item.id,
             'hover:bg-[--nc-item-color-hover]': activeId !== item.id
           }"

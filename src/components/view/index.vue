@@ -1,8 +1,9 @@
 <template>
   <div class="text-xs">
     <!-- <ImageView /> -->
-    <TextView v-model="content" />
+    <!-- <TextView v-model="content" /> -->
     <!-- <FileView /> -->
+    <ColorView />
   </div>
 </template>
 

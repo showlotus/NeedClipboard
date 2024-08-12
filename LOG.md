@@ -49,6 +49,18 @@ npm install --global --production windows-build-tools@4.0.0
   }
   ```
 
+- 新增了 `Color` 类型的图标展示和预览展示，还需要对颜色进行检测，判断是否是一个合法的颜色值，问了问 GPT，结果头一回知道还能用 `Option` 构造函数判断一个具名颜色是否是内置的颜色值。
+
+  ```js
+  function isColorNameValid(colorName) {
+    const s = new Option().style
+    s.color = colorName
+    return s.color !== ''
+  }
+  ```
+
+  方法是有了，明天写写测试用例，测一下这个方法。
+
 ### 08/11
 
 - 研究了一下如何将剪贴板中选中的内容回填到当前活动活动窗口中，使用 C++ 内置的 `SendMessage(hwnd, WM_PASTE, 0, 0)` 事件不生效（有可能是不在同一个进程中？），然后又查到一种方案，手动触发 `Ctrl + V` 倒是能实现粘贴。好在能实现就行，（不过自动回填的前提是，需要判断当前窗口是否有光标聚焦，在考虑要不要判断🤔），后续可以再优化。同时还需要开启一个线程监听当前活动窗口，当需要回填时，聚焦该活动窗口。

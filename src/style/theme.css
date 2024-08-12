@@ -12,6 +12,8 @@
   --nc-code-bg-color: var(--nc-item-color-active);
   --nc-code-bg-active-color: #e1e1e1;
   --nc-code-color: #656565;
+  --nc-color-block-border-color: #ddd;
+  --nc-color-block-border-active-color: #bcbcbc;
 
   --el-color-primary: #333;
   --el-border-color: #cbcbca;
@@ -37,6 +39,8 @@ html.dark {
   --nc-info-border-color: #2a2a2a;
   --nc-code-bg-active-color: #3f3f3f;
   --nc-code-color: #a4a4a4;
+  --nc-color-block-border-color: #515151;
+  --nc-color-block-border-active-color: #555;
 
   --el-color-primary: #f2f2f2;
   --el-border-color-hover: #4c4d4f;
