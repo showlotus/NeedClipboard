@@ -35,6 +35,20 @@ npm install --global --production windows-build-tools@4.0.0
 
 ## log
 
+### 08/12
+
+- `use hook` snippet template:
+
+  ```json
+  {
+    "export use hook": {
+      "prefix": "euh",
+      "body": ["export function $TM_FILENAME_BASE() {", "\treturn", "}", ""],
+      "description": "export use hook"
+    }
+  }
+  ```
+
 ### 08/11
 
 - 研究了一下如何将剪贴板中选中的内容回填到当前活动活动窗口中，使用 C++ 内置的 `SendMessage(hwnd, WM_PASTE, 0, 0)` 事件不生效（有可能是不在同一个进程中？），然后又查到一种方案，手动触发 `Ctrl + V` 倒是能实现粘贴。好在能实现就行，（不过自动回填的前提是，需要判断当前窗口是否有光标聚焦，在考虑要不要判断🤔），后续可以再优化。同时还需要开启一个线程监听当前活动窗口，当需要回填时，聚焦该活动窗口。

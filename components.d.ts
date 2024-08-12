@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     CodeBlock: typeof import('./src/components/CodeBlock.vue')['default']
+    ColorBlock: typeof import('./src/components/ColorBlock.vue')['default']
     Copy: typeof import('./src/components/Copy.vue')['default']
     CustomInput: typeof import('./src/components/CustomInput.vue')['default']
     CustomSelect: typeof import('./src/components/CustomSelect.vue')['default']

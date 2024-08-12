@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .shadow-color-block {
+    box-shadow: 0 0 3px 3px currentColor;
+  }
+}
+
 :root {
   /* TODO 不同系统下字体选用 */
   /* font-family:

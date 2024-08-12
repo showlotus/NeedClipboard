@@ -5,7 +5,7 @@
         <div
           class="mt-4 ml-4 mb-2 text-xs font-bold text-[--nc-group-label-color]"
         >
-          {{ group.label }}
+          {{ t(group.label) }}
         </div>
         <div
           v-for="item in group.data"
@@ -18,7 +18,10 @@
           }"
           @click="handleClick(item.id)"
         >
-          <TypeIcon :type="item.type" />
+          <TypeIcon
+            :type="item.type"
+            v-bind="{ ...(item.type === 'Color' ? { color: item.desc } : {}) }"
+          />
           {{ item.desc }}
         </div>
       </div>
@@ -50,18 +53,6 @@ const { t } = useI18n()
 const record = userRecordStore()
 
 console.log(record)
-
-/**
- * Today            今天
- * Yesterday        昨天
- * This Week        本周
- * Last Week        上周
- * This Month       本月
- * Last Month       上个月
- * This Year        本年
- * Last Year        去年
- * Long Ago         很久以前
- */
 
 const groupMap = new Map([
   [
@@ -165,7 +156,7 @@ const formatOriginData = (data: any[]) => {
   groupMap.forEach((val, key) => {
     if (val.data.length) {
       res.push({
-        label: t(key),
+        label: key,
         data: val.data
       })
       allRes.push(...val.data)
@@ -178,13 +169,33 @@ const formatOriginData = (data: any[]) => {
 
 const genMockData = (() => {
   let id = 1
-  const types = ['Text', 'Image', 'Link', 'File', 'FolderFile', 'Folder']
+  const types = [
+    'Color',
+    'Text',
+    'Image',
+    'Link',
+    'File',
+    'FolderFile',
+    'Folder'
+  ]
+  const colors = [
+    '#24acf2',
+    '#ff6c37',
+    '#f04b3d',
+    '#0073c7',
+    '#ffe947',
+    '#7356e2',
+    '#7b2fa0'
+  ]
   return (n: number, date?: string) => {
     return new Array(n).fill(0).map((v, i) => {
       return {
         id: ++id,
-        desc: btoa(`${i}`.repeat(i + 1)),
-        type: types[i % 6],
+        desc:
+          i % 7 === 0
+            ? colors[Math.floor(Math.random() * colors.length)]
+            : btoa(`${i}`.repeat(i + 1)),
+        type: types[i % 7],
         createDate:
           date ||
           dayjs()

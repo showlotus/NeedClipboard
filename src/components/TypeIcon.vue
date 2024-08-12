@@ -5,37 +5,42 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, h } from 'vue'
+import { computed, h, useAttrs } from 'vue'
 import TextSvg from '@/assets/icons/text.svg?component'
 import ImageSvg from '@/assets/icons/image.svg?component'
 import LinkSvg from '@/assets/icons/link.svg?component'
 import FileSvg from '@/assets/icons/file.svg?component'
 import FolderFileSvg from '@/assets/icons/folder-file.svg?component'
 import FolderSvg from '@/assets/icons/folder.svg?component'
+import ColorBlock from './ColorBlock.vue'
 
-type Type = 'Text' | 'Image' | 'Link' | 'File' | 'Folder' | 'FolderFile'
+type ClipboardType =
+  | 'Color'
+  | 'Text'
+  | 'Image'
+  | 'Link'
+  | 'File'
+  | 'Folder'
+  | 'FolderFile'
 
 interface Props {
-  type: Type
+  type: ClipboardType
+  color?: string
 }
 
 const props = defineProps<Props>()
+const ops = {
+  Color: () => h(ColorBlock, { class: 'w-4 h-4', color: props.color }),
+  Text: () => h(TextSvg, { class: 'w-5' }),
+  Image: () => h(ImageSvg, { class: 'w-[22px]' }),
+  Link: () => h(LinkSvg, { class: 'w-5' }),
+  File: () => h(FileSvg, { class: 'h-[18px]' }),
+  Folder: () => h(FolderSvg, { class: 'w-5' }),
+  FolderFile: () => h(FolderFileSvg, { class: 'w-5' })
+}
 
 const dynamicSvg = computed(() => {
-  if (props.type === 'Text') {
-    return h(TextSvg, { class: 'w-5' })
-  } else if (props.type === 'Image') {
-    return h(ImageSvg, { class: 'w-[22px]' })
-  } else if (props.type === 'Link') {
-    return h(LinkSvg, { class: 'w-5' })
-  } else if (props.type === 'File') {
-    return h(FileSvg, { class: 'h-[18px]' })
-  } else if (props.type === 'Folder') {
-    return h(FolderSvg, { class: 'w-5' })
-  } else if (props.type === 'FolderFile') {
-    return h(FolderFileSvg, { class: 'w-5' })
-  }
-  return h('span')
+  return ops[props.type]?.()
 })
 </script>
 

@@ -118,5 +118,29 @@
   "NC.unlimited": {
     "zh_CN": "无限制",
     "en_US": "Unlimited"
+  },
+  "NC.typeAll": {
+    "zh_CN": "所有类型",
+    "en_US": "All Types"
+  },
+  "NC.typeText": {
+    "zh_CN": "仅文本",
+    "en_US": "Text Only"
+  },
+  "NC.typeImage": {
+    "zh_CN": "仅图片",
+    "en_US": "Images Only"
+  },
+  "NC.typeFile": {
+    "zh_CN": "仅文件",
+    "en_US": "Files Only"
+  },
+  "NC.typeLink": {
+    "zh_CN": "仅链接",
+    "en_US": "Links Only"
+  },
+  "NC.typeColor": {
+    "zh_CN": "仅颜色",
+    "en_US": "Colors Only"
   }
 }
