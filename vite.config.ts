@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import electron from 'vite-plugin-electron/simple'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
@@ -31,6 +32,13 @@ export default defineConfig(({ command }) => {
       }),
       Components({
         resolvers: [ElementPlusResolver()]
+      }),
+      nodePolyfills({
+        globals: {
+          Buffer: true, // can also be 'build', 'dev', or false
+          global: true,
+          process: true
+        }
       }),
       electron({
         main: {

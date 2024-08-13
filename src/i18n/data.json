@@ -142,5 +142,9 @@
   "NC.typeColor": {
     "zh_CN": "仅颜色",
     "en_US": "Colors Only"
+  },
+  "NC.inTheEnd": {
+    "zh_CN": "到底了",
+    "en_US": "In the end"
   }
 }

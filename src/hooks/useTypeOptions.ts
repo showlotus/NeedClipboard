@@ -3,7 +3,9 @@ import { useI18n } from 'vue-i18n'
 
 export type ClipboardType = 'text' | 'image' | 'file' | 'link' | 'color'
 
-type TypeOptions = Array<{ label: String; value: 'all' | ClipboardType }>
+export type OptionType = ClipboardType | 'all'
+
+type TypeOptions = Array<{ label: string; value: OptionType }>
 
 export function useQueryTypeOptions() {
   const { t } = useI18n()

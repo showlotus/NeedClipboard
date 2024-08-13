@@ -22,13 +22,15 @@
 import { ref, watch, computed } from 'vue'
 import hotkeys from 'hotkeys-js'
 import { useQueryTypeOptions } from '@/hooks/useTypeOptions'
+import { SearchParams, useMainStore } from '@/stores/main'
 
 const { typeOptions } = useQueryTypeOptions()
 const keyword = ref('')
 const value = ref('all')
+const mainStore = useMainStore()
 watch([keyword, value], (val) => {
-  const params = { keyword: val[0], type: val[1] }
-  console.log(params)
+  const params = { keyword: val[0], type: val[1] } as SearchParams
+  mainStore.updateSearchParams(params)
 })
 
 const customSelectRef = ref()

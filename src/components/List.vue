@@ -26,13 +26,23 @@
           {{ item.desc }}
         </div>
       </div>
+      <div
+        v-if="isFullLoad"
+        class="text-center pt-3 pb-1 text-[--nc-group-label-color] text-xs select-none"
+      >
+        <span
+          class="before:content-['-----'] before:mr-2 after:content-['-----'] after:ml-2"
+        >
+          {{ t('NC.inTheEnd') }}</span
+        >
+      </div>
       <div class="mb-2"></div>
     </div>
   </el-scrollbar>
 </template>
 
 <script lang="ts" setup>
-import { computed, getCurrentInstance, nextTick, ref } from 'vue'
+import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import hotkeys from 'hotkeys-js'
 import dayjs from 'dayjs'
@@ -47,13 +57,23 @@ import {
   isToday,
   isYesterday
 } from '../utils/date'
-import { userRecordStore } from '@/stores/record'
+import { useMainStore } from '@/stores/main'
 import TypeIcon from './TypeIcon.vue'
+import { useSearch } from '@/hooks/useSearch'
+import { debounce } from '@/utils/debounce'
+import { throttle } from '@/utils/throttle'
 
 const { t } = useI18n()
-const record = userRecordStore()
-
-console.log(record)
+const mainStore = useMainStore()
+const searchParams = computed(() => mainStore.searchParams)
+const { data, search, next, isFullLoad } = useSearch(searchParams)
+watch(
+  searchParams,
+  () => {
+    search()
+  },
+  { immediate: true }
+)
 
 const groupMap = new Map([
   [
@@ -163,7 +183,7 @@ const formatOriginData = (data: any[]) => {
       allRes.push(...val.data)
     }
   })
-  console.log(res)
+  // console.log(res)
   list.value = res
   allList.value = allRes
 }
@@ -209,50 +229,30 @@ const genMockData = (() => {
 formatOriginData(genMockData(10))
 
 const loadMore = () => {
+  if (isFullLoad.value) {
+    return
+  }
   console.log('loadMore')
   const data = genMockData(5, '2020/01/01 01:00:00')
   formatOriginData(allList.value.concat(data))
 
-  scrollIntoView()
-}
+  // TODO 通过上下按键触发滚动时，才需要将当前聚焦元素滚动到视图中
+  // scrollIntoView()
 
-const throttle = (callback: (...args: any[]) => void, wait = 200) => {
-  let timer = null as any
-  return function (this: any, ...args: any[]) {
-    if (timer) {
-      return
-    }
-    timer = setTimeout(() => {
-      callback.apply(this, args)
-      clearTimeout(timer)
-      timer = null
-    }, wait)
-  }
-}
-
-const debounce = (callback: (...args: any[]) => void, wait = 200) => {
-  let timer = null as any
-  return function (this: any, ...args: any[]) {
-    if (timer) {
-      clearTimeout(timer)
-    }
-    timer = setTimeout(() => {
-      callback.apply(this, args)
-      clearTimeout(timer)
-      timer = null
-    }, wait)
-  }
+  next()
 }
 
 const hideScrollbar = debounce(() => {
   const el = instance?.proxy!.$el as HTMLDivElement
   el.dispatchEvent(new Event('mouseleave'))
 }, 1000)
+
 const showScrollbar = throttle(() => {
   const el = instance?.proxy!.$el as HTMLDivElement
   el.dispatchEvent(new Event('mousemove'))
   hideScrollbar()
 })
+
 const handleClick = (id: number) => {
   // activeId.value = id
   const idx = allList.value.findIndex((v) => v.id === id)
