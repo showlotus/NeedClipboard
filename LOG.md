@@ -35,6 +35,10 @@ npm install --global --production windows-build-tools@4.0.0
 
 ## log
 
+### 08/13
+
+- 添加了关于颜色校验的单元测试用例，以及把之前写的日期用例给分组了一下。
+
 ### 08/12
 
 - `use hook` snippet template:
@@ -49,7 +53,7 @@ npm install --global --production windows-build-tools@4.0.0
   }
   ```
 
-- 新增了 `Color` 类型的图标展示和预览展示，还需要对颜色进行检测，判断是否是一个合法的颜色值，问了问 GPT，结果头一回知道还能用 `Option` 构造函数判断一个具名颜色是否是内置的颜色值。
+- 新增了 `Color` 类型的图标展示和预览展示，还需要对颜色进行检测，判断是否是一个合法的颜色值，问了问 GPT，结果头一回知道还能用 `Option` 构造函数判断一个关键字是否是内置的颜色值。
 
   ```js
   function isColorNameValid(colorName) {

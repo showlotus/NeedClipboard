@@ -12,24 +12,26 @@ import {
   isYesterday
 } from '../src/utils/date'
 
-describe('test date validate', () => {
-  test('😀 is today', () => {
+describe('test today', () => {
+  test('is today', () => {
     expect(isToday(dayjs())).toBe(true)
   })
 
-  test('🙁 is not today and before', () => {
+  test('is not today and before', () => {
     expect(isToday(dayjs().subtract(1, 'day'))).toBe(false)
   })
 
-  test('🙁 is not today and after', () => {
+  test('is not today and after', () => {
     expect(isToday(dayjs().add(1, 'day'))).toBe(false)
   })
+})
 
-  test('😀 is yesterday', () => {
+describe('test yesterday', () => {
+  test('is yesterday', () => {
     expect(isYesterday(dayjs().subtract(1, 'day'))).toBe(true)
   })
 
-  test('😀 is yesterday with time is 00:00:00', () => {
+  test('is yesterday with time is 00:00:00', () => {
     expect(
       isYesterday(
         dayjs()
@@ -41,7 +43,7 @@ describe('test date validate', () => {
     ).toBe(true)
   })
 
-  test('😀 is yesterday with time is 23:59:59', () => {
+  test('is yesterday with time is 23:59:59', () => {
     expect(
       isYesterday(
         dayjs()
@@ -53,21 +55,23 @@ describe('test date validate', () => {
     ).toBe(true)
   })
 
-  test('🙁 is not yesterday and before', () => {
+  test('is not yesterday and before', () => {
     expect(isYesterday(dayjs().subtract(1, 'day').subtract(1, 'day'))).toBe(
       false
     )
   })
 
-  test('🙁 is not yesterday and after', () => {
+  test('is not yesterday and after', () => {
     expect(isYesterday(dayjs())).toBe(false)
   })
+})
 
-  test('😀 is this week', () => {
+describe('test this week', () => {
+  test('is this week', () => {
     expect(isThisWeek(dayjs())).toBe(true)
   })
 
-  test('😀 is this week at monday with time is 00:00:00', () => {
+  test('is this week at monday with time is 00:00:00', () => {
     expect(
       isThisWeek(
         dayjs()
@@ -79,7 +83,7 @@ describe('test date validate', () => {
     ).toBe(true)
   })
 
-  test('😀 is this week at sunday with time is 23:59:59', () => {
+  test('is this week at sunday with time is 23:59:59', () => {
     expect(
       isThisWeek(
         dayjs()
@@ -91,7 +95,7 @@ describe('test date validate', () => {
     ).toBe(true)
   })
 
-  test('🙁 is not this week at last sunday with time is 23:59:59', () => {
+  test('is not this week at last sunday with time is 23:59:59', () => {
     expect(
       isThisWeek(
         dayjs()
@@ -103,7 +107,7 @@ describe('test date validate', () => {
     ).toBe(false)
   })
 
-  test('🙁 is not this week at next monday with time is 00:00:00', () => {
+  test('is not this week at next monday with time is 00:00:00', () => {
     expect(
       isThisWeek(
         dayjs()
@@ -114,8 +118,10 @@ describe('test date validate', () => {
       )
     ).toBe(false)
   })
+})
 
-  test('😀 is last week', () => {
+describe('test last week', () => {
+  test('is last week', () => {
     expect(
       isLastWeek(
         dayjs()
@@ -127,7 +133,7 @@ describe('test date validate', () => {
     ).toBe(true)
   })
 
-  test('😀 is last week at last monday with 00:00:00', () => {
+  test('is last week at last monday with 00:00:00', () => {
     expect(
       isLastWeek(
         dayjs()
@@ -139,7 +145,7 @@ describe('test date validate', () => {
     ).toBe(true)
   })
 
-  test('😀 is last week at last sunday with 23:59:59', () => {
+  test('is last week at last sunday with 23:59:59', () => {
     expect(
       isLastWeek(
         dayjs()
@@ -151,31 +157,35 @@ describe('test date validate', () => {
     ).toBe(true)
   })
 
-  test('🙁 is not last week at today', () => {
+  test('is not last week at today', () => {
     expect(isLastWeek(dayjs())).toBe(false)
   })
+})
 
-  test('😀 is this month', () => {
+describe('test this month', () => {
+  test('is this month', () => {
     expect(isThisMonth(dayjs())).toBe(true)
   })
 
-  test('🙁 is not this month at last day of last month', () => {
+  test('is not this month at last day of last month', () => {
     expect(isThisMonth(dayjs().subtract(dayjs().get('date'), 'day'))).toBe(
       false
     )
   })
 
-  test('🙁 is not this month at next month', () => {
+  test('is not this month at next month', () => {
     expect(isThisMonth(dayjs().set('month', dayjs().get('month') + 1))).toBe(
       false
     )
   })
+})
 
-  test('😀 is last month', () => {
+describe('test last month', () => {
+  test('is last month', () => {
     expect(isLastMonth(dayjs().subtract(dayjs().get('date'), 'day'))).toBe(true)
   })
 
-  test('😀 is last month of first day', () => {
+  test('is last month of first day', () => {
     expect(
       isLastMonth(
         dayjs()
@@ -185,7 +195,7 @@ describe('test date validate', () => {
     ).toBe(true)
   })
 
-  test('😀 is last month of last day', () => {
+  test('is last month of last day', () => {
     expect(
       isLastMonth(
         dayjs()
@@ -195,35 +205,41 @@ describe('test date validate', () => {
     ).toBe(true)
   })
 
-  test('🙁 is not last month', () => {
+  test('is not last month', () => {
     expect(isLastMonth(dayjs())).toBe(false)
   })
+})
 
-  test('😀 is this year', () => {
+describe('test this year', () => {
+  test('is this year', () => {
     expect(isThisYear(dayjs())).toBe(true)
   })
 
-  test('😀 is not this year and before', () => {
+  test('is not this year and before', () => {
     expect(isThisYear(dayjs().subtract(1, 'year'))).toBe(false)
   })
 
-  test('😀 is not this year and after', () => {
+  test('is not this year and after', () => {
     expect(isThisYear(dayjs().add(1, 'year'))).toBe(false)
   })
+})
 
-  test('😀 is last year', () => {
+describe('test last year', () => {
+  test('is last year', () => {
     expect(isLastYear(dayjs().subtract(1, 'year'))).toBe(true)
   })
 
-  test('🙁 is not last year', () => {
+  test('is not last year', () => {
     expect(isLastYear(dayjs())).toBe(false)
   })
+})
 
-  test('😀 is long ago', () => {
+describe('test long ago', () => {
+  test('is long ago', () => {
     expect(isLongAgo(dayjs().subtract(2, 'year'))).toBe(true)
   })
 
-  test('🙁 is not long ago', () => {
+  test('is not long ago', () => {
     expect(isLongAgo(dayjs())).toBe(false)
   })
 })

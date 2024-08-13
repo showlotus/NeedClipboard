@@ -1,4 +1,5 @@
 function isValidColor(color: string) {
+  color = color.trim()
   // 匹配 HEX 颜色
   const hexRegex = /^#([A-Fa-f0-9]{3}){1,2}$/
 
@@ -13,6 +14,7 @@ function isValidColor(color: string) {
 }
 
 function isColorNameValid(colorName: string) {
+  colorName = colorName.trim()
   const s = new Option().style
   s.color = colorName
   return s.color !== ''
