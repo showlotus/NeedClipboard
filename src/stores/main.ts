@@ -5,12 +5,17 @@ import { OptionType } from '@/hooks/useTypeOptions'
 export interface SearchParams {
   keyword: string
   type: OptionType
-  currPage?: number
-  pageSize?: number
+  currPage: number
+  pageSize: number
 }
 
 export const useMainStore = defineStore('main', () => {
-  const searchParams = ref<SearchParams>({ keyword: '', type: 'all' })
+  const searchParams = ref<SearchParams>({
+    keyword: '',
+    type: 'all',
+    currPage: 1,
+    pageSize: 20
+  })
   const updateSearchParams = (val: SearchParams) => {
     searchParams.value = val
   }

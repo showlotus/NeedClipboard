@@ -58,7 +58,6 @@ import {
   isYesterday
 } from '../utils/date'
 import { useMainStore } from '@/stores/main'
-import TypeIcon from './TypeIcon.vue'
 import { useSearch } from '@/hooks/useSearch'
 import { debounce } from '@/utils/debounce'
 import { throttle } from '@/utils/throttle'

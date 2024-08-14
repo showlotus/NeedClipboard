@@ -23,5 +23,6 @@
   "editor.quickSuggestions": {
     "strings": "on"
   },
-  "cSpell.words": ["mouseleave", "mousemove", "pinia"]
+  "cSpell.words": ["mouseleave", "mousemove", "pinia"],
+  "ti18n.shortcutLanguages": ["zh_CN", "en_US"]
 }

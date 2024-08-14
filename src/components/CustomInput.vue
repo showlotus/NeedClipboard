@@ -6,6 +6,7 @@
       v-bind="attrs"
       @focus="handleFocus"
       @blur="handleBlur"
+      @keydown.space.prevent
     />
     <span class="custom-cursor text-base font-bold h-0">{{ model }}</span>
   </div>
