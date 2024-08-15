@@ -178,18 +178,18 @@ npm install --global --production windows-build-tools@4.0.0
 
   - 查询：
 
-    - 全类型查询：按关键词 `keyword` 查询，首先查询 `ClipboardTable` 表，查询条件为 `contentType` 为 `Text`/`File`/`Link`/`Color` 的数据，然后再根据 `contentType` 查找对应的表。
+    - 全类型查询：按关键词 `keyword` 查询，首先查询 `ClipboardTable` 表，查询条件为 `type` 为 `Text`/`File`/`Link`/`Color` 的数据，然后再根据 `type` 查找对应的表。
 
-      - 如果是 `contentType` 为 `Text`，根据主键 `id` 查找表 `TextTable`，且字段 `content` 匹配关键字 `keyword`。
-      - 如果是 `contentType` 为 `File`，根据主键 `id` 查找表 `FileTable`，且字段 `path` 匹配关键字 `keyword`。
-      - 如果是 `contentType` 为 `Link`，根据主键 `id` 查找表 `LinkTable`，且字段 `content` 匹配关键字 `keyword`。
-      - 如果是 `contentType` 为 `Color`，根据主键 `id` 查找表 `ColorTable`，且字段 `content` 匹配关键字 `keyword`。
+      - 如果是 `type` 为 `Text`，根据主键 `id` 查找表 `TextTable`，且字段 `content` 匹配关键字 `keyword`。
+      - 如果是 `type` 为 `File`，根据主键 `id` 查找表 `FileTable`，且字段 `path` 匹配关键字 `keyword`。
+      - 如果是 `type` 为 `Link`，根据主键 `id` 查找表 `LinkTable`，且字段 `content` 匹配关键字 `keyword`。
+      - 如果是 `type` 为 `Color`，根据主键 `id` 查找表 `ColorTable`，且字段 `content` 匹配关键字 `keyword`。
 
-    - 锁定类型查询：根据 `contentType` 查找对应的表，且对应字段匹配关键字 `keyword`。
+    - 锁定类型查询：根据 `type` 查找对应的表，且对应字段匹配关键字 `keyword`。
 
   - 新增：
 
-    - 先在 `ClipboardTable` 表中新增一条记录，获取主键后，再根据 `contentType` 向对应的表中插入数据。
+    - 先在 `ClipboardTable` 表中新增一条记录，获取主键后，再根据 `type` 向对应的表中插入数据。
 
   - 删除：
 
@@ -204,40 +204,40 @@ npm install --global --production windows-build-tools@4.0.0
     |   字段名    |                                类型                                |                  描述                  |
     | :---------: | :----------------------------------------------------------------: | :------------------------------------: |
     |     id      |                              `Number`                              |               主键，自增               |
-    | contentType | `String`，可选值：`Text` \| `File` \| `Image` \| `Link` \| `Color` |                  类型                  |
+    |    type     | `String`，可选值：`Text` \| `File` \| `Image` \| `Link` \| `Color` |                  类型                  |
     | application |                         `String` 或 `Null`                         |                来源应用                |
     | createTime  |                              `String`                              | 创建时间，格式为 `yyyy-MM-DD HH:mm:ss` |
 
-  - TextTable，记录 Content Type 为 `Text` 类型的数据
+  - TextTable，记录 type 为 `Text` 类型的数据
 
-    |   字段名    |            类型             |             描述              |
-    | :---------: | :-------------------------: | :---------------------------: |
-    |     id      |          `Number`           | 外键，来源自 `ClipboardTable` |
-    | contentType | `String`，值为固定值 `Text` |             类型              |
-    |   content   |          `String`           |           文本内容            |
-    | characters  |          `Number`           |            字符数             |
+    |   字段名   |            类型             |             描述              |
+    | :--------: | :-------------------------: | :---------------------------: |
+    |     id     |          `Number`           | 外键，来源自 `ClipboardTable` |
+    |    type    | `String`，值为固定值 `Text` |             类型              |
+    |  content   |          `String`           |           文本内容            |
+    | characters |          `Number`           |            字符数             |
 
-  - FileTable，记录 Content Type 为 `File` 类型的数据
+  - FileTable，记录 type 为 `File` 类型的数据
 
-    |   字段名    |            类型             |                描述                |
-    | :---------: | :-------------------------: | :--------------------------------: |
-    |     id      |          `Number`           |   外键，来源自 `ClipboardTable`    |
-    | contentType | `String`，值为固定值 `File` |                类型                |
-    |    path     |          `String`           | 文件路径，例如 `~/x/xx...src/code` |
-    |    size     |          `String`           |       文件大小，例如 `16 KB`       |
+    | 字段名  |                         类型                          |                描述                |
+    | :-----: | :---------------------------------------------------: | :--------------------------------: |
+    |   id    |                       `Number`                        |   外键，来源自 `ClipboardTable`    |
+    |  type   |              `String`，值为固定值 `File`              |                类型                |
+    | subType | `String`，可选值：`file` \| `folder` \| `folder,file` |                类型                |
+    |  path   |                `String` \| `String[]`                 | 文件路径，例如 `~/x/xx...src/code` |
+    |  size   |                       `String`                        |       文件大小，例如 `16 KB`       |
 
-  - ImageTable，记录 Content Type 为 `Image` 类型的数据
+  - ImageTable，记录 type 为 `Image` 类型的数据
 
-    |   字段名    |             类型             |              描述               |
-    | :---------: | :--------------------------: | :-----------------------------: |
-    |     id      |           `Number`           |  外键，来源自 `ClipboardTable`  |
-    | contentType | `String`，值为固定值 `Image` |              类型               |
-    |     url     |           `String`           |    图片的 URL，`Base64` 格式    |
-    |   miniUrl   |           `String`           | 图片缩略图的 URL，`Base64` 格式 |
-    | dimensions  |           `String`           |    图片尺寸，例如 `200×400`     |
-    |    size     |           `String`           |     图片大小，例如 `20 KB`      |
+    |   字段名   |             类型             |             描述              |
+    | :--------: | :--------------------------: | :---------------------------: |
+    |     id     |           `Number`           | 外键，来源自 `ClipboardTable` |
+    |    type    | `String`，值为固定值 `Image` |             类型              |
+    |    url     |           `String`           |   图片的 URL，`Base64` 格式   |
+    | dimensions |           `String`           |   图片尺寸，例如 `200×400`    |
+    |    size    |           `String`           |    图片大小，例如 `20 KB`     |
 
-  - LinkTable，记录 Content Type 为 `Link` 类型的数据
+  - LinkTable，记录 type 为 `Link` 类型的数据
 
     |   字段名   |   类型   |             描述              |
     | :--------: | :------: | :---------------------------: |
@@ -245,7 +245,7 @@ npm install --global --production windows-build-tools@4.0.0
     |  content   | `String` |           文本内容            |
     | characters | `Number` |            字符数             |
 
-  - ColorTable，记录 Content Type 为 `Color` 类型的数据
+  - ColorTable，记录 type 为 `Color` 类型的数据
 
     | 字段名  |   类型   |             描述              |
     | :-----: | :------: | :---------------------------: |
@@ -281,7 +281,7 @@ npm install --global --production windows-build-tools@4.0.0
     ```json
     {
       "data": "abcdefg",
-      "Content type": "Text",
+      "type": "Text",
       "Characters": 234
     }
     ```
@@ -291,7 +291,7 @@ npm install --global --production windows-build-tools@4.0.0
     ```json
     {
       "data": null,
-      "Content type": "File",
+      "type": "File",
       "Path": "~/xx/xxx...src/demo.png",
       "File size": "16 KB"
     }
@@ -302,8 +302,8 @@ npm install --global --production windows-build-tools@4.0.0
     ```json
     {
       "data": "data:image/jpeg;base64...",
-      "Content type": "Image",
-      "Dimensions": "200×400",
+      "type": "Image",
+      "dimensions": "200×400",
       "Image size": "33 KB"
     }
     ```

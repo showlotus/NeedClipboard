@@ -4,24 +4,24 @@ import { SearchParams } from '@/stores/main'
 import dayjs from 'dayjs'
 
 function genMockData(n = 10) {
-  const t = ['text', 'image', 'file', 'link', 'color']
+  const t = ['Text', 'Image', 'File', 'Link', 'Color']
   return new Array(n).fill(0).map((_, i) => {
     const type = t[i % t.length]
     const data = { subType: null } as any
-    if (type === 'color') {
+    if (type === 'Color') {
       data.desc = faker.color.rgb({ format: 'css' })
-    } else if (type === 'text') {
+    } else if (type === 'Text') {
       data.desc = faker.string.alpha({ length: { min: 10, max: 20 } })
       data.characters = data.desc.length
-    } else if (type === 'image') {
+    } else if (type === 'Image') {
       data.desc = 'Image(640×480)'
       data.url = faker.image.dataUri({ type: 'svg-base64' })
       data.dimensions = '640×480'
       data.size = '200 KB'
-    } else if (type === 'link') {
+    } else if (type === 'Link') {
       const url = faker.internet.url()
       data.desc = url
-    } else if (type === 'file') {
+    } else if (type === 'File') {
       const subType = ['file', 'folder', 'folder,file'][i % 3]
       data.subType = subType
       if (subType === 'file') {
@@ -83,6 +83,9 @@ export function useSearch(params: Ref<SearchParams>) {
   const data = ref<any[]>([])
   const search = async (page?: number) => {
     currPage = !page ? 1 : page
+    if (currPage === 1) {
+      data.value = []
+    }
     const { result, totals } = await fetchQuery({
       ...params.value,
       currPage,
