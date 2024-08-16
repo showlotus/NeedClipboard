@@ -25,12 +25,12 @@ import { ref } from 'vue'
 
 const info = ref([
   ['Source', 'Code'],
-  ['Content type', 'Text'],
+  ['Type', 'Text'],
   ['Characters', '11'],
   ['Copied', 'Today, 19:55:30'],
 
   ['Source', 'Code'],
-  ['Content type', 'Text'],
+  ['Type', 'Text'],
   ['Characters', '11'],
   ['Copied', 'Today, 19:55:30']
 ])
