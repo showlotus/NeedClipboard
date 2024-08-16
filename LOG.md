@@ -233,7 +233,7 @@ npm install --global --production windows-build-tools@4.0.0
     | :--------: | :--------------------------: | :---------------------------: |
     |     id     |           `Number`           | 外键，来源自 `ClipboardTable` |
     |    type    | `String`，值为固定值 `Image` |             类型              |
-    |  content   |           `String`           |   图片的 URL，`Base64` 格式   |
+    |    url     |           `String`           |   图片的 URL，`Base64` 格式   |
     | dimensions |           `String`           |   图片尺寸，例如 `200×400`    |
     |    size    |           `String`           |    图片大小，例如 `20 KB`     |
 
