@@ -3,18 +3,18 @@
     <div
       class="w-20 h-20 rounded-full relative after:block after:absolute after:inset-[-4px] after:border-4 after:rounded-full after:border-[currentColor] after:opacity-50"
       :style="{
-        color,
-        backgroundColor: color
+        color: value,
+        backgroundColor: value
       }"
     ></div>
-    <span>{{ color }}</span>
+    <span>{{ value }}</span>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-
-const color = ref('#0073c7')
+withDefaults(defineProps<{ value: string }>(), {
+  value: 'transparent'
+})
 </script>
 
 <style scoped></style>

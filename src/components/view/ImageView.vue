@@ -1,13 +1,13 @@
 <template>
   <div class="h-full w-full flex justify-center items-center">
-    <img :src="url" alt="" class="h-full" />
+    <img :src="value" alt="" class="h-full object-contain" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import imgUrl from '../img.txt?raw'
-
-const url = defineModel<string>({ default: imgUrl })
+withDefaults(defineProps<{ value: string }>(), {
+  value: ''
+})
 </script>
 
 <style scoped></style>

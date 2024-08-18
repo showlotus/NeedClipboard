@@ -227,7 +227,7 @@ async function createWindow() {
     // width: width * 0.4,
     // height: height * 0.5,
     width: width * 0.8,
-    height: 800,
+    height: height * 0.5,
     icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
       preload,

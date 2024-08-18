@@ -28,6 +28,7 @@ declare module 'vue' {
     ImageView: typeof import('./src/components/view/ImageView.vue')['default']
     Info: typeof import('./src/components/Info.vue')['default']
     List: typeof import('./src/components/List.vue')['default']
+    MainView: typeof import('./src/components/MainView.vue')['default']
     Setting: typeof import('./src/components/Setting.vue')['default']
     SettingPanel: typeof import('./src/components/SettingPanel.vue')['default']
     Shortcut: typeof import('./src/components/Shortcut.vue')['default']

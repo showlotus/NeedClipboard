@@ -13,24 +13,18 @@ import FileSvg from '@/assets/icons/file.svg?component'
 import FolderFileSvg from '@/assets/icons/folder-file.svg?component'
 import FolderSvg from '@/assets/icons/folder.svg?component'
 import ColorBlock from './ColorBlock.vue'
-
-type ClipboardType =
-  | 'Color'
-  | 'Text'
-  | 'Image'
-  | 'Link'
-  | 'File'
-  | 'Folder'
-  | 'FolderFile'
+import { FILE_SUB_TYPE_VALUE, TYPE_VALUE } from '@/constants/aria'
+import { ClipboardType } from '@/hooks/useTypeOptions'
 
 interface Props {
-  type: ClipboardType
-  color?: string
+  data: {
+    [K in string]: string
+  } & { type: ClipboardType }
 }
 
 const props = defineProps<Props>()
 const ops = {
-  Color: () => h(ColorBlock, { class: 'w-5 h-5', color: props.color }),
+  Color: () => h(ColorBlock, { class: 'w-5 h-5', value: props.data.content }),
   Text: () => h(TextSvg, { class: 'w-5' }),
   Image: () => h(ImageSvg, { class: 'w-[22px]' }),
   Link: () => h(LinkSvg, { class: 'w-5' }),
@@ -40,7 +34,16 @@ const ops = {
 }
 
 const dynamicSvg = computed(() => {
-  return ops[props.type]?.()
+  const type = props.data.type
+  if (type === TYPE_VALUE.file) {
+    const subType = props.data.subType
+    if (subType === FILE_SUB_TYPE_VALUE.folder) {
+      return () => h(FolderSvg, { class: 'w-5' })
+    } else if (subType === FILE_SUB_TYPE_VALUE.folderFile) {
+      return () => h(FolderFileSvg, { class: 'w-5' })
+    }
+  }
+  return ops[type]?.()
 })
 </script>
 

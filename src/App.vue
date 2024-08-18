@@ -5,13 +5,7 @@
     <Header
       class="drag pt-3 pb-3 pl-4 pr-4 border-b border-[--el-border-color]"
     />
-    <div class="w-full flex flex-1 h-0">
-      <List class="w-2/5 h-full border-r border-[--el-border-color] relative" />
-      <div class="w-0 flex-1 flex flex-col">
-        <View class="flex-1 h-0" />
-        <Info class="flex-1 h-0 border-t border-[--el-border-color]" />
-      </div>
-    </div>
+    <MainView class="w-full flex flex-1 h-0" />
     <Setting class="h-10 px-2 py-1 border-t border-[--el-border-color]" />
   </div>
 </template>

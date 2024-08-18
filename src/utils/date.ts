@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 
-type ValidateDate = (date: string | Date | dayjs.Dayjs) => boolean
+export type ValidateDate = (date: string | Date | dayjs.Dayjs) => boolean
 
 export const isToday: ValidateDate = (date) => {
   return dayjs().isSame(date, 'date')

@@ -26,7 +26,7 @@ import { SearchParams, useMainStore } from '@/stores/main'
 
 const { typeOptions } = useQueryTypeOptions()
 const keyword = ref('')
-const value = ref('all')
+const value = ref('All')
 const mainStore = useMainStore()
 watch([keyword, value], (val) => {
   const params = { keyword: val[0], type: val[1] } as SearchParams

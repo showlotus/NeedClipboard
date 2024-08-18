@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { OptionType } from '@/hooks/useTypeOptions'
+import { TYPE_VALUE } from '@/constants/aria'
 
 export interface SearchParams {
   keyword: string
@@ -12,7 +13,7 @@ export interface SearchParams {
 export const useMainStore = defineStore('main', () => {
   const searchParams = ref<SearchParams>({
     keyword: '',
-    type: 'all',
+    type: TYPE_VALUE.all,
     currPage: 1,
     pageSize: 20
   })
@@ -20,8 +21,16 @@ export const useMainStore = defineStore('main', () => {
     searchParams.value = val
   }
 
+  const activeRecord = ref<any>({})
+  const updateActiveRecord = (val: any) => {
+    activeRecord.value = val
+  }
+
   return {
     searchParams,
-    updateSearchParams
+    updateSearchParams,
+
+    activeRecord,
+    updateActiveRecord
   }
 })
