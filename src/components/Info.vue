@@ -13,7 +13,10 @@
           <span class="font-bold text-[--nc-group-label-color] min-w-40">{{
             item[0]
           }}</span>
-          <span class="text-[--el-color-primary] text-sm">{{ item[1] }}</span>
+          <span
+            class="text-[--el-color-primary] text-xs flex-1 text-right text-ellipsis overflow-hidden"
+            >{{ item[1] }}</span
+          >
         </div>
       </div>
     </el-scrollbar>
