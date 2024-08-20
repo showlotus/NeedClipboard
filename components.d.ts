@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AutoTooltip: typeof import('./src/components/AutoTooltip.vue')['default']
     CodeBlock: typeof import('./src/components/CodeBlock.vue')['default']
     ColorBlock: typeof import('./src/components/ColorBlock.vue')['default']
     ColorView: typeof import('./src/components/view/ColorView.vue')['default']

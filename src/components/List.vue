@@ -69,14 +69,15 @@ watch(
 const hasScrollbar = ref(false)
 const handleCheckScrollbar = () => {
   const el = instance?.proxy!.$el as HTMLDivElement
-  const viewEl = el?.querySelector('.el-scrollbar__view') as HTMLElement
-  if (!viewEl) {
+  console.log(el)
+  const wrapEl = el?.querySelector('.el-scrollbar__wrap') as HTMLElement
+  if (!wrapEl) {
     return false
   }
-  if (viewEl.clientHeight > el.clientHeight) {
+  if (wrapEl.scrollHeight > wrapEl.clientHeight) {
     console.log('has scrollbar')
   }
-  return viewEl.clientHeight > el.clientHeight
+  return wrapEl.scrollHeight > wrapEl.clientHeight
 }
 const emit = defineEmits(['on-update'])
 watch(flattenData, (val) => {

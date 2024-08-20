@@ -13,10 +13,11 @@
           <span class="font-bold text-[--nc-group-label-color] min-w-40">{{
             item[0]
           }}</span>
-          <span
+          <AutoTooltip
             class="text-[--el-color-primary] text-xs flex-1 text-right text-ellipsis overflow-hidden"
-            >{{ item[1] }}</span
           >
+            {{ item[1] }}
+          </AutoTooltip>
         </div>
       </div>
     </el-scrollbar>
@@ -34,7 +35,7 @@ const info = ref<Array<any[]>>([])
 const formatText = () => {
   return { characters: 'Characters' }
 }
-const foramtImage = () => {
+const formatImage = () => {
   return { dimensions: 'Dimensions', size: 'Size' }
 }
 const formatLink = () => {
@@ -48,7 +49,7 @@ const formatColor = () => {
 }
 const ops = {
   [TYPE_VALUE.text]: formatText,
-  [TYPE_VALUE.image]: foramtImage,
+  [TYPE_VALUE.image]: formatImage,
   [TYPE_VALUE.link]: formatLink,
   [TYPE_VALUE.color]: formatColor,
   [TYPE_VALUE.file]: formatFile
@@ -66,21 +67,12 @@ const formatInfo = (data: any) => {
   return res
 }
 watch(activeRecord, (val) => {
-  console.log('watch', val)
-  info.value = formatInfo(val)
+  if (!val) {
+    info.value = [] as any
+  } else {
+    info.value = formatInfo(val)
+  }
 })
-
-// const info = ref([
-//   ['Source', 'Code'],
-//   ['Type', 'Text'],
-//   ['Characters', '11'],
-//   ['Copied', 'Today, 19:55:30'],
-
-//   ['Source', 'Code'],
-//   ['Type', 'Text'],
-//   ['Characters', '11'],
-//   ['Copied', 'Today, 19:55:30']
-// ])
 </script>
 
 <style scoped></style>
