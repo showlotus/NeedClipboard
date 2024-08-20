@@ -14,7 +14,9 @@
             item[0]
           }}</span>
           <AutoTooltip
+            :key="item[1]"
             class="text-[--el-color-primary] text-xs flex-1 text-right text-ellipsis overflow-hidden"
+            :value="item[1]"
           >
             {{ item[1] }}
           </AutoTooltip>

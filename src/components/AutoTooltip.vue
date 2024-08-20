@@ -1,34 +1,62 @@
 <template>
-  <div @mouseenter="handleMouseEnter"><slot /></div>
+  <div @mouseenter="handleMouseEnter">
+    <span v-if="!ellipsisText">{{ value }}</span>
+    {{ ellipsisText }}
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { getCurrentInstance, onActivated, onMounted, onUpdated, ref } from 'vue'
+import { getCurrentInstance, onMounted, onUpdated, ref } from 'vue'
+
+const props = withDefaults(defineProps<{ value: string }>(), {
+  value: ''
+})
 
 const instance = getCurrentInstance()
 const isOverflow = ref(false)
 const checkIsOverflow = () => {
-  const el = instance?.proxy.$el
-  let range = document.createRange()
+  const el = instance?.proxy!.$el
+  let range: any = document.createRange()
   range.setStart(el, 0)
   range.setEnd(el, el.childNodes.length)
   const rangeWidth = range.getBoundingClientRect().width
   console.log(rangeWidth, el.offsetWidth)
   // 可接受的偏移范围内
-  const inOffset = (o) => rangeWidth - el.offsetWidth > o
+  const inOffset = (o: number) => rangeWidth - el.offsetWidth > o
   isOverflow.value = rangeWidth > el.offsetWidth && inOffset(1)
   range = null
   return isOverflow.value
 }
 
+const ellipsisText = ref('')
 const overrideSlot = () => {
-  const el = instance?.proxy.$el
+  const el = instance?.proxy!.$el
+  const elWidth = el.getBoundingClientRect().width
   const textContent = el.textContent as string
-  const mid = Math.floor(textContent.length / 2)
-  el.textContent =
-    textContent.slice(0, mid - 5) + '...' + textContent.slice(mid + 5)
-  console.log(textContent)
+  const span = document.createElement('span')
+  span.style.visibility = 'hidden'
+  span.style.whiteSpace = 'nowrap'
+  document.body.appendChild(span)
+  let start = 0
+  let end = textContent.length
+  while (start < end) {
+    const mid = Math.floor((start + end) / 2)
+    const text = textContent.slice(0, mid) + '...' + textContent.slice(-mid)
+    span.textContent = text
+    if (span.getBoundingClientRect().width > elWidth) {
+      end = mid
+    } else {
+      start = mid + 1
+    }
+  }
+  console.log(span)
+  console.log(span.getBoundingClientRect().width)
+  ellipsisText.value =
+    textContent.slice(0, start - 1) + '...' + textContent.slice(-(start - 1))
+  console.log(el.innerText)
+  document.body.removeChild(span)
 }
+
 onMounted(() => {
   checkIsOverflow() && overrideSlot()
 })
@@ -38,14 +66,8 @@ onUpdated(() => {
 })
 
 const handleMouseEnter = (e: MouseEvent) => {
-  const el = e.target as HTMLElement
-  let range = document.createRange()
-  range.setStart(el, 0)
-  range.setEnd(el, el.childNodes.length)
-  const rangeWidth = range.getBoundingClientRect().width
-  console.log(el.offsetWidth, rangeWidth)
-  // 可接受的偏移范围内
-  const inOffset = (o) => rangeWidth - el.offsetWidth > o
-  range = null
+  if (!isOverflow.value) {
+    return
+  }
 }
 </script>
