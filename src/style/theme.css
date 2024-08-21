@@ -28,6 +28,12 @@
 
   color: var(--el-text-color-regular);
   background-color: var(--nc-bg-color);
+
+  .el-popper {
+    color: var(--el-color-primary);
+    background: var(--nc-bg-color);
+    border: 1px solid var(--el-border-color);
+  }
 }
 
 html.dark {
@@ -50,5 +56,11 @@ html.dark {
 
   .el-switch__core .el-switch__action {
     background-color: var(--nc-bg-color);
+  }
+
+  .el-popper.is-dark {
+    color: var(--el-color-primary);
+    background: var(--nc-bg-color);
+    border: 1px solid var(--el-border-color);
   }
 }

@@ -17,3 +17,7 @@ export function useDarkTheme() {
   document.querySelector('html')!.classList.add('dark')
   window.ipcRenderer.invoke('set-theme', 'dark')
 }
+
+export async function useTheme() {
+  return await window.ipcRenderer.invoke('get-theme')
+}

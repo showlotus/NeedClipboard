@@ -2,12 +2,24 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { OptionType } from '@/hooks/useTypeOptions'
 import { TYPE_VALUE } from '@/constants/aria'
+import { Lang } from '@/i18n'
 
 export interface SearchParams {
   keyword: string
   type: OptionType
   currPage: number
   pageSize: number
+}
+
+type Theme = 'system' | 'light' | 'dark'
+
+interface Setting {
+  primaryAction: 'clipboard' | 'app'
+  theme: Theme
+  language: Lang
+  startup: boolean
+  shortcutKey: string
+  keepDays: number
 }
 
 export const useMainStore = defineStore('main', () => {
@@ -26,11 +38,26 @@ export const useMainStore = defineStore('main', () => {
     activeRecord.value = val
   }
 
+  const setting = ref<Setting>({
+    primaryAction: 'clipboard',
+    theme: 'dark',
+    language: 'zh_CN',
+    startup: false,
+    shortcutKey: 'Alt C',
+    keepDays: 7
+  })
+  const updateSetting = (key: keyof Setting, val: any) => {
+    ;(setting.value as any)[key] = val
+  }
+
   return {
     searchParams,
     updateSearchParams,
 
     activeRecord,
-    updateActiveRecord
+    updateActiveRecord,
+
+    setting,
+    updateSetting
   }
 })

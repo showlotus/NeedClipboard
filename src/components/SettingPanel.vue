@@ -13,7 +13,7 @@
   >
     <template #header> {{ t('NC.setting') }} </template>
     <el-scrollbar class="h-full">
-      <div class="h-full mt-[18px] flex gap-4">
+      <div class="h-full mt-[18px] flex gap-4 select-none">
         <el-form
           label-position="top"
           label-width="auto"
@@ -64,32 +64,14 @@
 
 <script lang="ts" setup>
 import { useSettingOptions } from '@/hooks/useSettingOptions'
-import { Lang } from '@/i18n'
+import { useMainStore } from '@/stores/main'
 import { useDarkTheme, useLightTheme, useSystemTheme } from '@/utils/theme'
-import { ref, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-type Theme = 'system' | 'light' | 'dark'
-
-interface Setting {
-  primaryAction: 'clipboard' | 'app'
-  theme: Theme
-  language: Lang
-  startup: boolean
-  shortcutKey: string
-  keepDays: number
-}
-
 const value = defineModel<boolean>({ default: false })
-
-const setting = ref<Setting>({
-  primaryAction: 'clipboard',
-  theme: 'dark',
-  language: 'zh_CN',
-  startup: false,
-  shortcutKey: 'Alt C',
-  keepDays: 7
-})
+const mainStore = useMainStore()
+const setting = computed(() => mainStore.setting)
 
 const { themeOptions, languageOptions, keepDaysOptions, primaryActionOptions } =
   useSettingOptions()

@@ -1,21 +1,46 @@
 <template>
-  <div @mouseenter="handleMouseEnter">
-    <span v-if="!ellipsisText">{{ value }}</span>
-    {{ ellipsisText }}
-  </div>
+  <el-tooltip
+    :visible="visible"
+    :content="value"
+    :effect="theme"
+    :show-arrow="false"
+    placement="top"
+  >
+    <div
+      ref="wrapEl"
+      class="text-[--el-color-primary] text-xs flex-1 text-right text-ellipsis overflow-hidden"
+      @mouseenter="handleMouseEnter"
+      @mouseleave="handleMouseLeave"
+    >
+      <span v-if="!ellipsisText">{{ value }}</span>
+      {{ ellipsisText }}
+    </div>
+  </el-tooltip>
 </template>
 
 <script lang="ts" setup>
-import { getCurrentInstance, onMounted, onUpdated, ref } from 'vue'
+import { useMainStore } from '@/stores/main'
+import { useTheme } from '@/utils/theme'
+import { onMounted, ref, watch } from 'vue'
 
-const props = withDefaults(defineProps<{ value: string }>(), {
+withDefaults(defineProps<{ value: string }>(), {
   value: ''
 })
 
-const instance = getCurrentInstance()
+const mainStore = useMainStore()
+const theme = ref('dark')
+watch(
+  () => mainStore.setting.theme,
+  async () => {
+    theme.value = await useTheme()
+  }
+)
+
+const visible = ref(false)
+const wrapEl = ref<HTMLDivElement>()
 const isOverflow = ref(false)
 const checkIsOverflow = () => {
-  const el = instance?.proxy!.$el
+  const el = wrapEl.value!
   let range: any = document.createRange()
   range.setStart(el, 0)
   range.setEnd(el, el.childNodes.length)
@@ -30,11 +55,13 @@ const checkIsOverflow = () => {
 
 const ellipsisText = ref('')
 const overrideSlot = () => {
-  const el = instance?.proxy!.$el
+  const el = wrapEl.value!
   const elWidth = el.getBoundingClientRect().width
+  const fontSize = getComputedStyle(el).fontSize
   const textContent = el.textContent as string
   const span = document.createElement('span')
   span.style.visibility = 'hidden'
+  span.style.fontSize = fontSize
   span.style.whiteSpace = 'nowrap'
   document.body.appendChild(span)
   let start = 0
@@ -49,11 +76,8 @@ const overrideSlot = () => {
       start = mid + 1
     }
   }
-  console.log(span)
-  console.log(span.getBoundingClientRect().width)
   ellipsisText.value =
     textContent.slice(0, start - 1) + '...' + textContent.slice(-(start - 1))
-  console.log(el.innerText)
   document.body.removeChild(span)
 }
 
@@ -61,13 +85,13 @@ onMounted(() => {
   checkIsOverflow() && overrideSlot()
 })
 
-onUpdated(() => {
-  checkIsOverflow() && overrideSlot()
-})
-
-const handleMouseEnter = (e: MouseEvent) => {
-  if (!isOverflow.value) {
-    return
+const handleMouseEnter = () => {
+  if (isOverflow.value) {
+    visible.value = true
   }
+}
+
+const handleMouseLeave = () => {
+  visible.value = false
 }
 </script>

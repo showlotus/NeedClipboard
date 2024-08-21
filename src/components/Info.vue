@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-2 text-sm flex flex-col">
+  <div class="pt-2 text-sm flex flex-col cursor-default select-none">
     <div class="py-2 px-3 text-xs font-bold text-[--nc-group-label-color]">
       Information
     </div>
@@ -14,12 +14,15 @@
             item[0]
           }}</span>
           <AutoTooltip
-            :key="item[1]"
-            class="text-[--el-color-primary] text-xs flex-1 text-right text-ellipsis overflow-hidden"
+            v-if="isFile && item[0] === 'Path'"
+            :key="activeRecord.id"
             :value="item[1]"
+          />
+          <span
+            v-else
+            class="text-[--el-color-primary] text-xs flex-1 text-right text-ellipsis overflow-hidden"
+            >{{ item[1] }}</span
           >
-            {{ item[1] }}
-          </AutoTooltip>
         </div>
       </div>
     </el-scrollbar>
@@ -33,6 +36,7 @@ import { TYPE_VALUE } from '@/constants/aria'
 
 const mainStore = useMainStore()
 const activeRecord = computed(() => mainStore.activeRecord)
+const isFile = computed(() => activeRecord.value.type === TYPE_VALUE.file)
 const info = ref<Array<any[]>>([])
 const formatText = () => {
   return { characters: 'Characters' }
