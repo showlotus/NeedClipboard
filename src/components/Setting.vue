@@ -2,14 +2,15 @@
   <div
     class="flex justify-between items-center gap-2 select-none z-[2000] bg-[--nc-bg-color]"
   >
-    <div
-      class="py-1 px-1 flex items-center gap-2 rounded hover:bg-[--nc-item-color-hover]"
-      @click="handleToggleSettingPanel"
-    >
-      <!-- logo -->
-      <span class="w-5 h-5 inline-block rounded border"></span>
-      <span class="pr-1 text-sm">Need Clipboard</span>
-    </div>
+    <HotkeyTooltip placement="right" command="Ctrl ," separator=" ">
+      <div
+        class="py-1 px-1 flex items-center gap-2 rounded hover:bg-[--nc-item-color-hover]"
+        @click="handleToggleSettingPanel"
+      >
+        <LogoSvg class="w-4 h-4 text-[crimson]" />
+        <span class="pr-1 text-sm">Need Clipboard</span>
+      </div>
+    </HotkeyTooltip>
 
     <div class="flex-1 flex justify-end items-center gap-1">
       <CodeBlock
@@ -32,6 +33,7 @@
 <script lang="ts" setup>
 import hotkeys from 'hotkeys-js'
 import { ref, watch } from 'vue'
+import LogoSvg from '@/assets/icons/logo.svg'
 
 const handlePastToClipboard = () => {
   hotkeys.trigger('enter', 'home')

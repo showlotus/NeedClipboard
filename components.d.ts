@@ -27,6 +27,7 @@ declare module 'vue' {
     FileView: typeof import('./src/components/view/FileView.vue')['default']
     Header: typeof import('./src/components/Header.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    HotkeyTooltip: typeof import('./src/components/HotkeyTooltip.vue')['default']
     ImageView: typeof import('./src/components/view/ImageView.vue')['default']
     Info: typeof import('./src/components/Info.vue')['default']
     List: typeof import('./src/components/List.vue')['default']

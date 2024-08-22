@@ -8,13 +8,15 @@
         class="no-drag min-w-80"
       />
     </div>
-    <custom-select
-      ref="customSelectRef"
-      v-model="value"
-      :options="typeOptions"
-      placeholder="Select"
-      class="w-40 no-drag"
-    />
+    <HotkeyTooltip placement="left" command="Ctrl,P">
+      <custom-select
+        ref="customSelectRef"
+        v-model="value"
+        :options="typeOptions"
+        placeholder="Select"
+        class="w-40 no-drag"
+      />
+    </HotkeyTooltip>
   </div>
 </template>
 

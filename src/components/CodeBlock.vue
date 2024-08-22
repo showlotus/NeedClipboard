@@ -7,7 +7,7 @@
       <span
         v-for="(t, i) in keys"
         :key="i"
-        class="py-1 px-1.5 rounded bg-[--nc-code-bg-color] text-[--nc-code-color] group-hover:bg-[--nc-code-bg-active-color]"
+        class="py-1 px-1.5 rounded font-bold bg-[--nc-code-bg-color] text-[--nc-code-color] group-hover:bg-[--nc-code-bg-active-color]"
         >{{ t }}</span
       >
     </div>
@@ -20,14 +20,16 @@ import { computed } from 'vue'
 interface Props {
   label?: string
   value?: string
+  separator?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   label: '',
-  value: ''
+  value: '',
+  separator: ','
 })
 
-const keys = computed(() => props.value.split(','))
+const keys = computed(() => props.value.split(props.separator))
 </script>
 
 <style scoped></style>

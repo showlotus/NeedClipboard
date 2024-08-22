@@ -226,8 +226,8 @@ async function createWindow() {
     title: 'Main window',
     // width: width * 0.4,
     // height: height * 0.5,
-    width: width * 0.8,
-    height: height * 0.5,
+    width: width * 0.4,
+    height: height * 0.8,
     icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
       preload,
