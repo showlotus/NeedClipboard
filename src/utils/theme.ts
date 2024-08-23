@@ -18,6 +18,6 @@ export function useDarkTheme() {
   window.ipcRenderer.invoke('set-theme', 'dark')
 }
 
-export async function useTheme() {
+export async function getTheme() {
   return await window.ipcRenderer.invoke('get-theme')
 }

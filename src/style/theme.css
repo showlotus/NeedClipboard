@@ -33,6 +33,7 @@
     color: var(--el-color-primary);
     background: var(--nc-bg-color);
     border: 1px solid var(--el-border-color);
+    box-shadow: var(--el-box-shadow-light);
   }
 }
 
@@ -62,5 +63,6 @@ html.dark {
     color: var(--el-color-primary);
     background: var(--nc-bg-color);
     border: 1px solid var(--el-border-color);
+    box-shadow: 0px 0px 12px #000;
   }
 }

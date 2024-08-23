@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
 import { useMainStore } from '@/stores/main'
-import { useTheme } from '@/utils/theme'
+import { getTheme } from '@/utils/theme'
 import { onMounted, ref, watch } from 'vue'
 
 withDefaults(defineProps<{ value: string }>(), {
@@ -32,7 +32,7 @@ const theme = ref('dark')
 watch(
   () => mainStore.setting.theme,
   async () => {
-    theme.value = await useTheme()
+    theme.value = await getTheme()
   }
 )
 

@@ -11,7 +11,7 @@
           v-for="item in group.data"
           :key="item.id"
           :data-id="'NC_' + item.id"
-          class="group mx-2.5 px-2 h-10 leading-10 rounded-md select-none flex items-center gap-2"
+          class="group mx-2.5 px-2 h-10 leading-10 rounded-md select-none flex items-center gap-2 overflow-hidden relative"
           :class="{
             'is-active': activeId === item.id,
             'bg-[--nc-item-color-active]': activeId === item.id,
@@ -20,9 +20,25 @@
           @click="handleClick(item.id)"
         >
           <TypeIcon :data="item" class="min-w-6" />
-          <span class="overflow-hidden text-ellipsis whitespace-nowrap">
+          <span
+            v-if="item.type !== 'Image'"
+            class="overflow-hidden text-ellipsis whitespace-nowrap"
+          >
             {{ item.content }}
           </span>
+          <!-- <div
+            v-else
+            class="flex-1 w-full h-full object-cover -mr-2 rounded-r-md"
+            :style="{
+              backgroundImage: `url()`
+            }"
+          ></div> -->
+          <img
+            v-else
+            :src="item.url"
+            class="w-full max-h-full -mr-2 object-cover rounded-r-md opacity-30"
+            :class="theme === 'dark' ? 'brightness-50' : 'brightness-95'"
+          />
         </div>
       </div>
       <div
@@ -48,10 +64,18 @@ import { useMainStore } from '@/stores/main'
 import { useSearch } from '@/hooks/useSearch'
 import { debounce } from '@/utils/debounce'
 import { throttle } from '@/utils/throttle'
+import { getTheme } from '@/utils/theme'
 
 const { t } = useI18n()
 const mainStore = useMainStore()
 const searchParams = computed(() => mainStore.searchParams)
+const theme = ref('dark')
+watch(
+  () => mainStore.setting.theme,
+  async () => {
+    theme.value = await getTheme()
+  }
+)
 // prettier-ignore
 const { groupedData, flattenData, search, next, isFullLoad } = useSearch(searchParams)
 const elScrollbarRef = ref()

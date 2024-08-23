@@ -227,7 +227,7 @@ async function createWindow() {
     // width: width * 0.4,
     // height: height * 0.5,
     width: width * 0.4,
-    height: height * 0.8,
+    height: height * 1,
     icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
       preload,
@@ -317,7 +317,12 @@ async function createWindow() {
   })
 
   // TODO 创建系统托盘
+  const icon = nativeImage.createFromPath(
+    path.join(process.env.VITE_PUBLIC, 'logo.')
+  )
+  // tray = new Tray(icon)
   tray = new Tray(path.join(process.env.VITE_PUBLIC, 'electron.ico'))
+  // tray = new Tray(path.join(process.env.VITE_PUBLIC, 'logo.svg'))
   // 点击系统托盘图标时，打开窗口
   tray.on('click', () => {
     !win.isVisible() && win.show()

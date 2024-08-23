@@ -29,7 +29,13 @@ function genMockData(n = 10) {
         .replace(/(?!^)(?=(\w{80})+$)/g, '\n')
       data.characters = data.content.length
     } else if (type === 'Image') {
-      data.url = faker.image.dataUri({ width: 2000, type: 'svg-base64' })
+      console.log(faker.image.avatar())
+      data.url = faker.image.dataUri({
+        width: 200,
+        height: 1000,
+        type: 'svg-base64'
+      })
+      data.url = faker.image.avatar()
       data.dimensions = '640×480'
       data.content = 'Image(640×480)'
       data.size = '200 KB'
