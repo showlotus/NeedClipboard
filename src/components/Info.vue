@@ -1,7 +1,7 @@
 <template>
   <div class="pt-2 text-sm flex flex-col cursor-default select-none">
     <div class="py-2 px-3 text-xs font-bold text-[--nc-group-label-color]">
-      Information
+      {{ $t('NC.information') }}
     </div>
     <el-scrollbar>
       <div class="flex-1 h-0 px-3">
@@ -48,7 +48,7 @@ const formatLink = () => {
   return { characters: 'Characters' }
 }
 const formatFile = () => {
-  return { path: 'Path', size: 'Size' }
+  return { path: 'Path', size: 'Size', filesCount: 'Files' }
 }
 const formatColor = () => {
   return []

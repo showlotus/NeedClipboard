@@ -150,5 +150,9 @@
   "NC.noResults": {
     "zh_CN": "无结果",
     "en_US": "No Results"
+  },
+  "NC.information": {
+    "zh_CN": "信息",
+    "en_US": "Information"
   }
 }

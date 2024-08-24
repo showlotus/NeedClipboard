@@ -29,7 +29,6 @@ function genMockData(n = 10) {
         .replace(/(?!^)(?=(\w{80})+$)/g, '\n')
       data.characters = data.content.length
     } else if (type === 'Image') {
-      console.log(faker.image.avatar())
       data.url = faker.image.dataUri({
         width: 200,
         height: 1000,
@@ -79,6 +78,7 @@ function genMockData(n = 10) {
         data.path = path
         data.content = path.split('/').at(-1)
         data.files = files
+        data.filesCount = files.length
       }
     }
     return {

@@ -5,7 +5,7 @@
         <div
           class="mt-4 ml-4 mb-2 text-xs font-bold text-[--nc-group-label-color]"
         >
-          {{ t(group.label) }}
+          {{ $t(group.label) }}
         </div>
         <div
           v-for="item in group.data"
@@ -26,19 +26,7 @@
           >
             {{ item.content }}
           </span>
-          <!-- <div
-            v-else
-            class="flex-1 w-full h-full object-cover -mr-2 rounded-r-md"
-            :style="{
-              backgroundImage: `url()`
-            }"
-          ></div> -->
-          <img
-            v-else
-            :src="item.url"
-            class="w-full max-h-full -mr-2 object-cover rounded-r-md opacity-30"
-            :class="theme === 'dark' ? 'brightness-50' : 'brightness-95'"
-          />
+          <img v-else :src="item.url" class="w-6 max-h-6 object-cover" />
         </div>
       </div>
       <div
@@ -48,7 +36,7 @@
         <span
           class="before:content-['-----'] before:mr-2 after:content-['-----'] after:ml-2"
         >
-          {{ t('NC.inTheEnd') }}</span
+          {{ $t('NC.inTheEnd') }}</span
         >
       </div>
       <div class="mb-2"></div>
@@ -58,7 +46,6 @@
 
 <script lang="ts" setup>
 import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
 import hotkeys from 'hotkeys-js'
 import { useMainStore } from '@/stores/main'
 import { useSearch } from '@/hooks/useSearch'
@@ -66,7 +53,6 @@ import { debounce } from '@/utils/debounce'
 import { throttle } from '@/utils/throttle'
 import { getTheme } from '@/utils/theme'
 
-const { t } = useI18n()
 const mainStore = useMainStore()
 const searchParams = computed(() => mainStore.searchParams)
 const theme = ref('dark')

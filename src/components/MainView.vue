@@ -14,7 +14,7 @@
       v-show="showEmpty"
       class="w-full h-full flex justify-center items-center"
     >
-      {{ t('NC.noResults') }}
+      {{ $t('NC.noResults') }}
     </div>
   </div>
 </template>
@@ -23,7 +23,6 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
 const showEmpty = ref(false)
 const handleUpdate = (isEmpty: boolean) => {
   showEmpty.value = isEmpty
