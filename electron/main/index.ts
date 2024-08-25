@@ -228,7 +228,7 @@ async function createWindow() {
     // height: height * 0.5,
     width: width * 0.4,
     height: height * 1,
-    icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
+    // icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
       preload,
       // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
@@ -311,18 +311,27 @@ async function createWindow() {
   })
   nativeTheme.themeSource = SettingsStore.get('theme')
   win.webContents.send('update-theme', SettingsStore.get('theme'))
+  const trayIconLight = nativeImage.createFromPath(
+    path.join(process.env.VITE_PUBLIC, 'tray-light.png')
+  )
+  const trayIconDark = nativeImage.createFromPath(
+    path.join(process.env.VITE_PUBLIC, 'tray-dark.png')
+  )
+
   // 系统主题切换时，通知渲染进程更新视图
   nativeTheme.on('updated', () => {
+    const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
+    // TODO 如何同步更新系统托盘中的图标
+    // if (theme === 'dark') {
+    //   tray.setImage(trayIconLight)
+    // } else {
+    //   tray.setImage(trayIconDark)
+    // }
     win.webContents.send('update-theme', SettingsStore.get('theme'))
   })
 
   // TODO 创建系统托盘
-  const icon = nativeImage.createFromPath(
-    path.join(process.env.VITE_PUBLIC, 'logo.')
-  )
-  // tray = new Tray(icon)
-  tray = new Tray(path.join(process.env.VITE_PUBLIC, 'electron.ico'))
-  // tray = new Tray(path.join(process.env.VITE_PUBLIC, 'logo.svg'))
+  tray = new Tray(trayIconLight)
   // 点击系统托盘图标时，打开窗口
   tray.on('click', () => {
     !win.isVisible() && win.show()

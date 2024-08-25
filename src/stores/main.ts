@@ -40,7 +40,7 @@ export const useMainStore = defineStore('main', () => {
 
   const setting = ref<Setting>({
     primaryAction: 'clipboard',
-    theme: 'dark',
+    theme: 'system',
     language: 'zh_CN',
     startup: false,
     shortcutKey: 'Alt C',

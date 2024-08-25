@@ -7,7 +7,7 @@
         class="py-1 px-1 flex items-center gap-2 rounded hover:bg-[--nc-item-color-hover]"
         @click="handleToggleSettingPanel"
       >
-        <LogoSvg class="w-4 h-4 text-[crimson]" />
+        <LogoSvg class="w-4 h-4 text-[--el-text-color-regular]" />
         <span class="pr-1 text-sm">Need Clipboard</span>
       </div>
     </HotkeyTooltip>

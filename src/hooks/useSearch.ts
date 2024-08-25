@@ -31,10 +31,13 @@ function genMockData(n = 10) {
     } else if (type === 'Image') {
       data.url = faker.image.dataUri({
         width: 200,
-        height: 1000,
+        height: 200,
         type: 'svg-base64'
       })
-      data.url = faker.image.avatar()
+
+      // data.url = faker.image.nature(1200, 500, true)
+      // data.url = faker.image.nature(500, 500, true)
+      // data.url = faker.image.nature(500, 1200, true)
       data.dimensions = '640×480'
       data.content = 'Image(640×480)'
       data.size = '200 KB'
@@ -72,9 +75,13 @@ function genMockData(n = 10) {
           .fill(0)
           .map(() => faker.system.directoryPath())
           .join('')
-        const files = new Array(3)
+        const files = new Array(20)
           .fill(0)
-          .map(() => /* path + '/' + */ faker.system.commonFileName())
+          .map(() =>
+            Math.random() > 0.5
+              ? faker.system.commonFileName()
+              : faker.system.directoryPath()
+          )
         data.path = path
         data.content = path.split('/').at(-1)
         data.files = files

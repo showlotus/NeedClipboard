@@ -15,7 +15,8 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "types": ["vue", "vue-i18n"]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

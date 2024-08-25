@@ -17,7 +17,8 @@
             'bg-[--nc-item-color-active]': activeId === item.id,
             'hover:bg-[--nc-item-color-hover]': activeId !== item.id
           }"
-          @click="handleClick(item.id)"
+          @click.left="handleClick(item.id)"
+          @click.right="handleOpenMenu(item)"
         >
           <TypeIcon :data="item" class="min-w-6" />
           <span
@@ -26,7 +27,11 @@
           >
             {{ item.content }}
           </span>
-          <img v-else :src="item.url" class="w-6 max-h-6 object-cover" />
+          <img
+            v-else
+            :src="item.url"
+            class="flex-1 w-0 max-w-6 max-h-6 object-cover"
+          />
         </div>
       </div>
       <div
@@ -102,9 +107,10 @@ const activeIndex = ref(-1)
 watch(activeIndex, (val) => {
   mainStore.updateActiveRecord(flattenData.value[val])
 })
-const activeId = computed(() => {
-  return flattenData.value[activeIndex.value]?.id
+const activeItem = computed(() => {
+  return flattenData.value?.[activeIndex.value]
 })
+const activeId = computed(() => activeItem.value?.id)
 
 const loadMore = () => {
   if (isFullLoad.value) {
@@ -128,6 +134,11 @@ const showScrollbar = throttle(() => {
 const handleClick = (id: number) => {
   const idx = flattenData.value.findIndex((v) => v.id === id)
   activeIndex.value = idx
+}
+const handleOpenMenu = (item: any) => {
+  // TODO 右键时是否需要选中当前项
+  handleClick(item.id)
+  console.log('open menu')
 }
 
 const instance = getCurrentInstance()
@@ -161,11 +172,17 @@ hotkeys('down', 'home', (e) => {
   activeIndex.value++
   scrollIntoView()
 })
+hotkeys('tab', 'home', () => {
+  activeItem.value && handleOpenMenu(activeItem.value)
+})
+hotkeys('delete', 'home', () => {
+  console.log('Delete', activeItem.value)
+})
 hotkeys('enter', 'home', () => {
-  console.log('Past to Clipboard', flattenData.value[activeIndex.value])
+  console.log('Past to Clipboard', activeItem.value)
 })
 hotkeys('ctrl+enter', 'home', () => {
-  console.log('Past to Action App', flattenData.value[activeIndex.value])
+  console.log('Past to Action App', activeItem.value)
 })
 </script>
 
