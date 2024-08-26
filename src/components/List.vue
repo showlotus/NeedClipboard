@@ -10,7 +10,7 @@
         <div
           v-for="item in group.data"
           :key="item.id"
-          :data-id="'NC_' + item.id"
+          :data-id="item.id"
           class="group mx-2.5 px-2 h-10 leading-10 rounded-md select-none flex items-center gap-2 overflow-hidden relative"
           :class="{
             'is-active': activeId === item.id,
@@ -46,6 +46,12 @@
       </div>
       <div class="mb-2"></div>
     </div>
+
+    <Menu
+      v-model:visible="menuVisible"
+      :trigger-ref="menuTriggerRef"
+      @on-delete="handleMenuDelete"
+    />
   </el-scrollbar>
 </template>
 
@@ -106,6 +112,7 @@ watch(flattenData, (val) => {
 const activeIndex = ref(-1)
 watch(activeIndex, (val) => {
   mainStore.updateActiveRecord(flattenData.value[val])
+  menuVisible.value = false
 })
 const activeItem = computed(() => {
   return flattenData.value?.[activeIndex.value]
@@ -135,21 +142,32 @@ const handleClick = (id: number) => {
   const idx = flattenData.value.findIndex((v) => v.id === id)
   activeIndex.value = idx
 }
+
+const menuVisible = ref(false)
+const menuTriggerRef = ref<HTMLElement | null>(null)
 const handleOpenMenu = (item: any) => {
+  console.log('open menu')
   // TODO 右键时是否需要选中当前项
   handleClick(item.id)
   console.log('open menu')
+  nextTick(() => {
+    menuVisible.value = true
+    menuTriggerRef.value = getCurrActiveItemEl()
+  })
+}
+const handleMenuDelete = () => {
+  console.log('delete', activeItem.value)
 }
 
 const instance = getCurrentInstance()
-const getCurrItemEl = () => {
+const getCurrActiveItemEl = () => {
   return instance?.proxy?.$el.querySelector(
-    `div[data-id="NC_${activeId.value}"]`
+    `div[data-id="${activeId.value}"]`
   ) as HTMLElement
 }
 const scrollIntoView = () => {
   nextTick(() => {
-    getCurrItemEl().scrollIntoView({
+    getCurrActiveItemEl().scrollIntoView({
       block: 'center'
     })
   })
@@ -173,7 +191,10 @@ hotkeys('down', 'home', (e) => {
   scrollIntoView()
 })
 hotkeys('tab', 'home', () => {
-  activeItem.value && handleOpenMenu(activeItem.value)
+  if (activeItem.value) {
+    menuTriggerRef.value = getCurrActiveItemEl()
+    menuVisible.value = !menuVisible.value
+  }
 })
 hotkeys('delete', 'home', () => {
   console.log('Delete', activeItem.value)

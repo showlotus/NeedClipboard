@@ -57,7 +57,6 @@ hotkeys('ctrl+p', 'home', () => {
 
 // 禁用 tab 的默认行为
 hotkeys('tab', 'home', (e) => {
-  e.preventDefault()
   return false
 })
 </script>
