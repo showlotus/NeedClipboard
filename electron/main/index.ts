@@ -331,7 +331,7 @@ async function createWindow() {
   })
 
   // TODO 创建系统托盘
-  tray = new Tray(trayIconLight)
+  tray = new Tray(path.join(process.env.VITE_PUBLIC, 'icon/png/logo.png'))
   // 点击系统托盘图标时，打开窗口
   tray.on('click', () => {
     !win.isVisible() && win.show()
