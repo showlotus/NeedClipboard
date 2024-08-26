@@ -10,6 +10,7 @@
         <div
           v-for="item in group.data"
           :key="item.id"
+          v-click-outside="handleClickOutside"
           :data-id="item.id"
           class="group mx-2.5 px-2 h-10 leading-10 rounded-md select-none flex items-center gap-2 overflow-hidden relative"
           :class="{
@@ -58,6 +59,7 @@
 <script lang="ts" setup>
 import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue'
 import hotkeys from 'hotkeys-js'
+import { ClickOutside as vClickOutside } from 'element-plus'
 import { useMainStore } from '@/stores/main'
 import { useSearch } from '@/hooks/useSearch'
 import { debounce } from '@/utils/debounce'
@@ -154,6 +156,12 @@ const handleOpenMenu = (item: any) => {
     menuVisible.value = true
     menuTriggerRef.value = getCurrActiveItemEl()
   })
+}
+const handleClickOutside = (e) => {
+  console.log('outside', e)
+  if (e.target !== getCurrActiveItemEl()) {
+    menuVisible.value = false
+  }
 }
 const handleMenuDelete = () => {
   console.log('delete', activeItem.value)
