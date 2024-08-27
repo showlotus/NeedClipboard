@@ -10,7 +10,6 @@
         <div
           v-for="item in group.data"
           :key="item.id"
-          v-click-outside="handleClickOutside"
           :data-id="item.id"
           class="group mx-2.5 px-2 h-10 leading-10 rounded-md select-none flex items-center gap-2 overflow-hidden relative"
           :class="{
@@ -151,17 +150,10 @@ const handleOpenMenu = (item: any) => {
   console.log('open menu')
   // TODO 右键时是否需要选中当前项
   handleClick(item.id)
-  console.log('open menu')
   nextTick(() => {
     menuVisible.value = true
     menuTriggerRef.value = getCurrActiveItemEl()
   })
-}
-const handleClickOutside = (e) => {
-  console.log('outside', e)
-  if (e.target !== getCurrActiveItemEl()) {
-    menuVisible.value = false
-  }
 }
 const handleMenuDelete = () => {
   console.log('delete', activeItem.value)

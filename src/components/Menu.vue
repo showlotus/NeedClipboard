@@ -1,44 +1,46 @@
 <template>
-  <el-tooltip
-    ref="menuRef"
-    placement="right"
-    trigger="contextmenu"
-    :show-arrow="false"
-    :visible="visible"
-    :popper-options="{
-      modifiers: [
-        {
-          name: 'computeStyles',
-          options: {
-            adaptive: false,
-            enabled: false
+  <div v-click-outside="handleClickOutside">
+    <el-tooltip
+      ref="menuRef"
+      placement="right"
+      trigger="contextmenu"
+      :show-arrow="false"
+      :visible="visible"
+      :popper-options="{
+        modifiers: [
+          {
+            name: 'computeStyles',
+            options: {
+              adaptive: false,
+              enabled: false
+            }
           }
-        }
-      ]
-    }"
-    popper-class="p-0"
-    :virtual-ref="triggerRef"
-    virtual-triggering
-    v-bind="$attrs"
-  >
-    <template #content>
-      <ul class="p-1 select-none">
-        <li
-          v-for="(o, i) in options"
-          :key="i"
-          class="py-1 px-4 flex items-center whitespace-nowrap cursor-pointer text-sm rounded"
-          :class="{
-            'bg-[--el-fill-color-light]': i === activeIndex
-          }"
-          @mouseenter="activeIndex = i"
-          @click="o.click"
-        >
-          {{ o.label }}
-        </li>
-      </ul>
-    </template>
-    <slot />
-  </el-tooltip>
+        ]
+      }"
+      popper-class="p-0"
+      :virtual-ref="triggerRef"
+      virtual-triggering
+      v-bind="$attrs"
+    >
+      <template #content>
+        <ul class="p-1 select-none">
+          <li
+            v-for="(o, i) in options"
+            :key="i"
+            class="py-1 px-4 flex items-center whitespace-nowrap cursor-pointer text-sm rounded"
+            :class="{
+              'bg-[--el-fill-color-light]': i === activeIndex
+            }"
+            @mouseenter="activeIndex = i"
+            @click="o.click"
+          >
+            {{ o.label }}
+          </li>
+        </ul>
+      </template>
+      <slot />
+    </el-tooltip>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -67,6 +69,12 @@ const menuRef = ref()
 
 const close = () => {
   emit('update:visible', false)
+}
+const handleClickOutside = () => {
+  if (props.visible) {
+    console.log('outside --------------')
+    close()
+  }
 }
 watch(
   () => props.visible,
@@ -122,14 +130,6 @@ const options = computed(() => [
     }
   }
 ])
-
-document.addEventListener('click', (e) => {
-  const target = e.target as HTMLElement
-  console.log('document click')
-  if (!target.contains(menuRef.value.popperRef.contentRef)) {
-    close()
-  }
-})
 
 document.addEventListener('contextmenu', (e) => {
   e.stopPropagation()
