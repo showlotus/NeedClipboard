@@ -13,11 +13,8 @@
           <span class="font-bold text-[--nc-group-label-color] min-w-40">{{
             item[0]
           }}</span>
-          <AutoTooltip
-            v-if="isFile && item[0] === 'Path'"
-            :key="activeRecord.id"
-            :value="item[1]"
-          />
+          <!-- TODO only the path attribute need tooltip -->
+          <AutoTooltip v-if="isFile" :key="activeRecord.id" :value="item[1]" />
           <span
             v-else
             class="text-[--el-color-primary] text-xs flex-1 text-right text-ellipsis overflow-hidden"
@@ -30,53 +27,66 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useMainStore } from '@/stores/main'
 import { TYPE_VALUE } from '@/constants/aria'
 
+const { t } = useI18n()
 const mainStore = useMainStore()
 const activeRecord = computed(() => mainStore.activeRecord)
 const isFile = computed(() => activeRecord.value.type === TYPE_VALUE.file)
-const info = ref<Array<any[]>>([])
-const formatText = () => {
-  return { characters: 'Characters' }
-}
-const formatImage = () => {
-  return { dimensions: 'Dimensions', size: 'Size' }
-}
-const formatLink = () => {
-  return { characters: 'Characters' }
-}
-const formatFile = () => {
-  return { path: 'Path', size: 'Size', filesCount: 'Files' }
-}
-const formatColor = () => {
-  return []
-}
 const ops = {
-  [TYPE_VALUE.text]: formatText,
-  [TYPE_VALUE.image]: formatImage,
-  [TYPE_VALUE.link]: formatLink,
-  [TYPE_VALUE.color]: formatColor,
-  [TYPE_VALUE.file]: formatFile
+  [TYPE_VALUE.text]: (data: any) => {
+    return [
+      [t('NC.source'), data.application],
+      [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
+      [t('NC.characters'), data.characters],
+      [t('NC.copied'), data.createTime]
+    ]
+  },
+  [TYPE_VALUE.image]: (data: any) => {
+    return [
+      [t('NC.source'), data.application],
+      [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
+      [t('NC.dimensions'), data.dimensions],
+      [t('NC.imageSize'), data.size],
+      [t('NC.copied'), data.createTime]
+    ]
+  },
+  [TYPE_VALUE.link]: (data: any) => {
+    return [
+      [t('NC.source'), data.application],
+      [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
+      [t('NC.characters'), data.characters],
+      [t('NC.copied'), data.createTime]
+    ]
+  },
+  [TYPE_VALUE.color]: (data: any) => {
+    return [
+      [t('NC.source'), data.application],
+      [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
+      [t('NC.copied'), data.createTime]
+    ]
+  },
+  [TYPE_VALUE.file]: (data: any) => {
+    return [
+      [t('NC.source'), data.application],
+      [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
+      [t('NC.path'), data.path],
+      [t('NC.fileSize'), data.size],
+      [t('NC.fileCount'), data.fileCount],
+      [t('NC.copied'), data.createTime]
+    ]
+  }
 }
-const formatInfo = (data: any) => {
-  const res = [] as any
-  res.push(['Source', data.application])
-  res.push(['Content Type', data.type])
-  const fields = ops[data.type]() as Record<string, string>
-  Object.keys(fields).forEach((key) => {
-    res.push([fields[key], data[key]])
-  })
-  res.push(['Copied', data.createTime])
-  console.log(fields)
-  return res
-}
-watch(activeRecord, (val) => {
-  if (!val) {
-    info.value = [] as any
+
+const info = computed(() => {
+  const val = activeRecord.value
+  if (!val || !val.type) {
+    return []
   } else {
-    info.value = formatInfo(val)
+    return ops[val.type](val)
   }
 })
 </script>

@@ -85,7 +85,7 @@ function genMockData(n = 10) {
         data.path = path
         data.content = path.split('/').at(-1)
         data.files = files
-        data.filesCount = files.length
+        data.fileCount = files.length
       }
     }
     return {

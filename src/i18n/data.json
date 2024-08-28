@@ -162,5 +162,61 @@
   "NC.information": {
     "zh_CN": "信息",
     "en_US": "Information"
+  },
+  "NC.source": {
+    "zh_CN": "来源",
+    "en_US": "Source"
+  },
+  "NC.type": {
+    "zh_CN": "类型",
+    "en_US": "Content Type"
+  },
+  "NC.path": {
+    "zh_CN": "路径",
+    "en_US": "Path"
+  },
+  "NC.characters": {
+    "zh_CN": "字符数",
+    "en_US": "Characters"
+  },
+  "NC.copied": {
+    "zh_CN": "复制于",
+    "en_US": "Copied"
+  },
+  "NC.dimensions": {
+    "zh_CN": "尺寸",
+    "en_US": "Dimensions"
+  },
+  "NC.imageSize": {
+    "zh_CN": "图片大小",
+    "en_US": "Image Size"
+  },
+  "NC.fileSize": {
+    "zh_CN": "文件大小",
+    "en_US": "File Size"
+  },
+  "NC.fileCount": {
+    "zh_CN": "文件数量",
+    "en_US": "File Count"
+  },
+  "NC.text": {
+    "zh_CN": "文本",
+    "en_US": "Text"
+  },
+  "NC.color": {
+    "zh_CN": "颜色",
+    "en_US": "Color"
+  },
+  "NC.link": {
+    "zh_CN": "链接",
+    "en_US": "Link"
+  },
+  "NC.image": {
+    "zh_CN": "图片",
+    "en_US": "Image"
+  },
+  "NC.file": {
+    "zh_CN": "文件",
+    "en_US": "File"
   }
 }
