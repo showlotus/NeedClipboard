@@ -1,5 +1,5 @@
-import 'vue-i18n'
 import { ComponentCustomProperties } from 'vue'
+import 'vue-i18n'
 
 // 声明 vue 模块扩展
 declare module '@vue/runtime-core' {

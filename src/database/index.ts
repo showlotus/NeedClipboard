@@ -1,4 +1,5 @@
 import Dexie, { EntityTable } from 'dexie'
+
 import pkg from '../../package.json'
 
 interface Clipboard {

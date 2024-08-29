@@ -1,23 +1,23 @@
 import {
-  app,
   BrowserWindow,
-  shell,
-  ipcMain,
-  globalShortcut,
-  screen,
   Menu,
-  webContents,
   Tray,
+  app,
+  clipboard,
+  globalShortcut,
+  ipcMain,
   nativeImage,
   nativeTheme,
-  clipboard
+  screen,
+  shell,
+  webContents
 } from 'electron'
-import { createRequire } from 'node:module'
-import { fileURLToPath } from 'node:url'
-import path from 'node:path'
-import fs from 'node:fs'
-import os from 'node:os'
 import ElectronStore from 'electron-store'
+import fs from 'node:fs'
+import { createRequire } from 'node:module'
+import os from 'node:os'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -184,6 +184,11 @@ ipcMain.handle('unregister-all-shortcut', (_event) => {
 })
 ipcMain.handle('register-all-shortcut', (_event) => {
   registerShortcut()
+})
+
+// TODO 获取当前活动应用，监听当前活动应用是否更新，通知视图层更新
+ipcMain.handle('get-active-app', (_event) => {
+  return Promise.resolve('Google Chrome')
 })
 
 // 注册快捷键

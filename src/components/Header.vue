@@ -21,8 +21,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, computed } from 'vue'
 import hotkeys from 'hotkeys-js'
+import { computed, ref, watch } from 'vue'
+
 import { useQueryTypeOptions } from '@/hooks/useTypeOptions'
 import { SearchParams, useMainStore } from '@/stores/main'
 

@@ -56,14 +56,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue'
 import hotkeys from 'hotkeys-js'
-import { ClickOutside as vClickOutside } from 'element-plus'
-import { useMainStore } from '@/stores/main'
+import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue'
+
 import { useSearch } from '@/hooks/useSearch'
+import { useMainStore } from '@/stores/main'
 import { debounce } from '@/utils/debounce'
-import { throttle } from '@/utils/throttle'
 import { getTheme } from '@/utils/theme'
+import { throttle } from '@/utils/throttle'
 
 const mainStore = useMainStore()
 const searchParams = computed(() => mainStore.searchParams)

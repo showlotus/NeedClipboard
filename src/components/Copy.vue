@@ -16,9 +16,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import imgUrl from './img.txt?raw'
-import imgUrl2 from './img2.txt?raw'
+
 import db from '../database'
+import imgUrl2 from './img2.txt?raw'
+import imgUrl from './img.txt?raw'
+
 const handleCopyFiles = () => {
   const files = [
     'C:\\Users\\showlotus\\Desktop\\WinCode\\t2',

@@ -6,15 +6,17 @@
 
 <script lang="ts" setup>
 import { computed, h } from 'vue'
-import TextSvg from '@/assets/icons/text.svg?component'
-import ImageSvg from '@/assets/icons/image.svg?component'
-import LinkSvg from '@/assets/icons/link.svg?component'
+
 import FileSvg from '@/assets/icons/file.svg?component'
 import FolderFileSvg from '@/assets/icons/folder-file.svg?component'
 import FolderSvg from '@/assets/icons/folder.svg?component'
-import ColorBlock from './ColorBlock.vue'
+import ImageSvg from '@/assets/icons/image.svg?component'
+import LinkSvg from '@/assets/icons/link.svg?component'
+import TextSvg from '@/assets/icons/text.svg?component'
 import { FILE_SUB_TYPE_VALUE, TYPE_VALUE } from '@/constants/aria'
 import { ClipboardType } from '@/hooks/useTypeOptions'
+
+import ColorBlock from './ColorBlock.vue'
 
 interface Props {
   data: {

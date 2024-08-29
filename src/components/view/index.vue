@@ -6,12 +6,14 @@
 
 <script lang="ts" setup>
 import { computed, h } from 'vue'
-import { useMainStore } from '@/stores/main'
+
 import { TYPE_VALUE } from '@/constants/aria'
-import TextView from './TextView.vue'
+import { useMainStore } from '@/stores/main'
+
 import ColorView from './ColorView.vue'
-import ImageView from './ImageView.vue'
 import FileView from './FileView.vue'
+import ImageView from './ImageView.vue'
+import TextView from './TextView.vue'
 
 const mainStore = useMainStore()
 

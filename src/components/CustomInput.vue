@@ -13,10 +13,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, useAttrs } from 'vue'
 import hotkeys from 'hotkeys-js'
-import { bindDocEvent } from '../utils/dom'
+import { ref, useAttrs } from 'vue'
+
 import { EVENT_CODE } from '../constants/aria'
+import { bindDocEvent } from '../utils/dom'
 
 const model = defineModel<string>({ default: '' })
 const attrs = useAttrs()

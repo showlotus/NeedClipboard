@@ -44,10 +44,10 @@
 </template>
 
 <script lang="ts" setup>
-import hotkeys from 'hotkeys-js'
-import { watch, computed, ref, nextTick } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { ClickOutside as vClickOutside } from 'element-plus'
+import hotkeys from 'hotkeys-js'
+import { computed, nextTick, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const props = withDefaults(
   defineProps<{ triggerRef: any; visible: boolean }>(),

@@ -15,8 +15,9 @@
 </template>
 
 <script setup lang="ts">
-import { EVENT_CODE } from '@/constants/aria'
 import { ref } from 'vue'
+
+import { EVENT_CODE } from '@/constants/aria'
 
 const model = defineModel<string>({ default: '' })
 

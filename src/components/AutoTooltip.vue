@@ -19,9 +19,10 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted, ref, watch } from 'vue'
+
 import { useMainStore } from '@/stores/main'
 import { getTheme } from '@/utils/theme'
-import { onMounted, ref, watch } from 'vue'
 
 withDefaults(defineProps<{ value: string }>(), {
   value: ''

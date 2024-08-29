@@ -24,10 +24,12 @@
     "build": "vue-tsc --noEmit && vite build && electron-builder",
     "preview": "vite preview",
     "test": "vitest",
-    "lint": "eslint \"src/**/*.{js,ts,vue}\" \"electron/**/*.ts\""
+    "lint": "eslint \"src/**/*.{js,ts,vue}\" \"electron/**/*.ts\"",
+    "prettier": "prettier --write \"src/**/*.{js,ts,vue}\" \"electron/**/*.ts\""
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.19",
     "dayjs": "^1.11.12",

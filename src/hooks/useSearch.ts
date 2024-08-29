@@ -1,8 +1,11 @@
-import { Ref, ref } from 'vue'
 import { faker } from '@faker-js/faker'
-import { SearchParams } from '@/stores/main'
 import dayjs from 'dayjs'
+import { Ref, ref } from 'vue'
+
+import { FILE_SUB_TYPE_VALUE, TYPE_VALUE } from '@/constants/aria'
+import { SearchParams } from '@/stores/main'
 import {
+  ValidateDate,
   isLastMonth,
   isLastWeek,
   isLastYear,
@@ -11,10 +14,8 @@ import {
   isThisWeek,
   isThisYear,
   isToday,
-  isYesterday,
-  ValidateDate
+  isYesterday
 } from '@/utils/date'
-import { FILE_SUB_TYPE_VALUE, TYPE_VALUE } from '@/constants/aria'
 
 function genMockData(n = 10) {
   const t = ['Text', 'Image', 'File', 'Link', 'Color']

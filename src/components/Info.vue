@@ -29,8 +29,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useMainStore } from '@/stores/main'
+
 import { TYPE_VALUE } from '@/constants/aria'
+import { useMainStore } from '@/stores/main'
 
 const { t } = useI18n()
 const mainStore = useMainStore()

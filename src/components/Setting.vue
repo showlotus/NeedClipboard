@@ -8,23 +8,28 @@
         @click="handleToggleSettingPanel"
       >
         <LogoSvg class="w-4 h-4 text-[--el-text-color-regular]" />
-        <span class="pr-1 text-sm">Need Clipboard</span>
+        <span class="pr-1 text-sm">NeedClipboard</span>
       </div>
     </HotkeyTooltip>
 
-    <div class="flex-1 flex justify-end items-center gap-1">
-      <CodeBlock
-        label="Copy to Clipboard"
-        value="Enter"
-        @click="handlePastToClipboard"
-      />
-      <span class="text-[--nc-code-color] text-xs"> | </span>
-      <CodeBlock
-        label="Paste to Google Chrome"
-        value="Ctrl,Enter"
-        @click="handlePastToApp"
-      />
-    </div>
+    <transition name="el-fade-in-linear">
+      <div
+        v-show="!settingVisible"
+        class="flex-1 flex justify-end items-center gap-1"
+      >
+        <CodeBlock
+          :label="triggerLabelList[0]"
+          value="Enter"
+          @click="handleTriggerEnter"
+        />
+        <span class="text-[--nc-code-color] text-xs"> | </span>
+        <CodeBlock
+          :label="triggerLabelList[1]"
+          value="Ctrl,Enter"
+          @click="handleTriggerCtrlEnter"
+        />
+      </div>
+    </transition>
 
     <SettingPanel v-model="settingVisible" />
   </div>
@@ -32,19 +37,36 @@
 
 <script lang="ts" setup>
 import hotkeys from 'hotkeys-js'
-import { ref, watch } from 'vue'
-import LogoSvg from '@/assets/icons/logo.svg'
+import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const handlePastToClipboard = () => {
-  hotkeys.trigger('enter', 'home')
-}
-const handlePastToApp = () => {
-  hotkeys.trigger('ctrl+enter', 'home')
-}
+import LogoSvg from '@/assets/icons/logo.svg'
+import { useMainStore } from '@/stores/main'
+import { getActiveApp } from '@/utils/ipc'
 
 const settingVisible = ref(false)
 const handleToggleSettingPanel = () => {
   settingVisible.value = !settingVisible.value
+}
+
+const { t } = useI18n()
+const mainStore = useMainStore()
+
+// TODO 监听活动应用
+const activeApp = ref('Google Chrome')
+const triggerLabelList = computed(() => {
+  if (mainStore.setting.primaryAction === 'clipboard') {
+    return [t('NC.copyToClipboard'), t('NC.pasteToSomeApp', [activeApp.value])]
+  } else {
+    return [t('NC.pasteToSomeApp', [activeApp.value]), t('NC.copyToClipboard')]
+  }
+})
+
+const handleTriggerEnter = () => {
+  hotkeys.trigger('enter', 'home')
+}
+const handleTriggerCtrlEnter = () => {
+  hotkeys.trigger('ctrl+enter', 'home')
 }
 
 hotkeys('ctrl+,', () => {

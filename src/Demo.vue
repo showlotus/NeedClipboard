@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-import HelloWorld from './components/HelloWorld.vue'
-import DataBase from './components/DataBase.vue'
-import Copy from './components/Copy.vue'
-import Shortcut from './components/Shortcut.vue'
 import { computed, getCurrentInstance } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+import Copy from './components/Copy.vue'
+import DataBase from './components/DataBase.vue'
+import HelloWorld from './components/HelloWorld.vue'
+import Shortcut from './components/Shortcut.vue'
 import db from './database'
 
 const { t } = useI18n()

@@ -63,11 +63,12 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+
 import { useSettingOptions } from '@/hooks/useSettingOptions'
 import { useMainStore } from '@/stores/main'
 import { useDarkTheme, useLightTheme, useSystemTheme } from '@/utils/theme'
-import { computed, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 const value = defineModel<boolean>({ default: false })
 const mainStore = useMainStore()
@@ -104,8 +105,6 @@ watch(
   },
   { immediate: true }
 )
-
-console.log(t('NC.pasteToSomeApp', ['Code']))
 </script>
 
 <style lang="scss">

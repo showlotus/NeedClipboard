@@ -1,7 +1,8 @@
-import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { OptionType } from '@/hooks/useTypeOptions'
+import { ref } from 'vue'
+
 import { TYPE_VALUE } from '@/constants/aria'
+import { OptionType } from '@/hooks/useTypeOptions'
 import { Lang } from '@/i18n'
 
 export interface SearchParams {
