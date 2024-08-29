@@ -52,6 +52,11 @@ const handleToggleSettingPanel = () => {
 const { t } = useI18n()
 const mainStore = useMainStore()
 
+const ops = {
+  clipboard() {},
+  app() {}
+}
+
 // TODO 监听活动应用
 const activeApp = ref('Google Chrome')
 const triggerLabelList = computed(() => {
@@ -62,12 +67,31 @@ const triggerLabelList = computed(() => {
   }
 })
 
+const triggerTips = computed(() => {
+  const res = [{ label: '' }, { label: '' }]
+})
+
 const handleTriggerEnter = () => {
   hotkeys.trigger('enter', 'home')
 }
 const handleTriggerCtrlEnter = () => {
   hotkeys.trigger('ctrl+enter', 'home')
 }
+
+hotkeys('enter', 'home', () => {
+  if (mainStore.setting.primaryAction === 'clipboard') {
+    console.log('Copy to Clipboard' /* activeItem.value */)
+  } else {
+    console.log('Past to Action App' /* activeItem.value */)
+  }
+})
+hotkeys('ctrl+enter', 'home', () => {
+  if (mainStore.setting.primaryAction === 'app') {
+    console.log('Copy to Clipboard' /* activeItem.value */)
+  } else {
+    console.log('Past to Action App' /* activeItem.value */)
+  }
+})
 
 hotkeys('ctrl+,', () => {
   handleToggleSettingPanel()

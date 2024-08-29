@@ -199,12 +199,6 @@ hotkeys('tab', 'home', () => {
 hotkeys('delete', 'home', () => {
   console.log('Delete', activeItem.value)
 })
-hotkeys('enter', 'home', () => {
-  console.log('Past to Clipboard', activeItem.value)
-})
-hotkeys('ctrl+enter', 'home', () => {
-  console.log('Past to Action App', activeItem.value)
-})
 </script>
 
 <style lang="scss" scoped></style>
