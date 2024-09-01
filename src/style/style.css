@@ -3,8 +3,12 @@
 @tailwind utilities;
 
 @layer components {
-  .shadow-color-block {
-    box-shadow: 0 0 3px 3px currentColor;
+  .input-shadow {
+    box-shadow: 0 0 0 1px var(--el-border-color) inset;
+  }
+
+  .focus-input-shadow {
+    box-shadow: 0 0 0 1px var(--el-color-primary) inset;
   }
 }
 

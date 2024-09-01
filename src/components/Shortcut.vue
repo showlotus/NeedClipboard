@@ -1,9 +1,12 @@
 <template>
   <div class="flex flex-col">
-    <el-input v-model="model" class="w-full" />
+    <!-- <el-input v-model="modelValue" class="w-full" /> -->
     <!-- 先按所需的组合键，再按 Enter 键。 -->
     <input
-      class="text-center h-0"
+      :id="id"
+      ref="inputRef"
+      v-model="modelValue"
+      class="el-input__wrapper hover:input-shadow focus:focus-input-shadow outline-none"
       type="text"
       @focus="handleFocus"
       @keydown="handleKeydown"
@@ -19,7 +22,10 @@ import { ref } from 'vue'
 
 import { EVENT_CODE } from '@/constants/aria'
 
-const model = defineModel<string>({ default: '' })
+const modelValue = defineModel<string>({ default: 'Alt + V' })
+withDefaults(defineProps<{ id: string }>(), {
+  id: 'shortcut'
+})
 
 const keys = new Set<string>()
 const keydownKeys = new Set<string>()
@@ -82,7 +88,6 @@ const handleKeydown = (e: KeyboardEvent) => {
     updateValue(e.target as HTMLInputElement)
   }
   e.preventDefault()
-  return false
 }
 const handleKeyup = (e: KeyboardEvent) => {
   const key = formatKey(e.key)

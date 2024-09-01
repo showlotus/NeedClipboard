@@ -50,8 +50,17 @@
               class="w-full"
             />
           </el-form-item>
-          <el-form-item :label="t('NC.activateHotkey')">
-            <Shortcut v-model="setting.shortcutKey" class="w-full" />
+          <el-form-item>
+            <template #label>
+              <label for="shortcut" class="block w-full h-full">{{
+                t('NC.activateHotkey')
+              }}</label>
+            </template>
+            <Shortcut
+              id="shortcut"
+              v-model:val="setting.shortcutKey"
+              class="w-full"
+            />
           </el-form-item>
           <el-form-item :label="t('NC.startup')" label-position="left">
             <el-switch v-model="setting.startup" />
