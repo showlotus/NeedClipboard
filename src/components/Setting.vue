@@ -2,7 +2,7 @@
   <div
     class="flex justify-between items-center gap-2 select-none z-[2000] bg-[--nc-bg-color]"
   >
-    <HotkeyTooltip placement="right" command="Ctrl ," separator=" ">
+    <HotkeyTooltip placement="right" command="Ctrl ,">
       <div
         class="py-1 px-1 flex items-center gap-2 rounded hover:bg-[--nc-item-color-hover]"
         @click="handleToggleSettingPanel"
@@ -25,7 +25,7 @@
         <span class="text-[--nc-code-color] text-xs"> | </span>
         <CodeBlock
           :label="triggerLabelList[1]"
-          value="Ctrl,Enter"
+          value="Ctrl Enter"
           @click="handleTriggerCtrlEnter"
         />
       </div>
@@ -44,7 +44,7 @@ import LogoSvg from '@/assets/icons/logo.svg'
 import { useMainStore } from '@/stores/main'
 import { getActiveApp } from '@/utils/ipc'
 
-const settingVisible = ref(false)
+const settingVisible = ref(!false)
 const handleToggleSettingPanel = () => {
   settingVisible.value = !settingVisible.value
 }

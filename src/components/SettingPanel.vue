@@ -58,7 +58,7 @@
             </template>
             <Shortcut
               id="shortcut"
-              v-model:val="setting.shortcutKey"
+              v-model="setting.shortcutKey"
               class="w-full"
             />
           </el-form-item>
@@ -83,8 +83,8 @@ const value = defineModel<boolean>({ default: false })
 const mainStore = useMainStore()
 const setting = computed(() => mainStore.setting)
 
-const { themeOptions, languageOptions, keepDaysOptions, primaryActionOptions } =
-  useSettingOptions()
+// prettier-ignore
+const { themeOptions, languageOptions, keepDaysOptions, primaryActionOptions } = useSettingOptions()
 
 const ops = {
   system: useSystemTheme,

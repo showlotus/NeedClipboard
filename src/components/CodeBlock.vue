@@ -1,9 +1,12 @@
 <template>
   <div
-    class="group py-1 px-1 flex gap-2 items-center text-xs rounded hover:bg-[--nc-item-color-hover]"
+    class="py-1 px-1 flex gap-2 items-center text-xs rounded"
+    :class="{
+      'group hover:bg-[--nc-item-color-hover]': openHoverStyle
+    }"
   >
     <span v-if="label" class="pl-1">{{ label }}</span>
-    <div class="flex gap-1">
+    <div class="flex flex-wrap gap-1">
       <span
         v-for="(t, i) in keys"
         :key="i"
@@ -21,15 +24,17 @@ interface Props {
   label?: string
   value?: string
   separator?: string
+  openHoverStyle?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   label: '',
   value: '',
-  separator: ','
+  separator: ' ',
+  openHoverStyle: true
 })
 
-const keys = computed(() => props.value.split(props.separator))
+const keys = computed(() => props.value.trim().split(props.separator))
 </script>
 
 <style scoped></style>

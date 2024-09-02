@@ -44,7 +44,7 @@ export const useMainStore = defineStore('main', () => {
     theme: 'dark',
     language: 'zh_CN',
     startup: false,
-    shortcutKey: 'Alt,C',
+    shortcutKey: 'Alt V',
     keepDays: 7
   })
   const updateSetting = (key: keyof Setting, val: any) => {

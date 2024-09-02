@@ -114,7 +114,7 @@ const SettingsStore = new ElectronStore({
 })
 // TODO 配置为空时，设置默认值
 if (!SettingsStore.get('shortcutKey')) {
-  SettingsStore.set('shortcutKey', 'Alt+C')
+  SettingsStore.set('shortcutKey', 'Alt V')
 }
 if (!SettingsStore.get('theme')) {
   SettingsStore.set('theme', 'system')
@@ -169,14 +169,15 @@ ipcMain.handle('update-clipboard-text', (_event, text) => {
 })
 
 // 修改全局快捷键
-ipcMain.handle('update-shortcut', (_event, keys) => {
-  console.log(keys)
+ipcMain.handle('update-shortcut', (_event, key) => {
+  console.log(key)
   // 判断快捷键是否冲突
-  const key = keys.join('+')
-  if (globalShortcut.isRegistered(key)) {
+  const keys = key.split(' ').join('+')
+  if (globalShortcut.isRegistered(keys)) {
     return Promise.resolve(false)
   }
-  SettingsStore.set('shortcutKey', keys.join('+'))
+  SettingsStore.set('shortcutKey', key)
+  registerShortcut()
   return Promise.resolve(true)
 })
 ipcMain.handle('unregister-all-shortcut', (_event) => {
@@ -194,7 +195,7 @@ ipcMain.handle('get-active-app', (_event) => {
 // 注册快捷键
 function registerShortcut() {
   // registerEsc()
-  const key = SettingsStore.get('shortcutKey')
+  const key = SettingsStore.get('shortcutKey').split(' ').join('+')
   console.log('registerShortcut', key)
   // 注册快捷键激活/隐藏窗口
   globalShortcut.register(key, () => {
@@ -262,6 +263,8 @@ async function createWindow() {
 
   // 禁用手动最大化
   win.setMaximizable(false)
+  win.setMinimizable(false)
+  // win.setMovable(false)
   // 禁用手动调整窗口大小
   win.setResizable(false)
   // TODO 不在任务栏中显示
@@ -292,6 +295,14 @@ async function createWindow() {
     return { action: 'deny' }
   })
   // win.webContents.on('will-navigate', (event, url) => { }) #344
+
+  win.webContents.on('before-input-event', (event, input) => {
+    if (input.alt && input.code === 'F4') {
+      event.preventDefault()
+    }
+    // win.webContents.setIgnoreMenuShortcuts(true)
+    // console.log('before-input-event', input.alt, input.key, input.code)
+  })
 
   const language = SettingsStore.get('language')
   const isZh = language === 'zh_CN'
