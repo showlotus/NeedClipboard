@@ -14,7 +14,8 @@
     "noEmit": true,
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "$/*": ["./*"]
     },
     "types": ["vue", "vue-i18n"]
   },

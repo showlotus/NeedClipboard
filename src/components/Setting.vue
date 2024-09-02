@@ -8,7 +8,14 @@
         @click="handleToggleSettingPanel"
       >
         <LogoSvg class="w-4 h-4 text-[--el-text-color-regular]" />
-        <span class="pr-1 text-sm">NeedClipboard</span>
+        <span class="pr-1 text-sm"
+          >{{ appName
+          }}<sup
+            v-if="isBeta"
+            class="ml-0.5 px-0.5 border border-solid border-current rounded-sm text-[--nc-group-label-color] opacity-50"
+            >Beta</sup
+          ></span
+        >
       </div>
     </HotkeyTooltip>
 
@@ -36,6 +43,7 @@
 </template>
 
 <script lang="ts" setup>
+import pkg from '$/package.json'
 import hotkeys from 'hotkeys-js'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -44,6 +52,8 @@ import LogoSvg from '@/assets/icons/logo.svg'
 import { useMainStore } from '@/stores/main'
 import { getActiveApp } from '@/utils/ipc'
 
+const isBeta = pkg.version.includes('beta')
+const appName = pkg.name
 const settingVisible = ref(!false)
 const handleToggleSettingPanel = () => {
   settingVisible.value = !settingVisible.value

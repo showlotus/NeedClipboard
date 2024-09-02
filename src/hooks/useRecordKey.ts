@@ -3,6 +3,7 @@ import { Ref, nextTick, ref } from 'vue'
 import { EVENT_CODE } from '@/constants/aria'
 import { updateActiveShortcut } from '@/utils/ipc'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type ValueOf<T> = T[keyof T]
 
 const formatKey = (key: string) => {
@@ -29,7 +30,7 @@ export function useRecordKey(initialValue: Ref<string>) {
   const recordingKeys = ref<string>(initialValue.value || '')
   const pressKeys = new Set<string>()
   const recordKeys = new Set<string>()
-  // BUG 同时按下 Alt + Space 时，会默认打开窗口调整菜单
+  // BUG 同时按下 Alt + Space 时，会默认打开调整窗口菜单面板
   const onKeydown = (e: KeyboardEvent) => {
     // 禁止的按键
     const uselessKeys = [EVENT_CODE.esc]

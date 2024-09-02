@@ -1,7 +1,7 @@
 import js from '@eslint/js'
+import eslintConfigPrettier from 'eslint-config-prettier'
 import eslintPluginVue from 'eslint-plugin-vue'
 import ts from 'typescript-eslint'
-import eslintConfigPrettier from 'eslint-config-prettier'
 
 export default ts.config(
   js.configs.recommended,

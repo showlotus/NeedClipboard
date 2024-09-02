@@ -1,6 +1,6 @@
 <template>
   <div class="pt-2 text-sm flex flex-col cursor-default select-none">
-    <div class="py-2 px-3 text-xs font-bold text-[--nc-group-label-color]">
+    <div class="py-2 px-3 text-sm font-bold text-[--nc-group-label-color]">
       {{ $t('NC.information') }}
     </div>
     <el-scrollbar>

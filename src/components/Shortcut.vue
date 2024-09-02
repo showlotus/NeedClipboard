@@ -16,15 +16,18 @@
       @keyup="onKeyup"
       @keydown.prevent
     >
-      <CodeBlock :value="recordingKeys" :openHoverStyle="false" class="-ml-1" />
+      <CodeBlock
+        :value="recordingKeys"
+        :open-hover-style="false"
+        class="-ml-1"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
-import { EVENT_CODE } from '@/constants/aria'
 import { useRecordKey } from '@/hooks/useRecordKey'
 
 withDefaults(defineProps<{ id: string }>(), {
@@ -35,11 +38,11 @@ const emit = defineEmits<{
   (e: 'update:modelValue', val: string): void
 }>()
 
-const inputVal = computed({
+const inputVal = computed<string>({
   get() {
-    return modelValue.value
+    return modelValue.value!
   },
-  set(val) {
+  set(val: string) {
     emit('update:modelValue', val)
   }
 })
