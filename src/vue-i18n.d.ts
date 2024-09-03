@@ -1,10 +1,9 @@
+// src/types/vue-i18n.d.ts
 import { ComponentCustomProperties } from 'vue'
-import 'vue-i18n'
+import { I18n } from 'vue-i18n'
 
-// 声明 vue 模块扩展
 declare module '@vue/runtime-core' {
-  // 为 Vue 组件实例扩展类型
   interface ComponentCustomProperties {
-    $t: typeof import('vue-i18n').t
+    $t: I18n['global']['t']
   }
 }

@@ -218,5 +218,9 @@
   "NC.file": {
     "zh_CN": "文件",
     "en_US": "File"
+  },
+  "NC.conflictShortcut": {
+    "zh_CN": "快捷键冲突",
+    "en_US": "Shortcut key conflict."
   }
 }

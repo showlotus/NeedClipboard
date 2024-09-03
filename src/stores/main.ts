@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 
 import { TYPE_VALUE } from '@/constants/aria'
 import { OptionType } from '@/hooks/useTypeOptions'
@@ -39,7 +39,7 @@ export const useMainStore = defineStore('main', () => {
     activeRecord.value = val
   }
 
-  const setting = ref<Setting>({
+  const setting = reactive<Setting>({
     primaryAction: 'clipboard',
     theme: 'dark',
     language: 'zh_CN',
@@ -48,8 +48,12 @@ export const useMainStore = defineStore('main', () => {
     keepDays: 7
   })
   const updateSetting = (key: keyof Setting, val: any) => {
-    ;(setting.value as any)[key] = val
+    ;(setting as any)[key] = val
   }
+  // TODO 更新 settings.json
+  watch(setting, (val) => {
+    console.log(val)
+  })
 
   return {
     searchParams,

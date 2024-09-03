@@ -62,7 +62,7 @@ import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue'
 import { useSearch } from '@/hooks/useSearch'
 import { useMainStore } from '@/stores/main'
 import { debounce } from '@/utils/debounce'
-import { getTheme } from '@/utils/theme'
+import { getTheme } from '@/utils/ipc'
 import { throttle } from '@/utils/throttle'
 
 const mainStore = useMainStore()

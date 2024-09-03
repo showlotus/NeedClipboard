@@ -77,7 +77,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useSettingOptions } from '@/hooks/useSettingOptions'
 import { useMainStore } from '@/stores/main'
-import { useDarkTheme, useLightTheme, useSystemTheme } from '@/utils/theme'
+import { useDarkTheme, useLightTheme, useSystemTheme } from '@/utils/ipc'
 
 const value = defineModel<boolean>({ default: false })
 const mainStore = useMainStore()
@@ -95,7 +95,7 @@ const ops = {
 window.ipcRenderer.on('update-theme', (_event, theme) => {
   // setting.value.theme = theme
   // console.log('update-theme', theme)
-  // ops[setting.value.theme]?.()
+  // ops[setting.value.theme]?.() // BUG 死循环
 })
 
 watch(

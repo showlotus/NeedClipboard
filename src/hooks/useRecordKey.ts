@@ -1,7 +1,9 @@
+import { ElMessage } from 'element-plus'
 import { Ref, nextTick, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { EVENT_CODE } from '@/constants/aria'
-import { updateActiveShortcut } from '@/utils/ipc'
+import { validateShortcutIsRegistered } from '@/utils/ipc'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type ValueOf<T> = T[keyof T]
@@ -30,26 +32,29 @@ export function useRecordKey(initialValue: Ref<string>) {
   const recordingKeys = ref<string>(initialValue.value || '')
   const pressKeys = new Set<string>()
   const recordKeys = new Set<string>()
+  const { t } = useI18n()
   // BUG 同时按下 Alt + Space 时，会默认打开调整窗口菜单面板
-  const onKeydown = (e: KeyboardEvent) => {
+  const onKeydown = async (e: KeyboardEvent) => {
     // 禁止的按键
     const uselessKeys = [EVENT_CODE.esc]
     if (e.key === EVENT_CODE.enter) {
-      const value = Array.from(recordKeys.values()).join(' ')
+      const value = Array.from(recordKeys.values())
 
-      // TODO 重新设置当前全局快捷键
-      // 首先判断是否冲突，若冲突则提示，否则提示修改成功
-      updateActiveShortcut(value).then((res) => {
-        if (res) {
-          initialValue.value = value
-          recordingKeys.value = value
-          nextTick(() => {
-            ;(e.target as HTMLElement).blur()
-          })
-          console.log(value)
-        } else {
-          console.error('快捷键冲突')
-        }
+      const shortcutKeys = value.join('+')
+      const isRegistered = await validateShortcutIsRegistered(shortcutKeys)
+      if (isRegistered) {
+        return ElMessage({
+          message: t('NC.conflictShortcut'),
+          type: 'warning',
+          plain: true
+        })
+      }
+
+      const key = value.join(' ')
+      initialValue.value = key
+      recordingKeys.value = key
+      nextTick(() => {
+        ;(e.target as HTMLElement).blur()
       })
     } else if (!uselessKeys.includes(e.key)) {
       // 重新录制，清空上次录制的键
@@ -69,10 +74,10 @@ export function useRecordKey(initialValue: Ref<string>) {
       pressKeys.delete(key)
     }
   }
-  const onFocus = (e: FocusEvent) => {
+  const onFocus = () => {
     recordingKeys.value = initialValue.value
   }
-  const onBlur = (e: FocusEvent) => {
+  const onBlur = () => {
     pressKeys.clear()
     recordKeys.clear()
     recordingKeys.value = initialValue.value

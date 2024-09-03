@@ -19,6 +19,8 @@ import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import './ipc'
+
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 // const NativeClipboard = require('../../packages/native-clipboard')
@@ -169,17 +171,17 @@ ipcMain.handle('update-clipboard-text', (_event, text) => {
 })
 
 // 修改全局快捷键
-ipcMain.handle('update-shortcut', (_event, key) => {
-  console.log(key)
-  // 判断快捷键是否冲突
-  const keys = key.split(' ').join('+')
-  if (globalShortcut.isRegistered(keys)) {
-    return Promise.resolve(false)
-  }
-  SettingsStore.set('shortcutKey', key)
-  registerShortcut()
-  return Promise.resolve(true)
-})
+// ipcMain.handle('update-shortcut', (_event, key) => {
+//   console.log(key)
+//   // 判断快捷键是否冲突
+//   const keys = key.split(' ').join('+')
+//   if (globalShortcut.isRegistered(keys)) {
+//     return Promise.resolve(false)
+//   }
+//   SettingsStore.set('shortcutKey', key)
+//   registerShortcut()
+//   return Promise.resolve(true)
+// })
 ipcMain.handle('unregister-all-shortcut', (_event) => {
   unregisterShortcut()
 })
