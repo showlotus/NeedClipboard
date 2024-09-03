@@ -1,28 +1,26 @@
 <template>
-  <div class="pt-2 text-sm flex flex-col cursor-default select-none">
-    <div class="py-2 px-3 text-sm font-bold text-[--nc-group-label-color]">
+  <div class="py-2 text-sm flex flex-col cursor-default select-none">
+    <!-- <div class="py-1 px-3 text-sm font-bold text-[--nc-group-label-color]">
       {{ $t('NC.information') }}
-    </div>
-    <el-scrollbar>
-      <div class="flex-1 h-0 px-3">
-        <div
-          v-for="(item, i) in info"
-          :key="i"
-          class="h-7 flex justify-between items-center text-xs border-b border-[--nc-info-border-color] last:border-none"
+    </div> -->
+    <div class="flex-1 px-3">
+      <div
+        v-for="(item, i) in info"
+        :key="i"
+        class="h-7 flex justify-between items-center text-xs border-b border-[--nc-info-border-color] last:border-none"
+      >
+        <span class="font-bold text-[--nc-group-label-color] min-w-40">{{
+          item[0]
+        }}</span>
+        <!-- TODO only the path attribute need tooltip -->
+        <AutoTooltip v-if="isFile" :key="activeRecord.id" :value="item[1]" />
+        <span
+          v-else
+          class="text-[--el-color-primary] text-xs flex-1 text-right text-ellipsis overflow-hidden"
+          >{{ item[1] }}</span
         >
-          <span class="font-bold text-[--nc-group-label-color] min-w-40">{{
-            item[0]
-          }}</span>
-          <!-- TODO only the path attribute need tooltip -->
-          <AutoTooltip v-if="isFile" :key="activeRecord.id" :value="item[1]" />
-          <span
-            v-else
-            class="text-[--el-color-primary] text-xs flex-1 text-right text-ellipsis overflow-hidden"
-            >{{ item[1] }}</span
-          >
-        </div>
       </div>
-    </el-scrollbar>
+    </div>
   </div>
 </template>
 
