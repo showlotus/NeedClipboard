@@ -4,6 +4,7 @@ import { reactive, ref, watch } from 'vue'
 import { TYPE_VALUE } from '@/constants/aria'
 import { OptionType } from '@/hooks/useTypeOptions'
 import { Lang } from '@/i18n'
+import { updateSettings } from '@/utils/ipc'
 
 export interface SearchParams {
   keyword: string
@@ -14,13 +15,40 @@ export interface SearchParams {
 
 type Theme = 'system' | 'light' | 'dark'
 
-interface Setting {
+export interface Setting {
   primaryAction: 'clipboard' | 'app'
   theme: Theme
   language: Lang
   startup: boolean
   shortcutKey: string
   keepDays: number
+}
+
+type ValueOf<T> = T[keyof T]
+
+function useSetting() {
+  const setting = reactive<Setting>({
+    primaryAction: 'clipboard',
+    theme: 'dark',
+    language: 'zh_CN',
+    startup: false,
+    shortcutKey: 'Alt V',
+    keepDays: 7
+  })
+  const updateSetting = (key: keyof Setting, val: any) => {
+    ;(setting[key] as any) = val
+  }
+
+  watch(setting, (val) => {
+    const cloneVal = JSON.parse(JSON.stringify(val))
+    console.log(cloneVal)
+    updateSettings(cloneVal)
+  })
+
+  return {
+    setting,
+    updateSetting
+  }
 }
 
 export const useMainStore = defineStore('main', () => {
@@ -39,21 +67,7 @@ export const useMainStore = defineStore('main', () => {
     activeRecord.value = val
   }
 
-  const setting = reactive<Setting>({
-    primaryAction: 'clipboard',
-    theme: 'dark',
-    language: 'zh_CN',
-    startup: false,
-    shortcutKey: 'Alt V',
-    keepDays: 7
-  })
-  const updateSetting = (key: keyof Setting, val: any) => {
-    ;(setting as any)[key] = val
-  }
-  // TODO 更新 settings.json
-  watch(setting, (val) => {
-    console.log(val)
-  })
+  const { setting, updateSetting } = useSetting()
 
   return {
     searchParams,

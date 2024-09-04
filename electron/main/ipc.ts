@@ -9,3 +9,7 @@ ipcMain.handle('shortcut-is-registered', (_event, key: string) => {
 ipcMain.handle('update-shortcut', (_event, key: string) => {
   SettingsStore.set('shortcutKey', key)
 })
+
+ipcMain.handle('update-settings', (_event, val: Record<string, any>) => {
+  SettingsStore.set(val)
+})

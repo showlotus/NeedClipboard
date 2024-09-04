@@ -2,8 +2,13 @@
 /// <reference types="vite-svg-loader" />
 
 declare module '*.vue' {
-  import type { DefineComponent } from 'vue'
+  import type { DefineComponent, ComponentCustomProperties } from 'vue'
   const component: DefineComponent<{}, {}, any>
+
+  export interface ComponentCustomProperties {
+    $t: any
+  }
+
   export default component
 }
 

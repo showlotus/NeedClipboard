@@ -1,0 +1,12 @@
+diff --git a/package.json b/package.json
+index 2153c3c93e9a48c36c043bdb51b9e6f5cbb91b2d..6dfdde4773b24a833dec5bacc3fd80cb068c866f 100644
+--- a/package.json
++++ b/package.json
+@@ -11,6 +11,7 @@
+ 		"url": "https://sindresorhus.com"
+ 	},
+ 	"type": "module",
++	"types": "./dist/source/index.d.ts",
+ 	"exports": {
+ 		"types": "./dist/source/index.d.ts",
+ 		"default": "./dist/source/index.js"

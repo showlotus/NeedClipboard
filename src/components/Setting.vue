@@ -4,18 +4,18 @@
   >
     <HotkeyTooltip placement="right" command="Ctrl ,">
       <div
-        class="py-1 px-1 flex items-center gap-2 rounded hover:bg-[--nc-item-color-hover]"
+        class="py-1 px-1 flex items-center rounded hover:bg-[--nc-item-color-hover]"
         @click="handleToggleSettingPanel"
       >
         <LogoSvg class="w-4 h-4 text-[--el-text-color-regular]" />
-        <span class="pr-1 text-sm"
-          >{{ appName
-          }}<sup
-            v-if="isBeta"
-            class="ml-0.5 px-0.5 border border-solid border-current rounded-sm text-[--nc-group-label-color] opacity-50"
-            >Beta</sup
-          ></span
-        >
+        <div class="ml-2 pr-1 text-sm mt-0.5">
+          {{ appName }}
+        </div>
+        <span
+          v-if="isBeta"
+          class="px-0.5 border border-solid border-current rounded-sm italic font-bold text-[9.5px] text-[--nc-group-label-color] opacity-50"
+          >Beta
+        </span>
       </div>
     </HotkeyTooltip>
 

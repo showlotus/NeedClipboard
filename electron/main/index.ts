@@ -20,6 +20,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import './ipc'
+import { SettingsStore } from './store'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -111,16 +112,16 @@ if (app.isPackaged) {
   console.log('openAtLogin', openAtLogin, process.argv)
 }
 
-const SettingsStore = new ElectronStore({
-  name: 'settings'
-})
+// const SettingsStore = new ElectronStore({
+//   name: 'settings'
+// })
 // TODO 配置为空时，设置默认值
-if (!SettingsStore.get('shortcutKey')) {
-  SettingsStore.set('shortcutKey', 'Alt V')
-}
-if (!SettingsStore.get('theme')) {
-  SettingsStore.set('theme', 'system')
-}
+// if (!SettingsStore.get('shortcutKey')) {
+//   SettingsStore.set('shortcutKey', 'Alt V')
+// }
+// if (!SettingsStore.get('theme')) {
+//   SettingsStore.set('theme', 'system')
+// }
 
 SettingsStore.onDidChange('shortcutKey', (newVal, oldVal) => {
   console.log('shortcutKey changed', newVal, oldVal)
@@ -132,11 +133,6 @@ SettingsStore.onDidChange('theme', (newVal, oldVal) => {
 
 const RecordStore = new ElectronStore({
   cwd: 'Records'
-})
-
-ipcMain.handle('save-store', (_event, ...args) => {
-  console.log(args)
-  SettingsStore.set('a', args)
 })
 
 ipcMain.handle('save-record', (_event, ...args) => {

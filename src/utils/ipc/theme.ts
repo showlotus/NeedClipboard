@@ -21,15 +21,3 @@ export function useDarkTheme() {
   document.querySelector('html')!.classList.add('dark')
   window.ipcRenderer.invoke('set-theme', 'dark')
 }
-
-export function getActiveApp() {
-  return window.ipcRenderer.invoke('get-active-app')
-}
-
-export function validateShortcutIsRegistered(val: string) {
-  return window.ipcRenderer.invoke('shortcut-is-registered', val)
-}
-
-export function updateActiveShortcut(val: string) {
-  return window.ipcRenderer.invoke('update-shortcut', val)
-}

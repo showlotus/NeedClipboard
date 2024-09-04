@@ -65,4 +65,8 @@ html.dark {
     border: 1px solid var(--el-border-color);
     box-shadow: 0px 0px 12px #000;
   }
+
+  .el-message.is-plain {
+    border-color: rgb(76, 77, 79, 0.5);
+  }
 }

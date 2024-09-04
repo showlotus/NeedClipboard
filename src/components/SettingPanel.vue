@@ -77,7 +77,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useSettingOptions } from '@/hooks/useSettingOptions'
 import { useMainStore } from '@/stores/main'
-import { useDarkTheme, useLightTheme, useSystemTheme } from '@/utils/ipc'
+import { useDarkTheme, useLightTheme, useSystemTheme } from '@/utils/ipc/theme'
 
 const value = defineModel<boolean>({ default: false })
 const mainStore = useMainStore()

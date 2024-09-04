@@ -9,7 +9,7 @@
     <div
       ref="contentRef"
       contenteditable="plaintext-only"
-      class="el-input__wrapper w-full justify-start hover:input-shadow focus:focus-input-shadow outline-none caret-transparent"
+      class="el-input__wrapper w-full justify-start hover:input-shadow focus:focus-input-shadow outline-none caret-[--el-color-primary]"
       @focus="onFocus"
       @blur="onBlur"
       @keydown="onKeydown"
@@ -21,6 +21,7 @@
         :open-hover-style="false"
         class="-ml-1"
       />
+      <span class="w-0.5">{{ ' ' }}</span>
     </div>
   </div>
 </template>

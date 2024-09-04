@@ -1,6 +1,6 @@
 {
   "name": "NeedClipboard",
-  "version": "28.1.0-beta.1",
+  "version": "1.0.0-beta.1",
   "main": "dist-electron/main/index.js",
   "description": "Really simple Electron + Vue + Vite boilerplate.",
   "author": "草鞋没号 <308487730@qq.com>",
@@ -61,5 +61,10 @@
     "vue": "^3.4.21",
     "vue-i18n": "^9.13.1",
     "vue-tsc": "^2.0.6"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "conf@13.0.1": "patches/conf@13.0.1.patch"
+    }
   }
 }

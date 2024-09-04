@@ -22,7 +22,7 @@
 import { onMounted, ref, watch } from 'vue'
 
 import { useMainStore } from '@/stores/main'
-import { getTheme } from '@/utils/ipc'
+import { getTheme } from '@/utils/ipc/theme'
 
 withDefaults(defineProps<{ value: string }>(), {
   value: ''
@@ -46,7 +46,6 @@ const checkIsOverflow = () => {
   range.setStart(el, 0)
   range.setEnd(el, el.childNodes.length)
   const rangeWidth = range.getBoundingClientRect().width
-  console.log(rangeWidth, el.offsetWidth)
   // 可接受的偏移范围内
   const inOffset = (o: number) => rangeWidth - el.offsetWidth > o
   isOverflow.value = rangeWidth > el.offsetWidth && inOffset(1)
@@ -67,9 +66,11 @@ const overrideSlot = () => {
   document.body.appendChild(span)
   let start = 0
   let end = textContent.length
+  const linkSymbol = '...'
   while (start < end) {
     const mid = Math.floor((start + end) / 2)
-    const text = textContent.slice(0, mid) + '...' + textContent.slice(-mid)
+    const text =
+      textContent.slice(0, mid) + linkSymbol + textContent.slice(-mid)
     span.textContent = text
     if (span.getBoundingClientRect().width > elWidth) {
       end = mid
@@ -78,7 +79,9 @@ const overrideSlot = () => {
     }
   }
   ellipsisText.value =
-    textContent.slice(0, start - 1) + '...' + textContent.slice(-(start - 1))
+    textContent.slice(0, start - 1) +
+    linkSymbol +
+    textContent.slice(-(start - 1))
   document.body.removeChild(span)
 }
 

@@ -35,7 +35,7 @@ export function useSettingOptions() {
     },
     {
       label: t('NC.unlimited'),
-      value: Infinity
+      value: 999
     }
   ])
   const primaryActionOptions = computed(() => [

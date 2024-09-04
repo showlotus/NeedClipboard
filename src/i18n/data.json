@@ -60,7 +60,7 @@
     "en_US": "Keep History For"
   },
   "NC.activateHotkey": {
-    "zh_CN": "激活热键",
+    "zh_CN": "激活快捷键",
     "en_US": "Activate HotKey"
   },
   "NC.copyToClipboard": {
@@ -221,6 +221,6 @@
   },
   "NC.conflictShortcut": {
     "zh_CN": "快捷键冲突",
-    "en_US": "Shortcut key conflict."
+    "en_US": "The hotkey is conflicted."
   }
 }
