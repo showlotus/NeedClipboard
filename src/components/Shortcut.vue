@@ -1,11 +1,6 @@
 <template>
   <div class="w-full">
-    <input
-      :id="id"
-      type="text"
-      class="w-0 h-0"
-      @focus="(e) => e.target.nextSibling.focus()"
-    />
+    <input :id="id" type="text" class="w-0 h-0" @focus="handleInputFocus" />
     <div
       ref="contentRef"
       contenteditable="plaintext-only"
@@ -50,4 +45,14 @@ const inputVal = computed<string>({
 
 // prettier-ignore
 const { recordingKeys, onKeyup, onKeydown, onFocus, onBlur } = useRecordKey(inputVal)
+
+const handleInputFocus = (e: FocusEvent) => {
+  const target = (e.target as HTMLInputElement).nextSibling! as HTMLDivElement
+  const range = document.createRange()
+  range.selectNodeContents(target)
+  range.collapse(false)
+  const selection = window.getSelection()!
+  selection.removeAllRanges()
+  selection.addRange(range)
+}
 </script>
