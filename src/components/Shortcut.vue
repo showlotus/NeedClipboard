@@ -7,22 +7,22 @@
       class="el-input__wrapper w-full justify-start hover:input-shadow focus:focus-input-shadow outline-none caret-[--el-color-primary]"
       @focus="onFocus"
       @blur="onBlur"
-      @keydown="onKeydown"
+      @keydown.prevent="onKeydown"
       @keyup="onKeyup"
-      @keydown.prevent
+      @input="onInput"
     >
       <CodeBlock
         :value="recordingKeys"
         :open-hover-style="false"
         class="-ml-1"
       />
-      <span class="w-0.5">{{ ' ' }}</span>
+      <span ref="gapRef" class="w-0.5">{{ ' ' }}</span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 import { useRecordKey } from '@/hooks/useRecordKey'
 
@@ -54,5 +54,10 @@ const handleInputFocus = (e: FocusEvent) => {
   const selection = window.getSelection()!
   selection.removeAllRanges()
   selection.addRange(range)
+}
+
+const gapRef = ref()
+const onInput = () => {
+  gapRef.value.textContent = ' '
 }
 </script>
