@@ -12,6 +12,7 @@
       @input="onInput"
     >
       <CodeBlock
+        contenteditable="false"
         :value="recordingKeys"
         :open-hover-style="false"
         class="-ml-1"
