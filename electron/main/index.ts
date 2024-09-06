@@ -21,6 +21,7 @@ import { fileURLToPath } from 'node:url'
 
 import './ipc'
 import { SettingsStore } from './store'
+import { initTray } from './tray'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -93,7 +94,6 @@ if (!app.requestSingleInstanceLock()) {
 }
 
 let win: BrowserWindow | null = null
-let tray: Tray | null = null
 const preload = path.join(__dirname, '../preload/index.mjs')
 const indexHtml = path.join(RENDERER_DIST, 'index.html')
 
@@ -123,13 +123,13 @@ if (app.isPackaged) {
 //   SettingsStore.set('theme', 'system')
 // }
 
-SettingsStore.onDidChange('shortcutKey', (newVal, oldVal) => {
-  console.log('shortcutKey changed', newVal, oldVal)
-})
-SettingsStore.onDidChange('theme', (newVal, oldVal) => {
-  // nativeTheme.themeSource = newVal
-  console.log('theme changed', newVal, oldVal)
-})
+// SettingsStore.onDidChange('shortcutKey', (newVal, oldVal) => {
+//   console.log('shortcutKey changed', newVal, oldVal)
+// })
+// SettingsStore.onDidChange('theme', (newVal, oldVal) => {
+//   // nativeTheme.themeSource = newVal
+//   console.log('theme changed', newVal, oldVal)
+// })
 
 const RecordStore = new ElectronStore({
   cwd: 'Records'
@@ -344,94 +344,7 @@ async function createWindow() {
     win.webContents.send('update-theme', SettingsStore.get('theme'))
   })
 
-  // TODO 创建系统托盘
-  tray = new Tray(path.join(process.env.VITE_PUBLIC, 'icon/png/logo.png'))
-  // 点击系统托盘图标时，打开窗口
-  tray.on('click', () => {
-    !win.isVisible() && win.show()
-  })
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: '开机启动',
-      type: 'checkbox',
-      checked: true,
-      click(e) {
-        // 设置开机自启
-        app.setLoginItemSettings({
-          openAtLogin: e.checked,
-          args: ['--openAsHidden']
-        })
-        console.log('Startup', e.checked)
-      }
-    },
-    { label: '', type: 'separator' },
-    {
-      label: 'zh_CN',
-      type: 'radio',
-      checked: isZh,
-      click() {
-        updateLanguage('zh_CN')
-      }
-    },
-    {
-      label: 'en_US',
-      type: 'radio',
-      checked: !isZh,
-      click() {
-        updateLanguage('en_US')
-      }
-    },
-    { label: '', type: 'separator' },
-    {
-      // label: 'System preference',
-      label: '跟随系统',
-      type: 'radio',
-      checked: true,
-      click() {
-        nativeTheme.themeSource = 'system'
-        SettingsStore.set('theme', 'system')
-        console.log('Theme choose System preference')
-      }
-    },
-    {
-      // label: 'Light',
-      label: '浅色',
-      type: 'radio',
-      click() {
-        nativeTheme.themeSource = 'light'
-        SettingsStore.set('theme', 'light')
-        console.log('Theme choose Light')
-      }
-    },
-    {
-      // label: 'Dark',
-      label: '暗色',
-      type: 'radio',
-      click() {
-        nativeTheme.themeSource = 'dark'
-        SettingsStore.set('theme', 'dark')
-        console.log('Theme choose Dark')
-      }
-    },
-    { label: '', type: 'separator' },
-    {
-      label: '检查更新',
-      type: 'normal',
-      click() {
-        // TODO 检查更新
-        console.log('检查更新')
-      }
-    },
-    {
-      label: '退出',
-      type: 'normal',
-      click() {
-        app.quit()
-      }
-    }
-  ])
-  tray.setToolTip('NeedClipboard')
-  tray.setContextMenu(contextMenu)
+  initTray(win)
 
   registerShortcut()
   win.on('show', () => {

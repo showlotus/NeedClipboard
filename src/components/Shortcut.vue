@@ -15,7 +15,7 @@
         contenteditable="false"
         :value="recordingKeys"
         :open-hover-style="false"
-        class="-ml-1"
+        class="-ml-1 !text-[--el-text-color-regular] !font-normal"
       />
       <span ref="gapRef" class="w-0.5">{{ ' ' }}</span>
     </div>

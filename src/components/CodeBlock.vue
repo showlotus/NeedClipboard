@@ -1,6 +1,6 @@
 <template>
   <div
-    class="py-1 px-1 flex gap-2 items-center text-xs rounded"
+    class="py-1 px-1 flex gap-2 items-center text-xs rounded text-[--nc-code-color] font-bold"
     :class="{
       'group hover:bg-[--nc-item-color-hover]': openHoverStyle
     }"
@@ -10,7 +10,7 @@
       <span
         v-for="(t, i) in keys"
         :key="i"
-        class="py-1 px-1.5 rounded font-bold bg-[--nc-code-bg-color] text-[--nc-code-color] group-hover:bg-[--nc-code-bg-active-color]"
+        class="py-1 px-1.5 rounded bg-[--nc-code-bg-color] group-hover:bg-[--nc-code-bg-active-color]"
         >{{ t }}</span
       >
     </div>
