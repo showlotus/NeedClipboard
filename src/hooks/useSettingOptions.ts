@@ -40,12 +40,12 @@ export function useSettingOptions() {
   ])
   const primaryActionOptions = computed(() => [
     {
-      label: t('NC.copyToClipboard'),
-      value: 'clipboard'
-    },
-    {
       label: t('NC.pasteToActiveApp'),
       value: 'app'
+    },
+    {
+      label: t('NC.copyToClipboard'),
+      value: 'clipboard'
     }
   ])
 

@@ -1,6 +1,6 @@
 <template>
   <el-drawer
-    v-model="value"
+    v-model="modelValue"
     direction="ltr"
     size="30%"
     :modal="true"
@@ -8,7 +8,6 @@
     :z-index="1000"
     :show-close="false"
     :lock-scroll="false"
-    :close-on-press-escape="false"
     append-to-body
   >
     <template #header> {{ t('NC.setting') }} </template>
@@ -17,27 +16,26 @@
         <el-form
           label-position="top"
           label-width="auto"
-          :model="setting"
           class="flex-1 mx-5"
           style="max-width: 600px"
         >
           <el-form-item :label="t('NC.primaryAction')">
             <custom-select
-              v-model="setting.primaryAction"
+              v-model="primaryAction"
               :options="primaryActionOptions"
               class="w-full"
             />
           </el-form-item>
           <el-form-item :label="t('NC.keepHistoryFor')">
             <custom-select
-              v-model="setting.keepDays"
+              v-model="keepDays"
               :options="keepDaysOptions"
               class="w-full"
             />
           </el-form-item>
           <el-form-item :label="t('NC.language')">
             <custom-select
-              v-model="setting.language"
+              v-model="language"
               :options="languageOptions"
               class="w-full"
             />
@@ -45,7 +43,7 @@
 
           <el-form-item :label="t('NC.themeMode')">
             <custom-select
-              v-model="setting.theme"
+              v-model="theme"
               :options="themeOptions"
               class="w-full"
             />
@@ -56,14 +54,10 @@
                 t('NC.activateHotkey')
               }}</label>
             </template>
-            <Shortcut
-              id="shortcut"
-              v-model="setting.shortcutKey"
-              class="w-full"
-            />
+            <Shortcut id="shortcut" v-model="shortcutKey" class="w-full" />
           </el-form-item>
           <el-form-item :label="t('NC.startup')" label-position="left">
-            <el-switch v-model="setting.startup" />
+            <el-switch v-model="startup" />
           </el-form-item>
         </el-form>
       </div>
@@ -72,19 +66,32 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch } from 'vue'
+import { watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useSettingOptions } from '@/hooks/useSettingOptions'
-import { useMainStore } from '@/stores/main'
+import { useUpdateSetting } from '@/hooks/useUpdateSetting'
+import { Theme } from '@/stores/main'
 import { useDarkTheme, useLightTheme, useSystemTheme } from '@/utils/ipc/theme'
 
-const value = defineModel<boolean>({ default: false })
-const mainStore = useMainStore()
-const setting = computed(() => mainStore.setting)
+const modelValue = defineModel<boolean>({ default: false })
+// prettier-ignore
+const {
+  primaryAction,
+  keepDays,
+  language,
+  theme,
+  shortcutKey,
+  startup
+} = useUpdateSetting()
 
 // prettier-ignore
-const { themeOptions, languageOptions, keepDaysOptions, primaryActionOptions } = useSettingOptions()
+const {
+  themeOptions,
+  languageOptions,
+  keepDaysOptions,
+  primaryActionOptions
+} = useSettingOptions()
 
 const ops = {
   system: useSystemTheme,
@@ -92,28 +99,13 @@ const ops = {
   dark: useDarkTheme
 }
 
-window.ipcRenderer.on('update-theme', (_event, theme) => {
-  // setting.value.theme = theme
-  // console.log('update-theme', theme)
-  // ops[setting.value.theme]?.() // BUG 死循环
-})
-
-watch(
-  () => setting.value.theme,
-  (val) => {
-    ops[val]?.()
-  },
-  { immediate: true }
-)
-
 const { t, locale } = useI18n()
-watch(
-  () => setting.value.language,
-  (val) => {
-    locale.value = val
-  },
-  { immediate: true }
-)
+watch(theme, (val) => {
+  ops[val]?.()
+})
+watch(language, (val) => {
+  locale.value = val
+})
 </script>
 
 <style lang="scss">

@@ -26,6 +26,7 @@ import { computed, ref, watch } from 'vue'
 
 import { useQueryTypeOptions } from '@/hooks/useTypeOptions'
 import { SearchParams, useMainStore } from '@/stores/main'
+import { ipcToggleVisible } from '@/utils/ipc'
 
 const { typeOptions } = useQueryTypeOptions()
 const keyword = ref('')
@@ -51,13 +52,16 @@ watch(
 )
 
 hotkeys.filter = () => true
+hotkeys('esc', 'home', () => {
+  ipcToggleVisible()
+})
 hotkeys('ctrl+p', 'home', () => {
   elSelectRef.value?.focus()
   elSelectRef.value?.toggleMenu()
 })
 
-// 禁用 tab 的默认行为
-hotkeys('tab', 'home', (e) => {
+// 禁用 TAB 键的默认行为
+hotkeys('tab', 'home', () => {
   return false
 })
 </script>

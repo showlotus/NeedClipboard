@@ -22,7 +22,7 @@
 import { onMounted, ref, watch } from 'vue'
 
 import { useMainStore } from '@/stores/main'
-import { getTheme } from '@/utils/ipc/theme'
+import { ipcGetTheme } from '@/utils/ipc/theme'
 
 withDefaults(defineProps<{ value: string }>(), {
   value: ''
@@ -31,9 +31,9 @@ withDefaults(defineProps<{ value: string }>(), {
 const mainStore = useMainStore()
 const theme = ref('dark')
 watch(
-  () => mainStore.setting.theme,
+  () => mainStore.setting?.theme,
   async () => {
-    theme.value = await getTheme()
+    theme.value = await ipcGetTheme()
   }
 )
 

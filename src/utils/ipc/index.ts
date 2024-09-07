@@ -1,17 +1,29 @@
 import { Setting } from '@/stores/main'
 
-export function getActiveApp() {
+export function ipcGetActiveApp() {
   return window.ipcRenderer.invoke('get-active-app')
 }
 
-export function validateShortcutIsRegistered(val: string) {
+export function ipcValidateShortcutIsRegistered(val: string) {
   return window.ipcRenderer.invoke('shortcut-is-registered', val)
 }
 
-export function updateActiveShortcut(val: string) {
+export function ipcUpdateActiveShortcut(val: string) {
   return window.ipcRenderer.invoke('update-shortcut', val)
 }
 
-export function updateSettings(val: Setting) {
-  window.ipcRenderer.invoke('update-settings', val)
+export function ipcUpdateSetting(key: keyof Setting, val: any) {
+  window.ipcRenderer.invoke('update-setting', key, val)
+}
+
+export function ipcToggleVisible() {
+  window.ipcRenderer.invoke('toggle-visible')
+}
+
+export function ipcOnRefreshSettings(callback: (...args: any[]) => void) {
+  window.ipcRenderer.on('refresh-settings', callback)
+}
+
+export function ipcGetTheme() {
+  return window.ipcRenderer.invoke('get-theme')
 }

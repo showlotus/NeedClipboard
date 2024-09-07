@@ -50,11 +50,11 @@ import { useI18n } from 'vue-i18n'
 
 import LogoSvg from '@/assets/icons/logo.svg'
 import { useMainStore } from '@/stores/main'
-import { getActiveApp } from '@/utils/ipc'
+import { ipcGetActiveApp } from '@/utils/ipc'
 
 const isBeta = pkg.version.includes('beta')
 const appName = pkg.name
-const settingVisible = ref(!false)
+const settingVisible = ref(false)
 const handleToggleSettingPanel = () => {
   settingVisible.value = !settingVisible.value
 }

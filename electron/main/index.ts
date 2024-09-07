@@ -131,15 +131,6 @@ if (app.isPackaged) {
 //   console.log('theme changed', newVal, oldVal)
 // })
 
-const RecordStore = new ElectronStore({
-  cwd: 'Records'
-})
-
-ipcMain.handle('save-record', (_event, ...args) => {
-  console.log(args)
-  // RecordStore.set('a', args)
-})
-
 ipcMain.handle('update-clipboard-file', (_event, files) => {
   NativeClipboard.writeFilesToClipboard(files)
 })
@@ -190,29 +181,36 @@ ipcMain.handle('get-active-app', (_event) => {
   return Promise.resolve('Google Chrome')
 })
 
+export function getWinWebContents() {
+  return win?.webContents
+}
+
+export function toggleWindowVisible() {
+  if (!win) {
+    createWindow()
+    return
+  }
+
+  if (win.isVisible()) {
+    win.hide()
+  } else {
+    win.show()
+  }
+}
+
 // 注册快捷键
 function registerShortcut() {
   // registerEsc()
-  const key = SettingsStore.get('shortcutKey').split(' ').join('+')
+  const key = SettingsStore.get('shortcutKey').replace(/\s/g, '+')
   console.log('registerShortcut', key)
   // 注册快捷键激活/隐藏窗口
-  globalShortcut.register(key, () => {
-    if (!win) {
-      createWindow()
-      return
-    }
-    console.log(key, win.isVisible())
-    if (win.isVisible()) {
-      win.hide()
-    } else {
-      win.show()
-    }
-  })
+  globalShortcut.register(key, () => toggleWindowVisible())
 }
 // 失效快捷键
 function unregisterShortcut() {
   globalShortcut.unregisterAll()
 }
+// TODO 暂时不处理 Esc 键
 function registerEsc() {
   if (globalShortcut.isRegistered('Esc')) {
     return
@@ -226,12 +224,14 @@ function registerEsc() {
 async function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
   console.log(width, height)
+  const winWidth = width * 0.4
+  const winHeight = height * 1
   win = new BrowserWindow({
     title: 'Main window',
     // width: width * 0.4,
     // height: height * 0.5,
-    width: width * 0.4,
-    height: height * 1,
+    width: winWidth,
+    height: winHeight,
     // icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
       preload,
@@ -253,6 +253,9 @@ async function createWindow() {
     // TODO 会导致打开窗口时有闪烁问题
     // backgroundMaterial: 'mica' // mica acrylic
   })
+
+  // TEST 靠右显示
+  win.setPosition(width - winWidth, 0)
 
   // 隐藏菜单栏
   // Menu.setApplicationMenu(null)
@@ -324,27 +327,10 @@ async function createWindow() {
     return Promise.resolve(theme)
   })
   nativeTheme.themeSource = SettingsStore.get('theme')
-  win.webContents.send('update-theme', SettingsStore.get('theme'))
-  const trayIconLight = nativeImage.createFromPath(
-    path.join(process.env.VITE_PUBLIC, 'tray-light.png')
-  )
-  const trayIconDark = nativeImage.createFromPath(
-    path.join(process.env.VITE_PUBLIC, 'tray-dark.png')
-  )
+  // win.webContents.send('update-theme', SettingsStore.get('theme'))
+  initTray()
 
-  // 系统主题切换时，通知渲染进程更新视图
-  nativeTheme.on('updated', () => {
-    const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
-    // TODO 如何同步更新系统托盘中的图标
-    // if (theme === 'dark') {
-    //   tray.setImage(trayIconLight)
-    // } else {
-    //   tray.setImage(trayIconDark)
-    // }
-    win.webContents.send('update-theme', SettingsStore.get('theme'))
-  })
-
-  initTray(win)
+  // 刷新配置
 
   registerShortcut()
   win.on('show', () => {
@@ -352,10 +338,14 @@ async function createWindow() {
     // registerEsc()
   })
   win.on('hide', () => {
-    if (globalShortcut.isRegistered('Esc')) {
-      console.log('unregister Esc')
-      globalShortcut.unregister('Esc')
-    }
+    // if (globalShortcut.isRegistered('Esc')) {
+    //   console.log('unregister Esc')
+    //   globalShortcut.unregister('Esc')
+    // }
+  })
+  win.webContents.on('did-finish-load', () => {
+    win.webContents.send('refresh-settings', SettingsStore.store)
+    console.log('finish loaded')
   })
 
   // TODO 开机启动时隐藏窗口
@@ -367,6 +357,8 @@ async function createWindow() {
   })
 
   console.log(app.getPath('userData'))
+
+  return win
 }
 
 app.whenReady().then(createWindow)

@@ -43,6 +43,11 @@ npm install --global --production windows-build-tools@4.0.0
 
 ## log
 
+### 09/07
+
+- 发现一个新玩法，通过 `v-model` 绑定的属性，传给子组件后，在子组件内部是可以直接更新这个值的。
+- 修改设置后，同步更新到 `settings.json` 文件中，已经完成了。
+
 ### 09/06
 
 - 关于 `settings` 的更新，考虑到在任务栏里也能更新一些配置，以及系统主题更新后，需要通知剪贴板更新。

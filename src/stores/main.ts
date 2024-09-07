@@ -4,7 +4,7 @@ import { reactive, ref, watch } from 'vue'
 import { TYPE_VALUE } from '@/constants/aria'
 import { OptionType } from '@/hooks/useTypeOptions'
 import { Lang } from '@/i18n'
-import { updateSettings } from '@/utils/ipc'
+import { ipcOnRefreshSettings } from '@/utils/ipc'
 
 export interface SearchParams {
   keyword: string
@@ -13,7 +13,7 @@ export interface SearchParams {
   pageSize: number
 }
 
-type Theme = 'system' | 'light' | 'dark'
+export type Theme = 'system' | 'light' | 'dark'
 
 export interface Setting {
   primaryAction: 'clipboard' | 'app'
@@ -24,30 +24,19 @@ export interface Setting {
   keepDays: number
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type ValueOf<T> = T[keyof T]
 
 function useSetting() {
-  const setting = reactive<Setting>({
-    primaryAction: 'clipboard',
-    theme: 'dark',
-    language: 'zh_CN',
-    startup: false,
-    shortcutKey: 'Alt V',
-    keepDays: 7
-  })
-  const updateSetting = (key: keyof Setting, val: any) => {
-    ;(setting[key] as any) = val
-  }
+  const setting = ref<Setting>({} as any)
 
-  watch(setting, (val) => {
-    const cloneVal = JSON.parse(JSON.stringify(val))
-    console.log(cloneVal)
-    updateSettings(cloneVal)
+  ipcOnRefreshSettings((event, store) => {
+    console.log('refresh settings', store)
+    setting.value = store
   })
 
   return {
-    setting,
-    updateSetting
+    setting
   }
 }
 
@@ -67,7 +56,7 @@ export const useMainStore = defineStore('main', () => {
     activeRecord.value = val
   }
 
-  const { setting, updateSetting } = useSetting()
+  const { setting } = useSetting()
 
   return {
     searchParams,
@@ -76,7 +65,6 @@ export const useMainStore = defineStore('main', () => {
     activeRecord,
     updateActiveRecord,
 
-    setting,
-    updateSetting
+    setting
   }
 })

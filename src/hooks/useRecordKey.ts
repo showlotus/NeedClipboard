@@ -1,9 +1,9 @@
 import { ElMessage } from 'element-plus'
-import { Ref, nextTick, ref } from 'vue'
+import { Ref, nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { EVENT_CODE } from '@/constants/aria'
-import { validateShortcutIsRegistered } from '@/utils/ipc'
+import { ipcValidateShortcutIsRegistered } from '@/utils/ipc'
 
 const formatKey = (key: string) => {
   if (
@@ -30,6 +30,11 @@ export function useRecordKey(initialValue: Ref<string>) {
   const pressKeys = new Set<string>()
   const recordKeys = new Set<string>()
   const { t } = useI18n()
+
+  watch(initialValue, (val) => {
+    recordingKeys.value = val
+  })
+
   // BUG 同时按下 Alt + Space 时，会默认打开调整窗口菜单面板
   const onKeydown = async (e: KeyboardEvent) => {
     // 禁止的按键
@@ -38,7 +43,7 @@ export function useRecordKey(initialValue: Ref<string>) {
       const value = Array.from(recordKeys.values())
 
       const shortcutKeys = value.join('+')
-      const isRegistered = await validateShortcutIsRegistered(shortcutKeys)
+      const isRegistered = await ipcValidateShortcutIsRegistered(shortcutKeys)
       if (isRegistered) {
         return ElMessage({
           message: t('NC.conflictShortcut'),
@@ -79,6 +84,7 @@ export function useRecordKey(initialValue: Ref<string>) {
     recordKeys.clear()
     recordingKeys.value = initialValue.value
   }
+
   return {
     recordingKeys,
     onKeydown,

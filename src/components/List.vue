@@ -62,20 +62,26 @@ import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue'
 import { useSearch } from '@/hooks/useSearch'
 import { useMainStore } from '@/stores/main'
 import { debounce } from '@/utils/debounce'
-import { getTheme } from '@/utils/ipc/theme'
+import { ipcGetTheme } from '@/utils/ipc/theme'
 import { throttle } from '@/utils/throttle'
 
 const mainStore = useMainStore()
 const searchParams = computed(() => mainStore.searchParams)
 const theme = ref('dark')
 watch(
-  () => mainStore.setting.theme,
+  () => mainStore.setting?.theme,
   async () => {
-    theme.value = await getTheme()
+    theme.value = await ipcGetTheme()
   }
 )
 // prettier-ignore
-const { groupedData, flattenData, search, next, isFullLoad } = useSearch(searchParams)
+const {
+  groupedData,
+  flattenData,
+  search,
+  next,
+  isFullLoad
+} = useSearch(searchParams)
 const elScrollbarRef = ref()
 watch(
   searchParams,
@@ -91,19 +97,14 @@ watch(
 const hasScrollbar = ref(false)
 const handleCheckScrollbar = () => {
   const el = instance?.proxy!.$el as HTMLDivElement
-  console.log(el)
   const wrapEl = el?.querySelector('.el-scrollbar__wrap') as HTMLElement
   if (!wrapEl) {
     return false
-  }
-  if (wrapEl.scrollHeight > wrapEl.clientHeight) {
-    console.log('has scrollbar')
   }
   return wrapEl.scrollHeight > wrapEl.clientHeight
 }
 const emit = defineEmits(['on-update'])
 watch(flattenData, (val) => {
-  console.log(val.length)
   emit('on-update', !val.length)
   nextTick(() => {
     hasScrollbar.value = handleCheckScrollbar()

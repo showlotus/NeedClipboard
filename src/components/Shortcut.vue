@@ -23,29 +23,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 import { useRecordKey } from '@/hooks/useRecordKey'
 
 withDefaults(defineProps<{ id: string }>(), {
   id: 'shortcut'
 })
-const modelValue = defineModel<string>()
-const emit = defineEmits<{
-  (e: 'update:modelValue', val: string): void
-}>()
-
-const inputVal = computed<string>({
-  get() {
-    return modelValue.value!
-  },
-  set(val: string) {
-    emit('update:modelValue', val)
-  }
-})
+const modelValue = defineModel<string>({ default: '' })
 
 // prettier-ignore
-const { recordingKeys, onKeyup, onKeydown, onFocus, onBlur } = useRecordKey(inputVal)
+const {
+  recordingKeys,
+  onKeyup,
+  onKeydown,
+  onFocus,
+  onBlur
+} = useRecordKey(modelValue)
 
 const handleInputFocus = (e: FocusEvent) => {
   const target = (e.target as HTMLInputElement).nextSibling! as HTMLDivElement
