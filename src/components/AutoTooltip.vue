@@ -24,7 +24,7 @@ import { onMounted, ref, watch } from 'vue'
 import { useMainStore } from '@/stores/main'
 import { ipcGetTheme } from '@/utils/ipc/theme'
 
-withDefaults(defineProps<{ value: string }>(), {
+withDefaults(defineProps<{ value: string | number }>(), {
   value: ''
 })
 

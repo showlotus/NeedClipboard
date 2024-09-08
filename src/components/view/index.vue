@@ -20,7 +20,7 @@ const mainStore = useMainStore()
 const activeRecord = computed<any>(() => mainStore.activeRecord)
 const dynamicView = computed(() => {
   if (!activeRecord.value) {
-    return ''
+    return h('span')
   }
 
   const type = activeRecord.value.type
@@ -33,7 +33,7 @@ const dynamicView = computed(() => {
   } else if (type === TYPE_VALUE.file) {
     return h(FileView, { data: activeRecord.value })
   }
-  return ''
+  return h('span')
 })
 </script>
 
