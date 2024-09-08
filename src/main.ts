@@ -5,6 +5,7 @@ import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
 
 import App from './App.vue'
+import { createDataBase } from './database'
 import './demos/ipc'
 import i18nConfig from './i18n'
 import './style/style.css'
@@ -13,6 +14,8 @@ import './style/theme.css'
 // If you want use Node.js, the`nodeIntegration` needs to be enabled in the Main process.
 // import './demos/node'
 
+const db = await createDataBase()
+console.log(db, await createDataBase())
 const pinia = createPinia()
 const i18n = createI18n({
   legacy: false,

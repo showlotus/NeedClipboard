@@ -17,7 +17,20 @@ import {
   isYesterday
 } from '@/utils/date'
 
-function genMockData(n = 10) {
+function calculateBase64Size(base64String: string) {
+  // 去掉 Base64 前缀
+  const base64Data = base64String.split(',')[1]
+
+  // 计算等号的数量
+  const padding = (base64Data.match(/=/g) || []).length
+
+  // 计算实际有效长度
+  const sizeInBytes = (base64Data.length * 3) / 4 - padding
+
+  return sizeInBytes
+}
+
+export function genMockData(n = 10) {
   const t = ['Text', 'Image', 'File', 'Link', 'Color']
   return new Array(n).fill(0).map((_, i) => {
     const type = t[i % t.length]
@@ -30,18 +43,21 @@ function genMockData(n = 10) {
         .replace(/(?!^)(?=(\w{80})+$)/g, '\n')
       data.characters = data.content.length
     } else if (type === 'Image') {
+      const w = Math.floor(Math.random() * 1000 + 200)
+      const h = Math.floor(Math.random() * 1000 + 200)
+
       data.url = faker.image.dataUri({
-        width: 200,
-        height: 200,
+        width: w,
+        height: h,
         type: 'svg-base64'
       })
 
       // data.url = faker.image.nature(1200, 500, true)
       // data.url = faker.image.nature(500, 500, true)
-      // data.url = faker.image.nature(500, 1200, true)
-      data.dimensions = '640×480'
-      data.content = 'Image(640×480)'
-      data.size = '200 KB'
+      // data.url = faker.image.nature(2500, 1200, true)
+      data.dimensions = w + '×' + h
+      data.content = ''
+      data.size = calculateBase64Size(data.url) + ' B'
     } else if (type === 'Link') {
       const url = faker.internet.url()
       data.content = url
@@ -60,8 +76,8 @@ function genMockData(n = 10) {
           name
         data.content = name
         data.path = path
-        data.size =
-          faker.number.float({ min: 10, max: 100, multipleOf: 0.02 }) + ' KB'
+        // data.size =
+        //   faker.number.float({ min: 10, max: 100, multipleOf: 0.02 }) + ' KB'
       } else if (subType === 'folder') {
         const path = new Array(10)
           .fill(0)
@@ -69,8 +85,8 @@ function genMockData(n = 10) {
           .join('')
         data.path = path
         data.content = path.split('/').at(-1)
-        data.size =
-          faker.number.float({ min: 10, max: 100, multipleOf: 0.02 }) + ' KB'
+        // data.size =
+        //   faker.number.float({ min: 10, max: 100, multipleOf: 0.02 }) + ' KB'
       } else if (subType === 'folder,file') {
         const path = new Array(10)
           .fill(0)
@@ -93,7 +109,7 @@ function genMockData(n = 10) {
       id: faker.string.uuid(),
       type,
       ...data,
-      application: faker.person.fullName(),
+      application: null, // faker.person.fullName(),
       createTime: dayjs()
         .subtract(Math.floor(Math.random() * 100), 'day')
         .format('YYYY/MM/DD HH:mm:ss')

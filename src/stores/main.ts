@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { reactive, ref, watch } from 'vue'
+import { ref } from 'vue'
 
 import { TYPE_VALUE } from '@/constants/aria'
 import { OptionType } from '@/hooks/useTypeOptions'
@@ -31,7 +31,6 @@ function useSetting() {
   const setting = ref<Setting>({} as any)
 
   ipcOnRefreshSettings((event, store) => {
-    console.log('refresh settings', store)
     setting.value = store
   })
 

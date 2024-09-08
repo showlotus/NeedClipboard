@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import db from '../database'
+import DB from '../database'
 
-db.clipboard
+DB.clipboard
   .bulkAdd([
     {
       type: 'file',
@@ -26,7 +26,7 @@ db.clipboard
 
 async function fuzzySearch(query: string) {
   const regex = new RegExp(query, 'i') // 创建正则表达式，忽略大小写
-  const results = await db.clipboard
+  const results = await DB.clipboard
     .filter((item) => regex.test(item.content))
     .toArray()
   return results

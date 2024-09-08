@@ -4,6 +4,10 @@ export function ipcGetActiveApp() {
   return window.ipcRenderer.invoke('get-active-app')
 }
 
+export function ipcOnUpdateActiveApp(callback: (...args: any[]) => void) {
+  window.ipcRenderer.on('update-active-app', callback)
+}
+
 export function ipcValidateShortcutIsRegistered(val: string) {
   return window.ipcRenderer.invoke('shortcut-is-registered', val)
 }
@@ -26,4 +30,12 @@ export function ipcOnRefreshSettings(callback: (...args: any[]) => void) {
 
 export function ipcGetTheme() {
   return window.ipcRenderer.invoke('get-theme')
+}
+
+export function ipcCloseTriggerShortcut() {
+  window.ipcRenderer.invoke('close-trigger-shortcut')
+}
+
+export function ipcOpenTriggerShortcut() {
+  window.ipcRenderer.invoke('open-trigger-shortcut')
 }

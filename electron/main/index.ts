@@ -1,26 +1,20 @@
 import {
   BrowserWindow,
-  Menu,
-  Tray,
   app,
   clipboard,
-  globalShortcut,
   ipcMain,
   nativeImage,
   nativeTheme,
   screen,
-  shell,
-  webContents
+  shell
 } from 'electron'
-import ElectronStore from 'electron-store'
-import fs from 'node:fs'
 import { createRequire } from 'node:module'
 import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import './ipc'
-import { SettingsStore } from './store'
+import { SettingsStore, registerShortcut } from './store'
 import { initTray } from './tray'
 
 const require = createRequire(import.meta.url)
@@ -111,26 +105,6 @@ if (app.isPackaged) {
   })
   console.log('openAtLogin', openAtLogin, process.argv)
 }
-
-// const SettingsStore = new ElectronStore({
-//   name: 'settings'
-// })
-// TODO 配置为空时，设置默认值
-// if (!SettingsStore.get('shortcutKey')) {
-//   SettingsStore.set('shortcutKey', 'Alt V')
-// }
-// if (!SettingsStore.get('theme')) {
-//   SettingsStore.set('theme', 'system')
-// }
-
-// SettingsStore.onDidChange('shortcutKey', (newVal, oldVal) => {
-//   console.log('shortcutKey changed', newVal, oldVal)
-// })
-// SettingsStore.onDidChange('theme', (newVal, oldVal) => {
-//   // nativeTheme.themeSource = newVal
-//   console.log('theme changed', newVal, oldVal)
-// })
-
 ipcMain.handle('update-clipboard-file', (_event, files) => {
   NativeClipboard.writeFilesToClipboard(files)
 })
@@ -157,25 +131,6 @@ ipcMain.handle('update-clipboard-text', (_event, text) => {
   clipboard.writeText(text)
 })
 
-// 修改全局快捷键
-// ipcMain.handle('update-shortcut', (_event, key) => {
-//   console.log(key)
-//   // 判断快捷键是否冲突
-//   const keys = key.split(' ').join('+')
-//   if (globalShortcut.isRegistered(keys)) {
-//     return Promise.resolve(false)
-//   }
-//   SettingsStore.set('shortcutKey', key)
-//   registerShortcut()
-//   return Promise.resolve(true)
-// })
-ipcMain.handle('unregister-all-shortcut', (_event) => {
-  unregisterShortcut()
-})
-ipcMain.handle('register-all-shortcut', (_event) => {
-  registerShortcut()
-})
-
 // TODO 获取当前活动应用，监听当前活动应用是否更新，通知视图层更新
 ipcMain.handle('get-active-app', (_event) => {
   return Promise.resolve('Google Chrome')
@@ -196,29 +151,6 @@ export function toggleWindowVisible() {
   } else {
     win.show()
   }
-}
-
-// 注册快捷键
-function registerShortcut() {
-  // registerEsc()
-  const key = SettingsStore.get('shortcutKey').replace(/\s/g, '+')
-  console.log('registerShortcut', key)
-  // 注册快捷键激活/隐藏窗口
-  globalShortcut.register(key, () => toggleWindowVisible())
-}
-// 失效快捷键
-function unregisterShortcut() {
-  globalShortcut.unregisterAll()
-}
-// TODO 暂时不处理 Esc 键
-function registerEsc() {
-  if (globalShortcut.isRegistered('Esc')) {
-    return
-  }
-  console.log('register Esc')
-  globalShortcut.register('Esc', () => {
-    win.hide()
-  })
 }
 
 async function createWindow() {
@@ -269,7 +201,7 @@ async function createWindow() {
   // 禁用手动调整窗口大小
   win.setResizable(false)
   // TODO 不在任务栏中显示
-  // win.setSkipTaskbar(true)
+  win.setSkipTaskbar(true)
 
   // TODO 窗口失焦时，隐藏窗口
   win.on('blur', () => {
@@ -285,11 +217,6 @@ async function createWindow() {
     win.loadFile(indexHtml)
   }
 
-  // Test actively push message to the Electron-Renderer
-  win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', new Date().toLocaleString())
-  })
-
   // Make all links open with the browser, not with the application
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https:')) shell.openExternal(url)
@@ -301,55 +228,30 @@ async function createWindow() {
     if (input.alt && input.code === 'F4') {
       event.preventDefault()
     }
-    // win.webContents.setIgnoreMenuShortcuts(true)
-    // console.log('before-input-event', input.alt, input.key, input.code)
   })
-
-  const language = SettingsStore.get('language')
-  const isZh = language === 'zh_CN'
-  const updateLanguage = (language: 'zh_CN' | 'en_US') => {
-    SettingsStore.set('language', language)
-    win.webContents.send('change-language', language)
-  }
-  // 注册获取当前语言的事件，用于初始化语言
-  ipcMain.handleOnce('get-language', () => {
-    return Promise.resolve(SettingsStore.get('language'))
-  })
-  ipcMain.handle('set-language', (_event, language) => {
-    updateLanguage(language)
-  })
-  ipcMain.handle('set-theme', (_event, theme) => {
-    SettingsStore.set('theme', theme)
-    nativeTheme.themeSource = theme
-  })
-  ipcMain.handle('get-theme', (_event) => {
-    const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
-    return Promise.resolve(theme)
-  })
-  nativeTheme.themeSource = SettingsStore.get('theme')
-  // win.webContents.send('update-theme', SettingsStore.get('theme'))
+  nativeTheme.themeSource = SettingsStore.get('theme') as any
   initTray()
 
-  // 刷新配置
+  registerShortcut(SettingsStore.get('shortcutKey'))
 
-  registerShortcut()
   win.on('show', () => {
     win.webContents.send('render')
-    // registerEsc()
   })
-  win.on('hide', () => {
-    // if (globalShortcut.isRegistered('Esc')) {
-    //   console.log('unregister Esc')
-    //   globalShortcut.unregister('Esc')
-    // }
-  })
-  win.webContents.on('did-finish-load', () => {
-    win.webContents.send('refresh-settings', SettingsStore.store)
-    console.log('finish loaded')
-  })
+  win.on('hide', () => {})
+  // TODO 模拟当前 Active App 发生改变
+  // setInterval(() => {
+  //   win.webContents.send(
+  //     'update-active-app',
+  //     btoa(String(Date.now() % 10000))
+  //       .slice(0, 6)
+  //       .toUpperCase()
+  //   )
+  // }, 5000)
 
   // TODO 开机启动时隐藏窗口
-  win.once('ready-to-show', () => {
+  // TODO 打包时，改为 once
+  win.on('ready-to-show', () => {
+    win.webContents.send('refresh-settings', SettingsStore.store)
     console.log(process.argv.includes('--openAsHidden'))
     if (!process.argv.includes('--openAsHidden')) {
       win.show()

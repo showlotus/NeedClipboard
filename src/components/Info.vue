@@ -12,8 +12,11 @@
         <span class="font-bold text-[--nc-group-label-color] min-w-40">{{
           item[0]
         }}</span>
-        <!-- TODO only the path attribute need tooltip -->
-        <AutoTooltip v-if="isFile" :key="activeRecord.id" :value="item[1]" />
+        <AutoTooltip
+          v-if="isFile && item[0] === t('NC.path')"
+          :key="activeRecord.id"
+          :value="item[1]"
+        />
         <span
           v-else
           class="text-[--el-color-primary] text-xs flex-1 text-right text-ellipsis overflow-hidden"
@@ -73,7 +76,7 @@ const ops = {
       [t('NC.source'), data.application],
       [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
       [t('NC.path'), data.path],
-      [t('NC.fileSize'), data.size],
+      // [t('NC.fileSize'), data.size],
       [t('NC.fileCount'), data.fileCount],
       [t('NC.copied'), data.createTime]
     ]
@@ -85,7 +88,7 @@ const info = computed(() => {
   if (!val || !val.type) {
     return []
   } else {
-    return ops[val.type](val)
+    return ops[val.type](val).filter((v) => v[1])
   }
 })
 </script>

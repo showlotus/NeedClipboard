@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import db from '../database'
+import DB from '../database'
 import imgUrl2 from './img2.txt?raw'
 import imgUrl from './img.txt?raw'
 
@@ -39,16 +39,16 @@ const handleCopyImage = () => {
 }
 
 const handleCopyImageFromDB = async () => {
-  const count = await db.image.count()
-  db.image.get(count).then((res) => {
+  const count = await DB.image.count()
+  DB.image.get(count).then((res) => {
     console.log(res)
     window.ipcRenderer.invoke('update-clipboard-image-buffer', res)
   })
 }
 
 const handleCopyImageFromUrl = async () => {
-  const count = await db.image.count()
-  db.image.get(count).then((res) => {
+  const count = await DB.image.count()
+  DB.image.get(count).then((res) => {
     console.log(res)
     window.ipcRenderer.invoke('update-clipboard-image-url', res)
   })

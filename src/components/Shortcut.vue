@@ -5,8 +5,8 @@
       ref="contentRef"
       contenteditable="plaintext-only"
       class="el-input__wrapper w-full justify-start hover:input-shadow focus:focus-input-shadow outline-none caret-[--el-color-primary]"
-      @focus="onFocus"
-      @blur="onBlur"
+      @focus="handleEditorFocus"
+      @blur="handleEditorBlur"
       @keydown.prevent="onKeydown"
       @keyup="onKeyup"
       @input="onInput"
@@ -26,6 +26,7 @@
 import { ref } from 'vue'
 
 import { useRecordKey } from '@/hooks/useRecordKey'
+import { ipcCloseTriggerShortcut, ipcOpenTriggerShortcut } from '@/utils/ipc'
 
 withDefaults(defineProps<{ id: string }>(), {
   id: 'shortcut'
@@ -40,6 +41,16 @@ const {
   onFocus,
   onBlur
 } = useRecordKey(modelValue)
+
+const handleEditorFocus = () => {
+  onFocus()
+  ipcCloseTriggerShortcut()
+}
+
+const handleEditorBlur = () => {
+  onBlur()
+  ipcOpenTriggerShortcut()
+}
 
 const handleInputFocus = (e: FocusEvent) => {
   const target = (e.target as HTMLInputElement).nextSibling! as HTMLDivElement

@@ -50,7 +50,7 @@ import { useI18n } from 'vue-i18n'
 
 import LogoSvg from '@/assets/icons/logo.svg'
 import { useMainStore } from '@/stores/main'
-import { ipcGetActiveApp } from '@/utils/ipc'
+import { ipcOnUpdateActiveApp } from '@/utils/ipc'
 
 const isBeta = pkg.version.includes('beta')
 const appName = pkg.name
@@ -62,23 +62,20 @@ const handleToggleSettingPanel = () => {
 const { t } = useI18n()
 const mainStore = useMainStore()
 
-const ops = {
-  clipboard() {},
-  app() {}
-}
-
 // TODO 监听活动应用
 const activeApp = ref('Google Chrome')
+ipcOnUpdateActiveApp((event, app) => {
+  console.log(app)
+  activeApp.value = app
+})
+
+const primaryAction = computed(() => mainStore.setting.primaryAction)
 const triggerLabelList = computed(() => {
-  if (mainStore.setting.primaryAction === 'clipboard') {
+  if (primaryAction.value === 'clipboard') {
     return [t('NC.copyToClipboard'), t('NC.pasteToSomeApp', [activeApp.value])]
   } else {
     return [t('NC.pasteToSomeApp', [activeApp.value]), t('NC.copyToClipboard')]
   }
-})
-
-const triggerTips = computed(() => {
-  const res = [{ label: '' }, { label: '' }]
 })
 
 const handleTriggerEnter = () => {
@@ -88,21 +85,31 @@ const handleTriggerCtrlEnter = () => {
   hotkeys.trigger('ctrl+enter', 'home')
 }
 
-hotkeys('enter', 'home', () => {
-  if (mainStore.setting.primaryAction === 'clipboard') {
-    console.log('Copy to Clipboard' /* activeItem.value */)
+const activeRecord = computed(() => mainStore.activeRecord)
+const triggerCopyToClipboard = () => {
+  // TODO
+  console.log('Copy to Clipboard', activeRecord.value)
+}
+const triggerPastToActiveApp = () => {
+  // TODO
+  console.log('Past to Action App', activeRecord.value)
+}
+const triggerEvents = {
+  enter: () => {},
+  ctrlEnter: () => {}
+}
+watch(primaryAction, (val) => {
+  if (val === 'app') {
+    triggerEvents.enter = triggerPastToActiveApp
+    triggerEvents.ctrlEnter = triggerCopyToClipboard
   } else {
-    console.log('Past to Action App' /* activeItem.value */)
-  }
-})
-hotkeys('ctrl+enter', 'home', () => {
-  if (mainStore.setting.primaryAction === 'app') {
-    console.log('Copy to Clipboard' /* activeItem.value */)
-  } else {
-    console.log('Past to Action App' /* activeItem.value */)
+    triggerEvents.enter = triggerCopyToClipboard
+    triggerEvents.ctrlEnter = triggerPastToActiveApp
   }
 })
 
+hotkeys('enter', 'home', () => triggerEvents.enter())
+hotkeys('ctrl+enter', 'home', () => triggerEvents.ctrlEnter())
 hotkeys('ctrl+,', () => {
   handleToggleSettingPanel()
 })
