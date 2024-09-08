@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded-full border-[2px] border-[--nc-color-block-border-color] group-[.is-active]:border-[--nc-color-block-border-active-color]"
+    class="relative rounded-full after:block after:absolute after:inset-[-1.8px] after:border-2 after:rounded-full after:border-[currentColor] after:opacity-50"
     :style="{ color: value, backgroundColor: value }"
   ></div>
 </template>
