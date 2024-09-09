@@ -5,7 +5,8 @@ import Dexie from 'dexie'
 import 'fake-indexeddb/auto'
 import { describe, expect, test } from 'vitest'
 
-import { fetchInsert } from '@/database/api'
+import { fetchInsert, fetchSearch } from '@/database/api'
+import { SearchParams } from '@/stores/main'
 
 import {
   ClipboardTableType,
@@ -14,11 +15,32 @@ import {
   createDatabase
 } from '../src/database'
 
-// describe('test fetchSearch', () => {
-//   test('adds 1 + 2 to equal 3', () => {
-//     expect(sum(1, 2)).toBe(3)
-//   })
-// })
+describe('test fetchSearch', () => {
+  test('search all', async () => {
+    const db = createDatabase()
+    await db.ClipboardTable.bulkAdd([
+      {
+        type: 'Text',
+        content: 'xxx',
+        createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+      },
+      {
+        type: 'Image',
+        content: '',
+        createTime: dayjs().subtract(1, 'day').format('YYYY/MM/DD HH:mm:ss')
+      }
+    ])
+    const params: SearchParams = {
+      keyword: '',
+      type: 'All',
+      currPage: 1,
+      pageSize: 10
+    }
+    const data = await fetchSearch(params)
+    console.log(data)
+    // expect(sum(1, 2)).toBe(3)
+  })
+})
 
 describe('test fetchInsert', () => {
   test('insert a record and type is Text', async () => {
@@ -61,7 +83,7 @@ describe('test fetchInsert', () => {
     const db = createDatabase()
     const content = 'https://www.xxx.com'
     const data: Omit<TextDataType, 'id'> = {
-      type: 'Color',
+      type: 'Link',
       content,
       characters: content.length,
       createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')

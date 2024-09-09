@@ -11,7 +11,7 @@
     <HotkeyTooltip placement="left" command="Ctrl P">
       <custom-select
         ref="customSelectRef"
-        v-model="value"
+        v-model="type"
         :options="typeOptions"
         placeholder="Select"
         class="w-40 no-drag"
@@ -24,16 +24,16 @@
 import hotkeys from 'hotkeys-js'
 import { computed, ref, watch } from 'vue'
 
-import { useQueryTypeOptions } from '@/hooks/useTypeOptions'
+import { OptionType, useQueryTypeOptions } from '@/hooks/useTypeOptions'
 import { SearchParams, useMainStore } from '@/stores/main'
 import { ipcToggleVisible } from '@/utils/ipc'
 
 const { typeOptions } = useQueryTypeOptions()
-const keyword = ref('')
-const value = ref('All')
+const keyword = ref<string>('')
+const type = ref<OptionType>('All')
 const mainStore = useMainStore()
-watch([keyword, value], (val) => {
-  const params = { keyword: val[0], type: val[1] } as SearchParams
+watch([keyword, type], ([keywordVal, typeVal]) => {
+  const params = { keyword: keywordVal, type: typeVal } as SearchParams
   mainStore.updateSearchParams(params)
 })
 
@@ -44,7 +44,7 @@ const elSelectRef = computed(() => {
 
 watch(
   () => elSelectRef.value?.expanded,
-  (newVal) => {
+  (newVal: boolean) => {
     if (!newVal) {
       hotkeys.trigger('/', 'home')
     }
@@ -53,7 +53,11 @@ watch(
 
 hotkeys.filter = () => true
 hotkeys('esc', 'home', () => {
-  ipcToggleVisible()
+  if (keyword.value) {
+    keyword.value = ''
+  } else {
+    ipcToggleVisible()
+  }
 })
 hotkeys('ctrl+p', 'home', () => {
   elSelectRef.value?.focus()

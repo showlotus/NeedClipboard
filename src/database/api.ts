@@ -23,11 +23,18 @@ export async function fetchSearch(params: SearchParams) {
     return v.content.includes(keyword)
   }
   const DB = createDatabase()
+  console.log(await DB.ClipboardTable.count())
+  let data
   if (type === TYPE_VALUE.all) {
-    const data = DB.ClipboardTable.filter(filters)
+    data = await DB.ClipboardTable.filter(filters).toArray()
   } else {
-    const data = DB.ClipboardTable.where('type').equals(type).filter(filters)
+    data = await DB.ClipboardTable.where('type')
+      .equals(type)
+      .filter(filters)
+      .toArray()
   }
+
+  return data
 
   const start = pageSize * (currPage - 1)
   const end = start + pageSize
@@ -40,14 +47,14 @@ export async function fetchSearch(params: SearchParams) {
   }
 }
 
-type OmitAll<T> = T
+type RemoveId<T> = Omit<T, 'id'>
 
 type InsertDataType =
-  | Omit<TextDataType, 'id'>
-  | Omit<ImageDataType, 'id'>
-  | Omit<FileDataType, 'id'>
+  | RemoveId<TextDataType>
+  | RemoveId<ImageDataType>
+  | RemoveId<FileDataType>
 
-export function fetchInsert(data: InsertDataType) {
+export async function fetchInsert(data: InsertDataType) {
   const db = createDatabase()
   let insertedClipboardTableData = {} as ClipboardTableType
   let insertedTypeTableData = {}
@@ -73,17 +80,16 @@ export function fetchInsert(data: InsertDataType) {
     )
   }
 
-  return db.ClipboardTable.add(insertedClipboardTableData).then(async (id) => {
-    const insertedData = { id, ...insertedTypeTableData }
-    if (data.type === 'File') {
-      await db.FileTable.put(insertedData as FileTableType)
-    } else if (data.type === 'Image') {
-      await db.ImageTable.put(insertedData as ImageTableType)
-    } else {
-      await db.TextTable.put(insertedData as TextTableType)
-    }
-    return id
-  })
+  const id = await db.ClipboardTable.add(insertedClipboardTableData)
+  const insertedData = { id, ...insertedTypeTableData }
+  if (data.type === 'File') {
+    await db.FileTable.put(insertedData as FileTableType)
+  } else if (data.type === 'Image') {
+    await db.ImageTable.put(insertedData as ImageTableType)
+  } else {
+    await db.TextTable.put(insertedData as TextTableType)
+  }
+  return id
 }
 
 export function fetchDelete() {}
