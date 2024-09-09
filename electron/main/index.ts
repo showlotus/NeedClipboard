@@ -251,7 +251,6 @@ async function createWindow() {
   // TODO 开机启动时隐藏窗口
   // TODO 打包时，改为 once
   win.on('ready-to-show', () => {
-    win.webContents.send('refresh-settings', SettingsStore.store)
     console.log(process.argv.includes('--openAsHidden'))
     if (!process.argv.includes('--openAsHidden')) {
       win.show()

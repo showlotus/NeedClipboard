@@ -8,8 +8,8 @@ export interface ClipboardTableType {
   id: number
   type: ClipboardType
   content: string
+  createTime: string
   application?: string
-  createTime?: string
 }
 
 export interface TextTableType {
@@ -17,8 +17,23 @@ export interface TextTableType {
   characters: number
 }
 
+export interface TextDataType extends ClipboardTableType {
+  type: 'Text' | 'Link' | 'Color'
+
+  characters: number
+}
+
 export interface FileTableType {
   id: number
+  subType: 'file' | 'folder' | 'folder,file'
+  path: string | string[]
+  files?: string[]
+  filesCount?: number
+}
+
+export interface FileDataType extends ClipboardTableType {
+  type: 'File'
+
   subType: 'file' | 'folder' | 'folder,file'
   path: string | string[]
   files?: string[]
@@ -32,6 +47,14 @@ export interface ImageTableType {
   size: string
 }
 
+export interface ImageDataType extends ClipboardTableType {
+  type: 'Image'
+
+  url: string
+  dimensions: string
+  size: string
+}
+
 type DataBaseType = Dexie & {
   ClipboardTable: EntityTable<ClipboardTableType, 'id'>
   TextTable: EntityTable<TextTableType, 'id'>
@@ -40,11 +63,11 @@ type DataBaseType = Dexie & {
 }
 
 let db: DataBaseType
-export async function createDataBase() {
-  const isExists = await Dexie.exists(pkg.name)
-  if (isExists) {
-    return db
-  }
+export function createDatabase() {
+  // const isExists = await Dexie.exists(pkg.name)
+  // if (isExists) {
+  //   return db
+  // }
 
   // 创建数据库
   const DB = new Dexie(pkg.name) as DataBaseType
@@ -57,13 +80,32 @@ export async function createDataBase() {
     ImageTable: 'id,url,dimensions,size'
   })
 
-  const mockData = genMockData(10)
-  DB.ClipboardTable.bulkAdd(
-    mockData.map((v) => {
-      delete v.id
-      return v
-    })
-  )
+  // const mockData = genMockData(10)
+  // DB.ClipboardTable.bulkAdd(
+  //   mockData.map((v) => {
+  //     delete v.id
+  //     return v
+  //   })
+  // )
+
+  // DB.ClipboardTable.bulkPut([
+  //   {
+  //     id: 100,
+  //     content: 'xxxxxxx',
+  //     application: '',
+  //     type: 'Text'
+  //   },
+  //   {
+  //     id: 1000,
+  //     content: 'xxxxxxx',
+  //     application: '',
+  //     type: 'Text'
+  //   }
+  // ])
 
   return (db = DB)
+}
+
+export function getDataBase() {
+  return db
 }

@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import { TYPE_VALUE } from '@/constants/aria'
 import { OptionType } from '@/hooks/useTypeOptions'
 import { Lang } from '@/i18n'
-import { ipcOnRefreshSettings } from '@/utils/ipc'
+import { ipcInitSettings, ipcOnRefreshSettings } from '@/utils/ipc'
 
 export interface SearchParams {
   keyword: string
@@ -33,6 +33,8 @@ function useSetting() {
   ipcOnRefreshSettings((event, store) => {
     setting.value = store
   })
+
+  ipcInitSettings()
 
   return {
     setting

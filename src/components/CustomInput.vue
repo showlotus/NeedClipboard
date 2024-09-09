@@ -48,7 +48,7 @@ hotkeys('/', 'home', (e) => {
   :deep(.el-input__wrapper) {
     padding-left: 0;
     padding-right: 0;
-    font-size: 16px;
+    font-size: 14px;
     box-shadow: none;
   }
 

@@ -10,7 +10,7 @@
     :lock-scroll="false"
     append-to-body
   >
-    <template #header> {{ t('NC.setting') }} </template>
+    <template #header> {{ $t('NC.setting') }} </template>
     <el-scrollbar class="h-full">
       <div class="h-full mt-[18px] flex gap-4 select-none">
         <el-form
@@ -19,21 +19,21 @@
           class="flex-1 mx-5"
           style="max-width: 600px"
         >
-          <el-form-item :label="t('NC.primaryAction')">
+          <el-form-item :label="$t('NC.primaryAction')">
             <custom-select
               v-model="primaryAction"
               :options="primaryActionOptions"
               class="w-full"
             />
           </el-form-item>
-          <el-form-item :label="t('NC.keepHistoryFor')">
+          <el-form-item :label="$t('NC.keepHistoryFor')">
             <custom-select
               v-model="keepDays"
               :options="keepDaysOptions"
               class="w-full"
             />
           </el-form-item>
-          <el-form-item :label="t('NC.language')">
+          <el-form-item :label="$t('NC.language')">
             <custom-select
               v-model="language"
               :options="languageOptions"
@@ -41,7 +41,7 @@
             />
           </el-form-item>
 
-          <el-form-item :label="t('NC.themeMode')">
+          <el-form-item :label="$t('NC.themeMode')">
             <custom-select
               v-model="theme"
               :options="themeOptions"
@@ -51,12 +51,12 @@
           <el-form-item>
             <template #label>
               <label for="shortcut" class="block w-full h-full">{{
-                t('NC.activateHotkey')
+                $t('NC.activateHotkey')
               }}</label>
             </template>
             <Shortcut id="shortcut" v-model="shortcutKey" class="w-full" />
           </el-form-item>
-          <el-form-item :label="t('NC.startup')" label-position="left">
+          <el-form-item :label="$t('NC.startup')" label-position="left">
             <el-switch v-model="startup" />
           </el-form-item>
         </el-form>
@@ -71,7 +71,6 @@ import { useI18n } from 'vue-i18n'
 
 import { useSettingOptions } from '@/hooks/useSettingOptions'
 import { useUpdateSetting } from '@/hooks/useUpdateSetting'
-import { Theme } from '@/stores/main'
 import { useDarkTheme, useLightTheme, useSystemTheme } from '@/utils/ipc/theme'
 
 const modelValue = defineModel<boolean>({ default: false })
@@ -99,7 +98,7 @@ const ops = {
   dark: useDarkTheme
 }
 
-const { t, locale } = useI18n()
+const { locale } = useI18n()
 watch(theme, (val) => {
   ops[val]?.()
 })

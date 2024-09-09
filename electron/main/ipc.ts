@@ -7,9 +7,13 @@ ipcMain.handle('toggle-visible', () => {
   toggleWindowVisible()
 })
 
+// TODO in production mode need use handleOnce
+ipcMain.handle('init-settings', () => {
+  getWinWebContents().send('refresh-settings', SettingsStore.store)
+})
+
 ipcMain.handle('update-setting', (event, key: string, val: any) => {
   SettingsStore.set(key, val)
-  // 通知渲染进程更新设置
   getWinWebContents().send('refresh-settings', SettingsStore.store)
 })
 

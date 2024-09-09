@@ -222,5 +222,9 @@
   "NC.conflictShortcut": {
     "zh_CN": "快捷键冲突",
     "en_US": "The hotkey is conflicted."
+  },
+  "NC.inputPlaceholder": {
+    "zh_CN": "输入关键词来筛选记录...",
+    "en_US": "Enter keywords to filter entries..."
   }
 }

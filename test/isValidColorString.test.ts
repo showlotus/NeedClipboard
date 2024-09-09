@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
-
 import { describe, expect, test } from 'vitest'
+
 import { isValidColorString } from '../src/utils/isValidColorString'
 
 describe('test name-color', () => {

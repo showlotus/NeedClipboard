@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest'
+
 import { formatI18nJson } from '../src/i18n'
 
 describe('test formatI18nJson', () => {

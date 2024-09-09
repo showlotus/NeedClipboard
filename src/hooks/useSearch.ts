@@ -119,7 +119,7 @@ export function genMockData(n = 10) {
 
 const mockData = genMockData(100)
 mockData.sort((a, b) => (a.createTime < b.createTime ? 1 : -1))
-console.log(mockData)
+// console.log(mockData)
 
 function searchKeyword(data: any, keyword: string) {
   if (!keyword) {

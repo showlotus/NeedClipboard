@@ -24,6 +24,10 @@ export function ipcToggleVisible() {
   window.ipcRenderer.invoke('toggle-visible')
 }
 
+export function ipcInitSettings() {
+  window.ipcRenderer.invoke('init-settings')
+}
+
 export function ipcOnRefreshSettings(callback: (...args: any[]) => void) {
   window.ipcRenderer.on('refresh-settings', callback)
 }

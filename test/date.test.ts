@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'vitest'
 import dayjs from 'dayjs'
+import { describe, expect, test } from 'vitest'
+
 import {
   isLastMonth,
   isLastWeek,

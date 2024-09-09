@@ -4,7 +4,7 @@
       <custom-input
         v-model="keyword"
         autofocus
-        placeholder="please input something..."
+        :placeholder="$t('NC.inputPlaceholder')"
         class="no-drag min-w-80"
       />
     </div>
