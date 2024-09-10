@@ -26,7 +26,7 @@ dist-electron
 
 # lockfile
 package-lock.json
-pnpm-lock.yaml
+# pnpm-lock.yaml
 yarn.lock
 
 # vscode
