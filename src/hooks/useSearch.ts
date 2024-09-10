@@ -34,7 +34,7 @@ export function genMockData(n = 10) {
   const t = ['Text', 'Image', 'File', 'Link', 'Color']
   return new Array(n).fill(0).map((_, i) => {
     const type = t[i % t.length]
-    const data = { subType: null } as any
+    const data = {} as any
     if (type === 'Color') {
       data.content = faker.color.rgb({ format: 'css' })
     } else if (type === 'Text') {

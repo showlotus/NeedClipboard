@@ -6,7 +6,9 @@ import { createI18n } from 'vue-i18n'
 
 import App from './App.vue'
 import { createDatabase } from './database'
+import { fetchInsert } from './database/api'
 import './demos/ipc'
+import { genMockData } from './hooks/useSearch'
 import i18nConfig from './i18n'
 import './style/style.css'
 import './style/theme.css'
@@ -14,8 +16,18 @@ import './style/theme.css'
 // If you want use Node.js, the`nodeIntegration` needs to be enabled in the Main process.
 // import './demos/node'
 
-const db = await createDatabase()
-console.log(db, await createDatabase())
+createDatabase()
+
+// TEST local dev
+// Promise.all(
+//   genMockData(10).map((v) => {
+//     delete v.id
+//     return fetchInsert(v)
+//   })
+// ).then(() => {
+//   console.log('database init...')
+// })
+
 const pinia = createPinia()
 const i18n = createI18n({
   legacy: false,

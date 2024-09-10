@@ -1,5 +1,7 @@
-import { TYPE_VALUE } from '@/constants/aria'
+import { TYPE_VALUE, UNIQUE_KEY } from '@/constants/aria'
+import { ClipboardType, OptionType } from '@/hooks/useTypeOptions'
 import { SearchParams } from '@/stores/main'
+import { pickAndOmit } from '@/utils/tools'
 
 import {
   ClipboardTableType,
@@ -56,67 +58,48 @@ type InsertDataType =
 
 export async function fetchInsert(data: InsertDataType) {
   const db = createDatabase()
-  let insertedClipboardTableData = {} as ClipboardTableType
-  let insertedTypeTableData = {}
-  if (data.type === 'File') {
-    ;[insertedTypeTableData, insertedClipboardTableData] = pickAndOmit(
-      data,
-      'files',
-      'filesCount',
-      'path',
-      'subType'
-    )
-  } else if (data.type === 'Image') {
-    ;[insertedTypeTableData, insertedClipboardTableData] = pickAndOmit(
-      data,
-      'dimensions',
-      'size',
-      'url'
-    )
-  } else {
-    ;[insertedTypeTableData, insertedClipboardTableData] = pickAndOmit(
-      data,
-      'characters'
-    )
+  const ops = {
+    File: async () => {
+      const [typeData, commonData] = pickAndOmit(
+        data as RemoveId<FileDataType>,
+        'files',
+        'filesCount',
+        'path',
+        'subType'
+      )
+      const id = await db.ClipboardTable.add(commonData)
+      const insertedData = { id, ...typeData }
+      return db.FileTable.put(insertedData as FileTableType)
+    },
+    Image: async () => {
+      const [typeData, commonData] = pickAndOmit(
+        data as RemoveId<ImageDataType>,
+        'dimensions',
+        'size',
+        'url'
+      )
+      const id = await db.ClipboardTable.add(commonData)
+      const insertedData = { id, ...typeData }
+      return db.ImageTable.put(insertedData as ImageTableType)
+    },
+    [UNIQUE_KEY]: async () => {
+      const [typeData, commonData] = pickAndOmit(
+        data as RemoveId<TextDataType>,
+        'characters'
+      )
+      const id = await db.ClipboardTable.add(commonData)
+      const insertedData = { id, ...typeData }
+      return db.TextTable.put(insertedData as TextTableType)
+    }
   }
 
-  const id = await db.ClipboardTable.add(insertedClipboardTableData)
-  const insertedData = { id, ...insertedTypeTableData }
-  if (data.type === 'File') {
-    await db.FileTable.put(insertedData as FileTableType)
-  } else if (data.type === 'Image') {
-    await db.ImageTable.put(insertedData as ImageTableType)
+  if (ops[data.type as 'File' | 'Image']) {
+    return ops[data.type as 'File' | 'Image']()
   } else {
-    await db.TextTable.put(insertedData as TextTableType)
+    return ops[UNIQUE_KEY]()
   }
-  return id
 }
 
 export function fetchDelete() {}
 
 export function fetchUpdate() {}
-
-function omit<T extends Record<string, any>>(obj: T, ...keys: (keyof T)[]) {
-  return Object.keys(obj).reduce((curr: any, key) => {
-    if (!keys.includes(key)) {
-      curr[key] = obj[key]
-    }
-    return curr
-  }, {})
-}
-
-function pick<T extends Record<string, any>>(obj: T, ...keys: (keyof T)[]) {
-  return Object.keys(obj).reduce((curr: any, key) => {
-    if (keys.includes(key)) {
-      curr[key] = obj[key]
-    }
-    return curr
-  }, {})
-}
-
-function pickAndOmit<T extends Record<string, any>>(
-  obj: T,
-  ...keys: (keyof T)[]
-) {
-  return [pick(obj, ...keys), omit(obj, ...keys)]
-}

@@ -26,7 +26,7 @@ interface Props {
 
 const props = defineProps<Props>()
 const ops = {
-  Color: () => h(ColorBlock, { class: 'w-5 h-5', value: props.data.content }),
+  Color: () => h(ColorBlock, { class: 'w-4 h-4', value: props.data.content }),
   Text: () => h(TextSvg, { class: 'w-5' }),
   Image: () => h(ImageSvg, { class: 'w-[22px]' }),
   Link: () => h(LinkSvg, { class: 'w-5' }),

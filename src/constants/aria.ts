@@ -34,3 +34,5 @@ export const FILE_SUB_TYPE_VALUE = {
   folder: 'folder',
   folderFile: 'folder,file'
 }
+
+export const UNIQUE_KEY = Symbol()

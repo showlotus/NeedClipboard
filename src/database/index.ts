@@ -4,6 +4,8 @@ import Dexie, { EntityTable } from 'dexie'
 import { genMockData } from '@/hooks/useSearch'
 import { ClipboardType } from '@/hooks/useTypeOptions'
 
+import { fetchInsert } from './api'
+
 export interface ClipboardTableType {
   id: number
   type: ClipboardType
@@ -62,13 +64,7 @@ type DataBaseType = Dexie & {
   ImageTable: EntityTable<ImageTableType, 'id'>
 }
 
-let db: DataBaseType
 export function createDatabase() {
-  // const isExists = await Dexie.exists(pkg.name)
-  // if (isExists) {
-  //   return db
-  // }
-
   // 创建数据库
   const DB = new Dexie(pkg.name) as DataBaseType
 
@@ -80,7 +76,15 @@ export function createDatabase() {
     ImageTable: 'id,url,dimensions,size'
   })
 
-  // const mockData = genMockData(10)
+  // Promise.all(
+  //   genMockData(10).map((v) => {
+  //     delete v.id
+  //     return fetchInsert(v)
+  //   })
+  // ).then(() => {
+  //   console.log('database init...')
+  // })
+
   // DB.ClipboardTable.bulkAdd(
   //   mockData.map((v) => {
   //     delete v.id
@@ -103,9 +107,5 @@ export function createDatabase() {
   //   }
   // ])
 
-  return (db = DB)
-}
-
-export function getDataBase() {
-  return db
+  return DB
 }
