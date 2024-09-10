@@ -17,41 +17,48 @@ import {
 export async function fetchSearch(params: SearchParams) {
   const { keyword, type, currPage, pageSize } = params
 
-  // let data = [] as any
   const filters = (v: ClipboardTableType) => {
     if (!keyword) {
       return true
     }
     return v.content.includes(keyword)
   }
-  const DB = createDatabase()
-  console.log(await DB.ClipboardTable.count())
-  let data
-  if (type === TYPE_VALUE.all) {
-    data = await DB.ClipboardTable.filter(filters).toArray()
-  } else {
-    data = await DB.ClipboardTable.where('type')
-      .equals(type)
-      .filter(filters)
-      .toArray()
-  }
-
-  return data
-
+  const db = createDatabase()
+  let data: ClipboardTableType[]
+  let totals = 0
   const start = pageSize * (currPage - 1)
   const end = start + pageSize
-  // const result = data.slice(start, end)
-  const result = [].slice(start, end)
-
-  return {
-    result,
-    totals: 100
+  if (type === TYPE_VALUE.all) {
+    const collections = db.ClipboardTable.filter(filters)
+    totals = await collections.count()
+    data = (await collections.sortBy('createTime')).reverse().slice(start, end)
+  } else {
+    const collections = db.ClipboardTable.where('type')
+      .equals(type)
+      .filter(filters)
+    totals = await collections.count()
+    data = (await collections.sortBy('createTime')).reverse().slice(start, end)
+    data = await Promise.all(
+      data.map(async (v) => {
+        let d
+        if (v.type === 'File') {
+          d = await db.FileTable.get(v.id)
+        } else if (v.type === 'Image') {
+          d = await db.ImageTable.get(v.id)
+        } else {
+          d = await db.TextTable.get(v.id)
+        }
+        return { ...v, ...d }
+      })
+    )
   }
+
+  return { result: data, totals }
 }
 
 type RemoveId<T> = Omit<T, 'id'>
 
-type InsertDataType =
+export type InsertDataType =
   | RemoveId<TextDataType>
   | RemoveId<ImageDataType>
   | RemoveId<FileDataType>
@@ -100,6 +107,22 @@ export async function fetchInsert(data: InsertDataType) {
   }
 }
 
-export function fetchDelete() {}
+export async function fetchDelete(id: number) {
+  const db = createDatabase()
+  const { type } = (await db.ClipboardTable.get(id))!
+  await db.ClipboardTable.delete(id)
+  if (type === 'File') {
+    return await db.FileTable.delete(id)
+  } else if (type === 'Image') {
+    return await db.ImageTable.delete(id)
+  } else {
+    return await db.TextTable.delete(id)
+  }
+}
 
+/**
+ * 什么时候需要更新记录：
+ *
+ * 1. 当剪贴板中最新的一条记录与当前即将要入库的数据一致时
+ */
 export function fetchUpdate() {}

@@ -49,16 +49,13 @@ import hotkeys from 'hotkeys-js'
 import { computed, nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-const props = withDefaults(
-  defineProps<{ triggerRef: any; visible: boolean }>(),
-  {
-    triggerRef: null,
-    visible: false
-  }
-)
+withDefaults(defineProps<{ triggerRef: any }>(), {
+  triggerRef: null
+})
+
+const modelValue = defineModel<boolean>('visible', { default: false })
 
 const emit = defineEmits<{
-  (e: 'update:visible', val: boolean): void
   (e: 'on-delete'): void
   (e: 'on-spin'): void
 }>()
@@ -68,16 +65,15 @@ const activeIndex = ref(-1)
 const menuRef = ref()
 
 const close = () => {
-  emit('update:visible', false)
+  modelValue.value = false
 }
 const handleClickOutside = () => {
-  if (props.visible) {
-    console.log('outside --------------')
+  if (modelValue.value) {
     close()
   }
 }
 watch(
-  () => props.visible,
+  modelValue,
   (val) => {
     if (val) {
       hotkeys.setScope('menu')
@@ -86,23 +82,20 @@ watch(
       hotkeys.setScope('home')
       hotkeys.trigger('/', 'home')
     }
-    console.log(hotkeys.getScope())
   },
   { immediate: true }
 )
 hotkeys('tab', 'menu', () => {
-  emit('update:visible', !props.visible)
+  modelValue.value = !modelValue.value
   return false
 })
 hotkeys('up', 'menu', () => {
   const len = options.value.length
   activeIndex.value = (activeIndex.value - 1 + len) % len
-  console.log(activeIndex.value)
   return false
 })
 hotkeys('down', 'menu', () => {
   activeIndex.value = (activeIndex.value + 1) % options.value.length
-  console.log(activeIndex.value)
   return false
 })
 hotkeys('enter', 'menu', () => {
@@ -121,14 +114,14 @@ const options = computed(() => [
       close()
       emit('on-delete')
     }
-  },
-  {
-    label: t('NC.spin'),
-    click() {
-      close()
-      emit('on-spin')
-    }
   }
+  // {
+  //   label: t('NC.spin'),
+  //   click() {
+  //     close()
+  //     emit('on-spin')
+  //   }
+  // }
 ])
 
 document.addEventListener('contextmenu', (e) => {

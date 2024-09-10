@@ -1,30 +1,30 @@
-export function omit<T extends Record<string, any>, U extends T>(
+export function omit<T extends Record<string, any>, U extends (keyof T)[]>(
   obj: T,
-  ...keys: (keyof T)[]
-) {
-  return Object.keys(obj).reduce((curr: any, key) => {
+  ...keys: U
+): Omit<T, U[number]> {
+  return Object.keys(obj).reduce((res: any, key) => {
     if (!keys.includes(key)) {
-      curr[key] = obj[key]
+      res[key] = obj[key]
     }
-    return curr
-  }, {}) as U
+    return res
+  }, {})
 }
 
-export function pick<T extends Record<string, any>, U extends T>(
+export function pick<T extends Record<string, any>, U extends (keyof T)[]>(
   obj: T,
-  ...keys: (keyof T)[]
-) {
-  return Object.keys(obj).reduce((curr: any, key) => {
+  ...keys: U
+): Pick<T, U[number]> {
+  return Object.keys(obj).reduce((res: any, key) => {
     if (keys.includes(key)) {
-      curr[key] = obj[key]
+      res[key] = obj[key]
     }
-    return curr
-  }, {}) as U
+    return res
+  }, {})
 }
 
-export function pickAndOmit<T extends Record<string, any>>(
-  obj: T,
-  ...keys: (keyof T)[]
-) {
-  return [pick(obj, ...keys), omit(obj, ...keys)]
+export function pickAndOmit<
+  T extends Record<string, any>,
+  U extends (keyof T)[]
+>(obj: T, ...keys: U) {
+  return [pick(obj, ...keys), omit(obj, ...keys)] as const
 }
