@@ -1,0 +1,32 @@
+name: Build and Push
+
+on:
+  push:
+    branches:
+      - main # 你想触发这个工作流的分支，可以根据需要修改
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+
+      - name: Set node
+        uses: actions/setup-node@v2
+        with:
+          # 根据需要设置 Node.js 版本
+          # node-version: lts/*
+          node-version: '18.x'
+          cache: pnpm
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Run test script
+        run: pnpm run test
