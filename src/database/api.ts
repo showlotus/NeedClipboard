@@ -1,5 +1,8 @@
-import { TYPE_VALUE, UNIQUE_KEY } from '@/constants/aria'
-import { ClipboardType, OptionType } from '@/hooks/useTypeOptions'
+import dayjs from 'dayjs'
+
+import { DATE_TEMPLATE } from '@/constants/date'
+import { TYPE_VALUE } from '@/constants/type'
+import { UNIQUE_KEY } from '@/constants/unique'
 import { SearchParams } from '@/stores/main'
 import { pickAndOmit } from '@/utils/tools'
 
@@ -14,16 +17,34 @@ import {
   createDatabase
 } from '.'
 
+type RemoveId<T> = Omit<T, 'id'>
+
+export type InsertDataType =
+  | RemoveId<TextDataType>
+  | RemoveId<ImageDataType>
+  | RemoveId<FileDataType>
+
 export async function fetchSearch(params: SearchParams) {
   const { keyword, type, currPage, pageSize } = params
 
+  const db = createDatabase()
   const filters = (v: ClipboardTableType) => {
     if (!keyword) {
       return true
     }
     return v.content.includes(keyword)
   }
-  const db = createDatabase()
+  const composeData = async (v: ClipboardTableType) => {
+    let d
+    if (v.type === 'File') {
+      d = await db.FileTable.get(v.id)
+    } else if (v.type === 'Image') {
+      d = await db.ImageTable.get(v.id)
+    } else {
+      d = await db.TextTable.get(v.id)
+    }
+    return { ...v, ...d }
+  }
   let data: ClipboardTableType[]
   let totals = 0
   const start = pageSize * (currPage - 1)
@@ -38,30 +59,10 @@ export async function fetchSearch(params: SearchParams) {
       .filter(filters)
     totals = await collections.count()
     data = (await collections.sortBy('createTime')).reverse().slice(start, end)
-    data = await Promise.all(
-      data.map(async (v) => {
-        let d
-        if (v.type === 'File') {
-          d = await db.FileTable.get(v.id)
-        } else if (v.type === 'Image') {
-          d = await db.ImageTable.get(v.id)
-        } else {
-          d = await db.TextTable.get(v.id)
-        }
-        return { ...v, ...d }
-      })
-    )
   }
-
+  data = await Promise.all(data.map(composeData))
   return { result: data, totals }
 }
-
-type RemoveId<T> = Omit<T, 'id'>
-
-export type InsertDataType =
-  | RemoveId<TextDataType>
-  | RemoveId<ImageDataType>
-  | RemoveId<FileDataType>
 
 export async function fetchInsert(data: InsertDataType) {
   const db = createDatabase()
@@ -121,8 +122,22 @@ export async function fetchDelete(id: number) {
 }
 
 /**
- * 什么时候需要更新记录：
+ * TODO 什么时候需要更新记录：
  *
- * 1. 当剪贴板中最新的一条记录与当前即将要入库的数据一致时
+ * 1. 当剪贴板中最新的一条记录与当前即将要入库的数据一致时，如何判断数据一致？
+ * 2. 当前即将入库的数据已存在数据库中，
  */
-export function fetchUpdate() {}
+export function fetchUpdate(id: number, createTime?: string) {
+  const db = createDatabase()
+  return db.ClipboardTable.where('id')
+    .equals(id)
+    .modify((v) => {
+      v.createTime = createTime || dayjs().format(DATE_TEMPLATE)
+    })
+}
+
+;(window as any).__NeedClipboard__TEST__API = {
+  fetchInsert,
+  fetchDelete,
+  fetchUpdate
+}

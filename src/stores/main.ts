@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-import { TYPE_VALUE } from '@/constants/aria'
+import { TYPE_VALUE } from '@/constants/type'
 import { OptionType } from '@/hooks/useTypeOptions'
 import { Lang } from '@/i18n'
 import { ipcInitSettings, ipcOnRefreshSettings } from '@/utils/ipc'

@@ -1,10 +1,7 @@
 import pkg from '$/package.json'
 import Dexie, { EntityTable } from 'dexie'
 
-import { genMockData } from '@/hooks/useSearch'
 import { ClipboardType } from '@/hooks/useTypeOptions'
-
-import { fetchInsert } from './api'
 
 export interface ClipboardTableType {
   id: number
@@ -75,37 +72,6 @@ export function createDatabase() {
     FileTable: 'id,subType,path,files,filesCount',
     ImageTable: 'id,url,dimensions,size'
   })
-
-  // Promise.all(
-  //   genMockData(10).map((v) => {
-  //     delete v.id
-  //     return fetchInsert(v)
-  //   })
-  // ).then(() => {
-  //   console.log('database init...')
-  // })
-
-  // DB.ClipboardTable.bulkAdd(
-  //   mockData.map((v) => {
-  //     delete v.id
-  //     return v
-  //   })
-  // )
-
-  // DB.ClipboardTable.bulkPut([
-  //   {
-  //     id: 100,
-  //     content: 'xxxxxxx',
-  //     application: '',
-  //     type: 'Text'
-  //   },
-  //   {
-  //     id: 1000,
-  //     content: 'xxxxxxx',
-  //     application: '',
-  //     type: 'Text'
-  //   }
-  // ])
 
   return DB
 }

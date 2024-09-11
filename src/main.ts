@@ -1,5 +1,6 @@
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'element-plus/theme-chalk/el-message.css'
+import hotkeys from 'hotkeys-js'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
@@ -16,17 +17,21 @@ import './style/theme.css'
 // If you want use Node.js, the`nodeIntegration` needs to be enabled in the Main process.
 // import './demos/node'
 
-createDatabase()
-
+// hotkeys.unbind()
+const db = createDatabase()
+db.ClipboardTable.clear()
+db.TextTable.clear()
+db.ImageTable.clear()
+db.FileTable.clear()
 // TEST local dev
-// Promise.all(
-//   genMockData(10).map((v) => {
-//     delete v.id
-//     return fetchInsert(v)
-//   })
-// ).then(() => {
-//   console.log('database init...')
-// })
+Promise.all(
+  genMockData(20).map((v) => {
+    delete v.id
+    return fetchInsert(v)
+  })
+).then(() => {
+  console.log('database init...')
+})
 
 const pinia = createPinia()
 const i18n = createI18n({

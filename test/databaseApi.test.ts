@@ -1,27 +1,50 @@
 // @vitest-environment jsdom
 import dayjs from 'dayjs'
-import Dexie from 'dexie'
 // fix IndexedDB API missing
 import 'fake-indexeddb/auto'
 import { describe, expect, test } from 'vitest'
 
+import { DATE_TEMPLATE } from '@/constants/date'
 import {
-  InsertDataType,
-  fetchDelete,
-  fetchInsert,
-  fetchSearch
-} from '@/database/api'
-import { SearchParams } from '@/stores/main'
-
-import {
-  ClipboardTableType,
   FileDataType,
   ImageDataType,
   TextDataType,
   createDatabase
-} from '../src/database'
+} from '@/database'
+import {
+  InsertDataType,
+  fetchDelete,
+  fetchInsert,
+  fetchSearch,
+  fetchUpdate
+} from '@/database/api'
+import { omit, pick } from '@/utils/tools'
 
 describe('test fetchSearch', () => {
+  test('search all', async () => {
+    const db = createDatabase()
+    await db.ClipboardTable.clear()
+    const content = '1234567'
+    const data: Omit<TextDataType, 'id'> = {
+      type: 'Text',
+      content,
+      characters: content.length,
+      createTime: dayjs().format(DATE_TEMPLATE)
+    }
+    const id = await fetchInsert(data)
+    const { result } = await fetchSearch({
+      keyword: '',
+      type: 'All',
+      currPage: 1,
+      pageSize: 1
+    })
+    const clipboardTableResult = await db.ClipboardTable.get(id)
+    const textTableResult = await db.TextTable.get(id)
+    expect(clipboardTableResult).toEqual({ ...omit(data, 'characters'), id })
+    expect(textTableResult).toEqual({ ...pick(data, 'characters'), id })
+    expect(result[0]).toEqual({ ...data, id })
+  })
+
   test('search all with page', async () => {
     const db = createDatabase()
     await db.ClipboardTable.clear()
@@ -29,12 +52,12 @@ describe('test fetchSearch', () => {
       new Array(3).fill(0).map((v, i) => ({
         type: 'Text',
         content: '111',
-        createTime: dayjs().subtract(i, 'day').format('YYYY/MM/DD HH:mm:ss')
+        createTime: dayjs().subtract(i, 'day').format(DATE_TEMPLATE)
       })),
       new Array(3).fill(0).map((v, i) => ({
         type: 'Text',
         content: '222',
-        createTime: dayjs().add(i, 'day').format('YYYY/MM/DD HH:mm:ss')
+        createTime: dayjs().add(i, 'day').format(DATE_TEMPLATE)
       }))
     ].flat() as InsertDataType[]
     await Promise.all(list.map((v) => fetchInsert(v)))
@@ -79,7 +102,7 @@ describe('test fetchSearch', () => {
       new Array(3).fill(0).map((v, i) => ({
         type: 'Text',
         content: '_' + i,
-        createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+        createTime: dayjs().format(DATE_TEMPLATE)
       })),
       new Array(3).fill(0).map((v, i) => ({
         type: 'File',
@@ -88,12 +111,12 @@ describe('test fetchSearch', () => {
         subType: 'folder,file',
         files: ['a.txt', 'b.js', 'c.jsx'],
         filesCount: 3,
-        createTime: dayjs().subtract(1, 'day').format('YYYY/MM/DD HH:mm:ss')
+        createTime: dayjs().subtract(1, 'day').format(DATE_TEMPLATE)
       })),
       new Array(3).fill(0).map((v, i) => ({
         type: 'Link',
         content: '_' + i + '_',
-        createTime: dayjs().subtract(1, 'day').format('YYYY/MM/DD HH:mm:ss')
+        createTime: dayjs().subtract(1, 'day').format(DATE_TEMPLATE)
       }))
     ].flat() as InsertDataType[]
     await Promise.all(list.map((v) => fetchInsert(v)))
@@ -137,13 +160,13 @@ describe('test fetchInsert', () => {
       type: 'Text',
       content,
       characters: content.length,
-      createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+      createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     const clipboardTableResult = await db.ClipboardTable.get(id)
     const textTableResult = await db.TextTable.get(id)
-    expect(clipboardTableResult).toBeDefined()
-    expect(textTableResult).toBeDefined()
+    expect(clipboardTableResult).toEqual({ ...omit(data, 'characters'), id })
+    expect(textTableResult).toEqual({ ...pick(data, 'characters'), id })
     expect({ ...clipboardTableResult, ...textTableResult }).toEqual({
       ...data,
       id
@@ -157,7 +180,7 @@ describe('test fetchInsert', () => {
       type: 'Color',
       content,
       characters: content.length,
-      createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+      createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     const clipboardTableResult = await db.ClipboardTable.get(id)
@@ -177,7 +200,7 @@ describe('test fetchInsert', () => {
       type: 'Link',
       content,
       characters: content.length,
-      createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+      createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     const clipboardTableResult = await db.ClipboardTable.get(id)
@@ -198,7 +221,7 @@ describe('test fetchInsert', () => {
       url: 'data:image/png;base64,/9j/4A',
       dimensions: '200 × 300',
       size: '300 B',
-      createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+      createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     const clipboardTableResult = await db.ClipboardTable.get(id)
@@ -219,7 +242,7 @@ describe('test fetchInsert', () => {
       content: fileName,
       path: '~/x/y/z/' + fileName,
       subType: 'file',
-      createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+      createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     const clipboardTableResult = await db.ClipboardTable.get(id)
@@ -240,7 +263,7 @@ describe('test fetchInsert', () => {
       content: folderName,
       path: '~/x/y/z/' + folderName,
       subType: 'folder',
-      createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+      createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     const clipboardTableResult = await db.ClipboardTable.get(id)
@@ -263,7 +286,7 @@ describe('test fetchInsert', () => {
       subType: 'folder,file',
       files: ['a.txt', 'b.js', 'c.jsx'],
       filesCount: 3,
-      createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+      createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     const clipboardTableResult = await db.ClipboardTable.get(id)
@@ -285,7 +308,7 @@ describe('test fetchDelete', () => {
       type: 'Text',
       content,
       characters: content.length,
-      createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+      createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     expect(await db.ClipboardTable.get(id)).toBeDefined()
@@ -302,7 +325,7 @@ describe('test fetchDelete', () => {
       type: 'Link',
       content,
       characters: content.length,
-      createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+      createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     expect(await db.ClipboardTable.get(id)).toBeDefined()
@@ -319,7 +342,7 @@ describe('test fetchDelete', () => {
       type: 'Color',
       content,
       characters: content.length,
-      createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+      createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     expect(await db.ClipboardTable.get(id)).toBeDefined()
@@ -337,7 +360,7 @@ describe('test fetchDelete', () => {
       url: 'data:image/png;base64,/9j/4A',
       dimensions: '200 × 300',
       size: '300 B',
-      createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+      createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     expect(await db.ClipboardTable.get(id)).toBeDefined()
@@ -355,7 +378,7 @@ describe('test fetchDelete', () => {
       content: fileName,
       path: '~/x/y/z/' + fileName,
       subType: 'file',
-      createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+      createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     expect(await db.ClipboardTable.get(id)).toBeDefined()
@@ -373,7 +396,7 @@ describe('test fetchDelete', () => {
       content: folderName,
       path: '~/x/y/z/' + folderName,
       subType: 'folder',
-      createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+      createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     expect(await db.ClipboardTable.get(id)).toBeDefined()
@@ -393,7 +416,7 @@ describe('test fetchDelete', () => {
       subType: 'folder,file',
       files: ['a.txt', 'b.js', 'c.jsx'],
       filesCount: 3,
-      createTime: dayjs().format('YYYY/MM/DD HH:mm:ss')
+      createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     expect(await db.ClipboardTable.get(id)).toBeDefined()
@@ -404,8 +427,20 @@ describe('test fetchDelete', () => {
   })
 })
 
-// describe('test fetchUpdate', () => {
-//   test('adds 1 + 2 to equal 3', () => {
-//     expect(sum(1, 2)).toBe(3)
-//   })
-// })
+describe('test fetchUpdate', () => {
+  test('update a record and type is Text', async () => {
+    const db = createDatabase()
+    const content = '1234567'
+    const data: Omit<TextDataType, 'id'> = {
+      type: 'Text',
+      content,
+      characters: content.length,
+      createTime: dayjs().format(DATE_TEMPLATE)
+    }
+
+    const id = await fetchInsert(data)
+    const createTime = dayjs().add(1, 'h').format(DATE_TEMPLATE)
+    await fetchUpdate(id, createTime)
+    expect((await db.ClipboardTable.get(id))?.createTime).toBe(createTime)
+  })
+})

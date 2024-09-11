@@ -31,7 +31,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { TYPE_VALUE } from '@/constants/aria'
+import { TYPE_VALUE } from '@/constants/type'
 import { useMainStore } from '@/stores/main'
 
 const { t } = useI18n()

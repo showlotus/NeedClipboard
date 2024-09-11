@@ -18,6 +18,7 @@
             'hover:bg-[--nc-item-color-hover]': activeId !== item.id
           }"
           @click.left="handleClick(item.id)"
+          @dblclick.left="handleOpenMenu(item)"
           @click.right="handleOpenMenu(item)"
         >
           <TypeIcon :data="item" class="min-w-6" />
@@ -59,9 +60,11 @@
 import hotkeys from 'hotkeys-js'
 import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue'
 
+import { fetchDelete } from '@/database/api'
 import { useSearch } from '@/hooks/useSearch'
 import { useMainStore } from '@/stores/main'
 import { debounce } from '@/utils/debounce'
+import { ipcOnHideWin, ipcOnShowWin } from '@/utils/ipc'
 import { ipcGetTheme } from '@/utils/ipc/theme'
 import { throttle } from '@/utils/throttle'
 
@@ -83,14 +86,17 @@ const {
   isFullLoad
 } = useSearch(searchParams)
 const elScrollbarRef = ref()
+const refresh = () => {
+  search().then(() => {
+    elScrollbarRef.value?.setScrollTop(0)
+    activeIndex.value = 0
+    mainStore.updateActiveRecord(flattenData.value[0])
+  })
+}
 watch(
   searchParams,
   () => {
-    search().then(() => {
-      elScrollbarRef.value?.setScrollTop(0)
-      activeIndex.value = 0
-      mainStore.updateActiveRecord(flattenData.value[0])
-    })
+    refresh()
   },
   { immediate: true }
 )
@@ -148,16 +154,20 @@ const handleClick = (id: number) => {
 const menuVisible = ref(false)
 const menuTriggerRef = ref<HTMLElement | null>(null)
 const handleOpenMenu = (item: any) => {
-  console.log('open menu')
-  // TODO 右键时是否需要选中当前项
   handleClick(item.id)
   nextTick(() => {
     menuVisible.value = true
     menuTriggerRef.value = getCurrActiveItemEl()
   })
 }
-const handleMenuDelete = () => {
-  console.log('delete', activeItem.value)
+const handleMenuDelete = async () => {
+  await fetchDelete(activeId.value)
+  await search()
+  activeIndex.value = Math.min(
+    Math.max(activeIndex.value, 0),
+    flattenData.value.length - 1
+  )
+  mainStore.updateActiveRecord(flattenData.value[activeIndex.value])
 }
 
 const instance = getCurrentInstance()
@@ -168,11 +178,12 @@ const getCurrActiveItemEl = () => {
 }
 const scrollIntoView = () => {
   nextTick(() => {
-    getCurrActiveItemEl().scrollIntoView({
+    getCurrActiveItemEl()?.scrollIntoView({
       block: 'center'
     })
   })
 }
+
 hotkeys('up', 'home', (e) => {
   showScrollbar()
   e.preventDefault()
@@ -198,7 +209,20 @@ hotkeys('tab', 'home', () => {
   }
 })
 hotkeys('delete', 'home', () => {
-  console.log('Delete', activeItem.value)
+  if (activeItem.value) {
+    handleMenuDelete()
+  }
+})
+
+ipcOnShowWin(() => {
+  // BUG 重新打开后，选中第一项会有闪烁问题
+  refresh()
+  hotkeys.trigger('/', 'home')
+})
+ipcOnHideWin(() => {
+  console.log('hide', Date.now())
+  activeIndex.value = 0
+  mainStore.updateActiveRecord(flattenData.value[activeIndex.value])
 })
 </script>
 

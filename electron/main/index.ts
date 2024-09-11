@@ -201,7 +201,7 @@ async function createWindow() {
   // 禁用手动调整窗口大小
   win.setResizable(false)
   // TODO 不在任务栏中显示
-  win.setSkipTaskbar(true)
+  // win.setSkipTaskbar(true)
 
   // TODO 窗口失焦时，隐藏窗口
   win.on('blur', () => {
@@ -235,9 +235,13 @@ async function createWindow() {
   registerShortcut(SettingsStore.get('shortcutKey'))
 
   win.on('show', () => {
-    win.webContents.send('render')
+    console.log('win show')
+    win.webContents.send('show-win')
   })
-  win.on('hide', () => {})
+  win.on('hide', () => {
+    console.log('win hide', Date.now())
+    win.webContents.send('hide-win')
+  })
   // TODO 模拟当前 Active App 发生改变
   // setInterval(() => {
   //   win.webContents.send(

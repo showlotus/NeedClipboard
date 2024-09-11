@@ -31,7 +31,7 @@ import { computed } from 'vue'
 
 import FileSvg from '@/assets/icons/file.svg'
 import FolderSvg from '@/assets/icons/folder.svg'
-import { FILE_SUB_TYPE_VALUE } from '@/constants/aria'
+import { FILE_SUB_TYPE_VALUE } from '@/constants/type'
 
 const props = withDefaults(defineProps<{ data: any }>(), {
   data: {}

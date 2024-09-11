@@ -13,7 +13,7 @@ import FolderSvg from '@/assets/icons/folder.svg?component'
 import ImageSvg from '@/assets/icons/image.svg?component'
 import LinkSvg from '@/assets/icons/link.svg?component'
 import TextSvg from '@/assets/icons/text.svg?component'
-import { FILE_SUB_TYPE_VALUE, TYPE_VALUE } from '@/constants/aria'
+import { FILE_SUB_TYPE_VALUE, TYPE_VALUE } from '@/constants/type'
 import { ClipboardType } from '@/hooks/useTypeOptions'
 
 import ColorBlock from './ColorBlock.vue'

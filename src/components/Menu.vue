@@ -46,7 +46,7 @@
 <script lang="ts" setup>
 import { ClickOutside as vClickOutside } from 'element-plus'
 import hotkeys from 'hotkeys-js'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 withDefaults(defineProps<{ triggerRef: any }>(), {

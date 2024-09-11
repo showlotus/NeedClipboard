@@ -2,7 +2,8 @@ import { faker } from '@faker-js/faker'
 import dayjs from 'dayjs'
 import { Ref, ref } from 'vue'
 
-import { FILE_SUB_TYPE_VALUE, TYPE_VALUE } from '@/constants/aria'
+import { DATE_TEMPLATE } from '@/constants/date'
+import { fetchSearch } from '@/database/api'
 import { SearchParams } from '@/stores/main'
 import {
   ValidateDate,
@@ -112,49 +113,9 @@ export function genMockData(n = 10) {
       application: null, // faker.person.fullName(),
       createTime: dayjs()
         .subtract(Math.floor(Math.random() * 100), 'day')
-        .format('YYYY/MM/DD HH:mm:ss')
+        .format(DATE_TEMPLATE)
     }
   })
-}
-
-const mockData = genMockData(100)
-mockData.sort((a, b) => (a.createTime < b.createTime ? 1 : -1))
-// console.log(mockData)
-
-function searchKeyword(data: any, keyword: string) {
-  if (!keyword) {
-    return true
-  }
-
-  return data.content.includes(keyword)
-  if (data.type === TYPE_VALUE.file) {
-    if (data.subType === FILE_SUB_TYPE_VALUE.folderFile) {
-      return data.files.some((v: any) => v.includes(keyword))
-    } else {
-      return data.content.some()
-    }
-  } else {
-    return data.content.includes(keyword)
-  }
-}
-
-async function fetchQuery(params: SearchParams) {
-  console.log(params)
-  const { keyword, type, currPage, pageSize } = params
-  const data = mockData.filter((v) => {
-    if (type === TYPE_VALUE.all) {
-      return searchKeyword(v, keyword)
-    } else {
-      return type === v.type && searchKeyword(v, keyword)
-    }
-  })
-  const start = pageSize * (currPage - 1)
-  const end = start + pageSize
-  const result = data.slice(start, end)
-  return {
-    result,
-    totals: data.length
-  }
 }
 
 function handleGroup(data: any[]) {
@@ -258,16 +219,14 @@ export function useSearch(params: Ref<SearchParams>) {
   const flattenData = ref<any[]>([])
   const search = async (page?: number) => {
     currPage = !page ? 1 : page
-    if (currPage === 1) {
-      flattenData.value = []
-    }
-    const { result, totals } = await fetchQuery({
+    const prevData = currPage === 1 ? [] : flattenData.value
+    const { result, totals } = await fetchSearch({
       ...params.value,
       currPage,
       pageSize
     })
     isFullLoad.value = result.length + flattenData.value.length === totals
-    const groupRes = handleGroup(flattenData.value.concat(result))
+    const groupRes = handleGroup(prevData.concat(result))
     groupedData.value = groupRes.groupedData
     flattenData.value = groupRes.flattenData
   }

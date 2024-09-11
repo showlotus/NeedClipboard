@@ -43,3 +43,11 @@ export function ipcCloseTriggerShortcut() {
 export function ipcOpenTriggerShortcut() {
   window.ipcRenderer.invoke('open-trigger-shortcut')
 }
+
+export function ipcOnShowWin(callback: (...args: any[]) => void) {
+  window.ipcRenderer.on('show-win', callback)
+}
+
+export function ipcOnHideWin(callback: (...args: any[]) => void) {
+  window.ipcRenderer.on('hide-win', callback)
+}

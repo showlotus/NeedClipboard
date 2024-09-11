@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import { computed, h } from 'vue'
 
-import { TYPE_VALUE } from '@/constants/aria'
+import { TYPE_VALUE } from '@/constants/type'
 import { useMainStore } from '@/stores/main'
 
 import ColorView from './ColorView.vue'

@@ -16,9 +16,6 @@
 import hotkeys from 'hotkeys-js'
 import { ref, useAttrs } from 'vue'
 
-import { EVENT_CODE } from '../constants/aria'
-import { bindDocEvent } from '../utils/dom'
-
 const model = defineModel<string>({ default: '' })
 const attrs = useAttrs()
 
