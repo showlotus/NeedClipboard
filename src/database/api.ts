@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { DATE_TEMPLATE } from '@/constants/date'
 import { TYPE_VALUE } from '@/constants/type'
 import { UNIQUE_KEY } from '@/constants/unique'
+import { ClipboardType } from '@/hooks/useTypeOptions'
 import { SearchParams } from '@/stores/main'
 import { pickAndOmit } from '@/utils/tools'
 
@@ -136,6 +137,30 @@ export function fetchUpdate(id: number, createTime?: string) {
     })
 }
 
+export function fetchIsExistInDB(
+  type: 'Text',
+  data: { content: string }
+): Promise<boolean>
+export function fetchIsExistInDB(
+  type: 'File',
+  data: { path: string; files: string[]; subType: string }
+): Promise<boolean>
+export function fetchIsExistInDB(
+  type: 'Image',
+  data: { url: string; dimensions: string; size: string }
+): Promise<boolean>
+export async function fetchIsExistInDB(type: 'Text' | 'File' | 'Image') {
+  const db = createDatabase()
+  if (type === 'File') {
+  } else if (type === 'Image') {
+  } else {
+  }
+  return true
+}
+
+fetchIsExistInDB('Text', { content: '' })
+fetchIsExistInDB('File', { path: '11', files: [], subType: '' })
+fetchIsExistInDB('Image', { url: '', dimensions: '', size: '' })
 ;(window as any).__NeedClipboard__TEST__API = {
   fetchInsert,
   fetchDelete,
