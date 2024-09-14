@@ -27,7 +27,6 @@ export interface FileTableType {
   subType: 'file' | 'folder' | 'folder,file'
   path: string | string[]
   files?: string[]
-  filesCount?: number
 }
 
 export interface FileDataType extends ClipboardTableType {
@@ -36,22 +35,23 @@ export interface FileDataType extends ClipboardTableType {
   subType: 'file' | 'folder' | 'folder,file'
   path: string | string[]
   files?: string[]
-  filesCount?: number
 }
 
 export interface ImageTableType {
   id: number
   url: string
-  dimensions: string
-  size: string
+  width: number
+  height: number
+  size: number
 }
 
 export interface ImageDataType extends ClipboardTableType {
   type: 'Image'
 
   url: string
-  dimensions: string
-  size: string
+  width: number
+  height: number
+  size: number
 }
 
 type DataBaseType = Dexie & {
@@ -69,8 +69,8 @@ export function createDatabase() {
   DB.version(1).stores({
     ClipboardTable: '++id,type,content,application,createTime',
     TextTable: 'id,characters',
-    FileTable: 'id,subType,path,files,filesCount',
-    ImageTable: 'id,url,dimensions,size'
+    FileTable: 'id,subType,path,files',
+    ImageTable: 'id,url,width,height,size'
   })
 
   return DB

@@ -32,6 +32,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { TYPE_VALUE } from '@/constants/type'
+import { FileDataType, ImageDataType, TextDataType } from '@/database'
 import { useMainStore } from '@/stores/main'
 
 const { t } = useI18n()
@@ -39,7 +40,7 @@ const mainStore = useMainStore()
 const activeRecord = computed(() => mainStore.activeRecord)
 const isFile = computed(() => activeRecord.value.type === TYPE_VALUE.file)
 const ops = {
-  [TYPE_VALUE.text]: (data: any) => {
+  [TYPE_VALUE.text]: (data: TextDataType) => {
     return [
       [t('NC.source'), data.application],
       [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
@@ -47,16 +48,16 @@ const ops = {
       [t('NC.copied'), data.createTime]
     ]
   },
-  [TYPE_VALUE.image]: (data: any) => {
+  [TYPE_VALUE.image]: (data: ImageDataType) => {
     return [
       [t('NC.source'), data.application],
       [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
-      [t('NC.dimensions'), data.dimensions],
+      [t('NC.dimensions'), `${data.size}×${data.height}`],
       [t('NC.imageSize'), data.size],
       [t('NC.copied'), data.createTime]
     ]
   },
-  [TYPE_VALUE.link]: (data: any) => {
+  [TYPE_VALUE.link]: (data: TextDataType) => {
     return [
       [t('NC.source'), data.application],
       [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
@@ -64,20 +65,20 @@ const ops = {
       [t('NC.copied'), data.createTime]
     ]
   },
-  [TYPE_VALUE.color]: (data: any) => {
+  [TYPE_VALUE.color]: (data: TextDataType) => {
     return [
       [t('NC.source'), data.application],
       [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
       [t('NC.copied'), data.createTime]
     ]
   },
-  [TYPE_VALUE.file]: (data: any) => {
+  [TYPE_VALUE.file]: (data: FileDataType) => {
     return [
       [t('NC.source'), data.application],
       [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
       [t('NC.path'), data.path],
       // [t('NC.fileSize'), data.size],
-      [t('NC.fileCount'), data.fileCount],
+      [t('NC.fileCount'), data.files?.length],
       [t('NC.copied'), data.createTime]
     ]
   }

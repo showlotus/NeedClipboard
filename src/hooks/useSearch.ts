@@ -56,9 +56,11 @@ export function genMockData(n = 10) {
       // data.url = faker.image.nature(1200, 500, true)
       // data.url = faker.image.nature(500, 500, true)
       // data.url = faker.image.nature(2500, 1200, true)
-      data.dimensions = w + '×' + h
+      data.width = w
+      data.height = h
+      // data.dimensions = w + '×' + h
       data.content = ''
-      data.size = calculateBase64Size(data.url) + ' B'
+      data.size = calculateBase64Size(data.url)
     } else if (type === 'Link') {
       const url = faker.internet.url()
       data.content = url
@@ -103,7 +105,7 @@ export function genMockData(n = 10) {
         data.path = path
         data.content = path.split('/').at(-1)
         data.files = files
-        data.fileCount = files.length
+        // data.fileCount = files.length
       }
     }
     return {

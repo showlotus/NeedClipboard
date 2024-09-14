@@ -67,7 +67,6 @@ describe('test fetchSearch', () => {
       currPage: 1,
       pageSize: 4
     })
-    console.log(data)
     expect(data.result.length).toBe(4)
 
     const data2 = await fetchSearch({
@@ -219,8 +218,9 @@ describe('test fetchInsert', () => {
       type: 'Image',
       content: '',
       url: 'data:image/png;base64,/9j/4A',
-      dimensions: '200 × 300',
-      size: '300 B',
+      width: 200,
+      height: 300,
+      size: 300,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
@@ -285,7 +285,6 @@ describe('test fetchInsert', () => {
       path: '~/x/y/z/' + folderName,
       subType: 'folder,file',
       files: ['a.txt', 'b.js', 'c.jsx'],
-      filesCount: 3,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
@@ -358,8 +357,9 @@ describe('test fetchDelete', () => {
       type: 'Image',
       content: '',
       url: 'data:image/png;base64,/9j/4A',
-      dimensions: '200 × 300',
-      size: '300 B',
+      width: 200,
+      height: 300,
+      size: 300,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
@@ -415,7 +415,6 @@ describe('test fetchDelete', () => {
       path: '~/x/y/z/' + folderName,
       subType: 'folder,file',
       files: ['a.txt', 'b.js', 'c.jsx'],
-      filesCount: 3,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)

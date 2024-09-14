@@ -72,7 +72,6 @@ export async function fetchInsert(data: InsertDataType) {
       const [typeData, commonData] = pickAndOmit(
         data as RemoveId<FileDataType>,
         'files',
-        'filesCount',
         'path',
         'subType'
       )
@@ -83,7 +82,8 @@ export async function fetchInsert(data: InsertDataType) {
     Image: async () => {
       const [typeData, commonData] = pickAndOmit(
         data as RemoveId<ImageDataType>,
-        'dimensions',
+        'width',
+        'height',
         'size',
         'url'
       )
@@ -137,30 +137,50 @@ export function fetchUpdate(id: number, createTime?: string) {
     })
 }
 
-export function fetchIsExistInDB(
-  type: 'Text',
-  data: { content: string }
-): Promise<boolean>
-export function fetchIsExistInDB(
-  type: 'File',
-  data: { path: string; files: string[]; subType: string }
-): Promise<boolean>
-export function fetchIsExistInDB(
-  type: 'Image',
-  data: { url: string; dimensions: string; size: string }
-): Promise<boolean>
-export async function fetchIsExistInDB(type: 'Text' | 'File' | 'Image') {
+export async function fetchIsExistInDB(
+  data:
+    | Pick<TextDataType, 'type' | 'content'>
+    | Pick<FileDataType, 'type' | 'content' | 'path' | 'files' | 'subType'>
+    | Pick<ImageDataType, 'type' | 'url' | 'width' | 'height' | 'size'>
+) {
   const db = createDatabase()
-  if (type === 'File') {
-  } else if (type === 'Image') {
+  let target
+  if (data.type === 'File') {
+    const res = await db.ClipboardTable.where({
+      type: data.type,
+      content: data.content,
+      path: data.path,
+      subType: data.subType
+    }).toArray()
+    for (const v of res) {
+      // if ()
+    }
+  } else if (data.type === 'Image') {
+    target = await db.ClipboardTable.where({
+      type: data.type,
+      url: data.url,
+      width: data.width,
+      height: data.height,
+      size: data.size
+    }).first()
   } else {
+    target = await db.ClipboardTable.where({
+      type: data.type,
+      content: data.content
+    }).first()
   }
-  return true
+  return target?.id
 }
 
-fetchIsExistInDB('Text', { content: '' })
-fetchIsExistInDB('File', { path: '11', files: [], subType: '' })
-fetchIsExistInDB('Image', { url: '', dimensions: '', size: '' })
+fetchIsExistInDB({ type: 'Text', content: '' })
+fetchIsExistInDB({
+  type: 'File',
+  content: '',
+  path: '11',
+  files: [],
+  subType: 'file'
+})
+fetchIsExistInDB({ type: 'Image', url: '', width: 20, height: 30, size: 10 })
 ;(window as any).__NeedClipboard__TEST__API = {
   fetchInsert,
   fetchDelete,
