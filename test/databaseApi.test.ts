@@ -15,10 +15,10 @@ import {
   InsertDataType,
   fetchDelete,
   fetchInsert,
+  fetchIsExistInDB,
   fetchSearch,
   fetchUpdate
 } from '@/database/api'
-import { omit, pick } from '@/utils/tools'
 
 describe('test fetchSearch', () => {
   test('search all', async () => {
@@ -28,7 +28,6 @@ describe('test fetchSearch', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Text',
       content,
-      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
@@ -38,10 +37,8 @@ describe('test fetchSearch', () => {
       currPage: 1,
       pageSize: 1
     })
-    const clipboardTableResult = await db.ClipboardTable.get(id)
-    const textTableResult = await db.TextTable.get(id)
-    expect(clipboardTableResult).toEqual({ ...omit(data, 'characters'), id })
-    expect(textTableResult).toEqual({ ...pick(data, 'characters'), id })
+    const res = await db.ClipboardTable.get(id)
+    expect(res).toEqual({ ...data, id })
     expect(result[0]).toEqual({ ...data, id })
   })
 
@@ -158,18 +155,11 @@ describe('test fetchInsert', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Text',
       content,
-      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
-    const clipboardTableResult = await db.ClipboardTable.get(id)
-    const textTableResult = await db.TextTable.get(id)
-    expect(clipboardTableResult).toEqual({ ...omit(data, 'characters'), id })
-    expect(textTableResult).toEqual({ ...pick(data, 'characters'), id })
-    expect({ ...clipboardTableResult, ...textTableResult }).toEqual({
-      ...data,
-      id
-    })
+    const res = await db.ClipboardTable.get(id)
+    expect(res).toEqual({ ...data, id })
   })
 
   test('insert a record and type is Color', async () => {
@@ -178,18 +168,11 @@ describe('test fetchInsert', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Color',
       content,
-      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
-    const clipboardTableResult = await db.ClipboardTable.get(id)
-    const textTableResult = await db.TextTable.get(id)
-    expect(clipboardTableResult).toBeDefined()
-    expect(textTableResult).toBeDefined()
-    expect({ ...clipboardTableResult, ...textTableResult }).toEqual({
-      ...data,
-      id
-    })
+    const res = await db.ClipboardTable.get(id)
+    expect(res).toEqual({ ...data, id })
   })
 
   test('insert a record and type is Link', async () => {
@@ -198,18 +181,11 @@ describe('test fetchInsert', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Link',
       content,
-      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
-    const clipboardTableResult = await db.ClipboardTable.get(id)
-    const textTableResult = await db.TextTable.get(id)
-    expect(clipboardTableResult).toBeDefined()
-    expect(textTableResult).toBeDefined()
-    expect({ ...clipboardTableResult, ...textTableResult }).toEqual({
-      ...data,
-      id
-    })
+    const res = await db.ClipboardTable.get(id)
+    expect(res).toEqual({ ...data, id })
   })
 
   test('insert a record and type is Image', async () => {
@@ -224,14 +200,8 @@ describe('test fetchInsert', () => {
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
-    const clipboardTableResult = await db.ClipboardTable.get(id)
-    const imageTableResult = await db.ImageTable.get(id)
-    expect(clipboardTableResult).toBeDefined()
-    expect(imageTableResult).toBeDefined()
-    expect({ ...clipboardTableResult, ...imageTableResult }).toEqual({
-      ...data,
-      id
-    })
+    const res = await db.ClipboardTable.get(id)
+    expect(res).toEqual({ ...data, id })
   })
 
   test('insert a record and type is File, subType is file', async () => {
@@ -245,14 +215,8 @@ describe('test fetchInsert', () => {
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
-    const clipboardTableResult = await db.ClipboardTable.get(id)
-    const fileTableResult = await db.FileTable.get(id)
-    expect(clipboardTableResult).toBeDefined()
-    expect(fileTableResult).toBeDefined()
-    expect({ ...clipboardTableResult, ...fileTableResult }).toEqual({
-      ...data,
-      id
-    })
+    const res = await db.ClipboardTable.get(id)
+    expect(res).toEqual({ ...data, id })
   })
 
   test('insert a record and type is File, subType is folder', async () => {
@@ -266,14 +230,8 @@ describe('test fetchInsert', () => {
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
-    const clipboardTableResult = await db.ClipboardTable.get(id)
-    const fileTableResult = await db.FileTable.get(id)
-    expect(clipboardTableResult).toBeDefined()
-    expect(fileTableResult).toBeDefined()
-    expect({ ...clipboardTableResult, ...fileTableResult }).toEqual({
-      ...data,
-      id
-    })
+    const res = await db.ClipboardTable.get(id)
+    expect(res).toEqual({ ...data, id })
   })
 
   test('insert a record and type is File, subType is folder,file', async () => {
@@ -288,14 +246,8 @@ describe('test fetchInsert', () => {
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
-    const clipboardTableResult = await db.ClipboardTable.get(id)
-    const fileTableResult = await db.FileTable.get(id)
-    expect(clipboardTableResult).toBeDefined()
-    expect(fileTableResult).toBeDefined()
-    expect({ ...clipboardTableResult, ...fileTableResult }).toEqual({
-      ...data,
-      id
-    })
+    const res = await db.ClipboardTable.get(id)
+    expect(res).toEqual({ ...data, id })
   })
 })
 
@@ -306,15 +258,12 @@ describe('test fetchDelete', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Text',
       content,
-      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     expect(await db.ClipboardTable.get(id)).toBeDefined()
-    expect(await db.TextTable.get(id)).toBeDefined()
     await fetchDelete(id)
     expect(await db.ClipboardTable.get(id)).toBeUndefined()
-    expect(await db.TextTable.get(id)).toBeUndefined()
   })
 
   test('delete a record and type is Link', async () => {
@@ -323,15 +272,12 @@ describe('test fetchDelete', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Link',
       content,
-      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     expect(await db.ClipboardTable.get(id)).toBeDefined()
-    expect(await db.TextTable.get(id)).toBeDefined()
     await fetchDelete(id)
     expect(await db.ClipboardTable.get(id)).toBeUndefined()
-    expect(await db.TextTable.get(id)).toBeUndefined()
   })
 
   test('delete a record and type is Color', async () => {
@@ -340,15 +286,12 @@ describe('test fetchDelete', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Color',
       content,
-      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
     expect(await db.ClipboardTable.get(id)).toBeDefined()
-    expect(await db.TextTable.get(id)).toBeDefined()
     await fetchDelete(id)
     expect(await db.ClipboardTable.get(id)).toBeUndefined()
-    expect(await db.TextTable.get(id)).toBeUndefined()
   })
 
   test('delete a record and type is Image', async () => {
@@ -364,10 +307,8 @@ describe('test fetchDelete', () => {
     }
     const id = await fetchInsert(data)
     expect(await db.ClipboardTable.get(id)).toBeDefined()
-    expect(await db.ImageTable.get(id)).toBeDefined()
     await fetchDelete(id)
     expect(await db.ClipboardTable.get(id)).toBeUndefined()
-    expect(await db.ImageTable.get(id)).toBeUndefined()
   })
 
   test('delete a record and type is File, subType is file', async () => {
@@ -382,10 +323,8 @@ describe('test fetchDelete', () => {
     }
     const id = await fetchInsert(data)
     expect(await db.ClipboardTable.get(id)).toBeDefined()
-    expect(await db.FileTable.get(id)).toBeDefined()
     await fetchDelete(id)
     expect(await db.ClipboardTable.get(id)).toBeUndefined()
-    expect(await db.FileTable.get(id)).toBeUndefined()
   })
 
   test('delete a record and type is File, subType is folder', async () => {
@@ -400,10 +339,8 @@ describe('test fetchDelete', () => {
     }
     const id = await fetchInsert(data)
     expect(await db.ClipboardTable.get(id)).toBeDefined()
-    expect(await db.FileTable.get(id)).toBeDefined()
     await fetchDelete(id)
     expect(await db.ClipboardTable.get(id)).toBeUndefined()
-    expect(await db.FileTable.get(id)).toBeUndefined()
   })
 
   test('delete a record and type is File, subType is folder,file', async () => {
@@ -419,10 +356,125 @@ describe('test fetchDelete', () => {
     }
     const id = await fetchInsert(data)
     expect(await db.ClipboardTable.get(id)).toBeDefined()
-    expect(await db.FileTable.get(id)).toBeDefined()
     await fetchDelete(id)
     expect(await db.ClipboardTable.get(id)).toBeUndefined()
-    expect(await db.FileTable.get(id)).toBeUndefined()
+  })
+})
+
+describe('test fetchIsExistInDB', () => {
+  test('a existed record with type is Text', async () => {
+    const db = createDatabase()
+    db.ClipboardTable.clear()
+    const content = '1234567'
+    const data: Omit<TextDataType, 'id'> = {
+      type: 'Text',
+      content,
+      createTime: dayjs().format(DATE_TEMPLATE)
+    }
+
+    const id = await fetchInsert(data)
+    const existId = await fetchIsExistInDB(data)
+    expect(id).toBe(existId)
+
+    const existId2 = await fetchIsExistInDB({
+      ...data,
+      content: data.content + ' '
+    })
+    expect(existId2).toBeUndefined()
+  })
+
+  test('a existed record with type is Image', async () => {
+    const db = createDatabase()
+    db.ClipboardTable.clear()
+    const data: Omit<ImageDataType, 'id'> = {
+      type: 'Image',
+      content: '',
+      url: 'data:image/png;base64,/9j/4A',
+      width: 200,
+      height: 300,
+      size: 300,
+      createTime: dayjs().format(DATE_TEMPLATE)
+    }
+
+    const id = await fetchInsert(data)
+    const existId = await fetchIsExistInDB(data)
+    expect(id).toBe(existId)
+
+    const existId2 = await fetchIsExistInDB({ ...data, url: '' })
+    expect(existId2).toBeUndefined()
+  })
+
+  test('a existed record with type is File, subType is file', async () => {
+    const db = createDatabase()
+    db.ClipboardTable.clear()
+    const fileName = 'a.txt'
+    const data: Omit<FileDataType, 'id'> = {
+      type: 'File',
+      content: fileName,
+      path: '~/x/y/z/' + fileName,
+      subType: 'file',
+      createTime: dayjs().format(DATE_TEMPLATE)
+    }
+
+    const id = await fetchInsert(data)
+    const existId = await fetchIsExistInDB(data)
+    expect(id).toBe(existId)
+
+    const existId2 = await fetchIsExistInDB({ ...data, subType: 'folder' })
+    expect(existId2).toBeUndefined()
+  })
+
+  test('a existed record with type is File, subType is folder', async () => {
+    const db = createDatabase()
+    db.ClipboardTable.clear()
+    const folderName = 'aaa'
+    const data: Omit<FileDataType, 'id'> = {
+      type: 'File',
+      content: folderName,
+      path: '~/x/y/z/' + folderName,
+      subType: 'folder',
+      createTime: dayjs().format(DATE_TEMPLATE)
+    }
+
+    const id = await fetchInsert(data)
+    const existId = await fetchIsExistInDB(data)
+    expect(id).toBe(existId)
+
+    const existId2 = await fetchIsExistInDB({ ...data, subType: 'file' })
+    expect(existId2).toBeUndefined()
+  })
+
+  test('a existed record with type is File, subType is folder,file', async () => {
+    const db = createDatabase()
+    db.ClipboardTable.clear()
+    const folderName = 'aaa'
+    const data: Omit<FileDataType, 'id'> = {
+      type: 'File',
+      content: folderName,
+      path: '~/x/y/z/' + folderName,
+      subType: 'folder,file',
+      files: ['a.txt', 'b.js', 'c.jsx'],
+      createTime: dayjs().format(DATE_TEMPLATE)
+    }
+
+    const id = await fetchInsert(data)
+    const existId = await fetchIsExistInDB(data)
+    expect(existId).toBe(id)
+
+    const existId2 = await fetchIsExistInDB({ ...data, subType: 'folder' })
+    expect(existId2).toBeUndefined()
+
+    const existId3 = await fetchIsExistInDB({
+      ...data,
+      files: ['c.jsx', 'a.txt', 'b.js']
+    })
+    expect(existId3).toBe(id)
+
+    const existId4 = await fetchIsExistInDB({
+      ...data,
+      files: ['c.jsx', 'a.txt', 'b.jsx']
+    })
+    expect(existId4).toBeUndefined()
   })
 })
 
@@ -433,7 +485,6 @@ describe('test fetchUpdate', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Text',
       content,
-      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
 

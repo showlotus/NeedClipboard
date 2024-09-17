@@ -2,19 +2,14 @@ import dayjs from 'dayjs'
 
 import { DATE_TEMPLATE } from '@/constants/date'
 import { TYPE_VALUE } from '@/constants/type'
-import { UNIQUE_KEY } from '@/constants/unique'
-import { ClipboardType } from '@/hooks/useTypeOptions'
 import { SearchParams } from '@/stores/main'
-import { pickAndOmit } from '@/utils/tools'
+import { isEqualArray } from '@/utils/tools'
 
 import {
   ClipboardTableType,
   FileDataType,
-  FileTableType,
   ImageDataType,
-  ImageTableType,
   TextDataType,
-  TextTableType,
   createDatabase
 } from '.'
 
@@ -35,17 +30,6 @@ export async function fetchSearch(params: SearchParams) {
     }
     return v.content.includes(keyword)
   }
-  const composeData = async (v: ClipboardTableType) => {
-    let d
-    if (v.type === 'File') {
-      d = await db.FileTable.get(v.id)
-    } else if (v.type === 'Image') {
-      d = await db.ImageTable.get(v.id)
-    } else {
-      d = await db.TextTable.get(v.id)
-    }
-    return { ...v, ...d }
-  }
   let data: ClipboardTableType[]
   let totals = 0
   const start = pageSize * (currPage - 1)
@@ -61,65 +45,17 @@ export async function fetchSearch(params: SearchParams) {
     totals = await collections.count()
     data = (await collections.sortBy('createTime')).reverse().slice(start, end)
   }
-  data = await Promise.all(data.map(composeData))
   return { result: data, totals }
 }
 
 export async function fetchInsert(data: InsertDataType) {
   const db = createDatabase()
-  const ops = {
-    File: async () => {
-      const [typeData, commonData] = pickAndOmit(
-        data as RemoveId<FileDataType>,
-        'files',
-        'path',
-        'subType'
-      )
-      const id = await db.ClipboardTable.add(commonData)
-      const insertedData = { id, ...typeData }
-      return db.FileTable.put(insertedData as FileTableType)
-    },
-    Image: async () => {
-      const [typeData, commonData] = pickAndOmit(
-        data as RemoveId<ImageDataType>,
-        'width',
-        'height',
-        'size',
-        'url'
-      )
-      const id = await db.ClipboardTable.add(commonData)
-      const insertedData = { id, ...typeData }
-      return db.ImageTable.put(insertedData as ImageTableType)
-    },
-    [UNIQUE_KEY]: async () => {
-      const [typeData, commonData] = pickAndOmit(
-        data as RemoveId<TextDataType>,
-        'characters'
-      )
-      const id = await db.ClipboardTable.add(commonData)
-      const insertedData = { id, ...typeData }
-      return db.TextTable.put(insertedData as TextTableType)
-    }
-  }
-
-  if (ops[data.type as 'File' | 'Image']) {
-    return ops[data.type as 'File' | 'Image']()
-  } else {
-    return ops[UNIQUE_KEY]()
-  }
+  return db.ClipboardTable.add(data)
 }
 
 export async function fetchDelete(id: number) {
   const db = createDatabase()
-  const { type } = (await db.ClipboardTable.get(id))!
-  await db.ClipboardTable.delete(id)
-  if (type === 'File') {
-    return await db.FileTable.delete(id)
-  } else if (type === 'Image') {
-    return await db.ImageTable.delete(id)
-  } else {
-    return await db.TextTable.delete(id)
-  }
+  return db.ClipboardTable.delete(id)
 }
 
 /**
@@ -139,25 +75,31 @@ export function fetchUpdate(id: number, createTime?: string) {
 
 export async function fetchIsExistInDB(
   data:
-    | Pick<TextDataType, 'type' | 'content'>
-    | Pick<FileDataType, 'type' | 'content' | 'path' | 'files' | 'subType'>
-    | Pick<ImageDataType, 'type' | 'url' | 'width' | 'height' | 'size'>
+    | Omit<TextDataType, 'id' | 'application' | 'createTime'>
+    | Omit<FileDataType, 'id' | 'application' | 'createTime'>
+    | Omit<ImageDataType, 'id' | 'application' | 'createTime'>
 ) {
   const db = createDatabase()
   let target
   if (data.type === 'File') {
-    const res = await db.ClipboardTable.where({
+    const res = (await db.ClipboardTable.where({
       type: data.type,
       content: data.content,
       path: data.path,
       subType: data.subType
-    }).toArray()
-    for (const v of res) {
-      // if ()
+    }).toArray()) as FileDataType[]
+    if (data.subType !== 'folder,file') {
+      target = res[0]
+    } else {
+      for (const item of res) {
+        if (isEqualArray(data.files!, item.files!)) {
+          target = item
+          break
+        }
+      }
     }
   } else if (data.type === 'Image') {
     target = await db.ClipboardTable.where({
-      type: data.type,
       url: data.url,
       width: data.width,
       height: data.height,
@@ -172,15 +114,6 @@ export async function fetchIsExistInDB(
   return target?.id
 }
 
-fetchIsExistInDB({ type: 'Text', content: '' })
-fetchIsExistInDB({
-  type: 'File',
-  content: '',
-  path: '11',
-  files: [],
-  subType: 'file'
-})
-fetchIsExistInDB({ type: 'Image', url: '', width: 20, height: 30, size: 10 })
 ;(window as any).__NeedClipboard__TEST__API = {
   fetchInsert,
   fetchDelete,

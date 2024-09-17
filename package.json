@@ -26,7 +26,8 @@
     "preview": "vite preview",
     "test": "vitest",
     "lint": "eslint \"src/**/*.{js,ts,vue}\" \"electron/**/*.ts\"",
-    "prettier": "prettier --write \"src/**/*.{js,ts,vue}\" \"electron/**/*.ts\""
+    "prettier": "prettier --write \"src/**/*.{js,ts,vue}\" \"electron/**/*.ts\"",
+    "refresh": "rm -rf **/node_modules && pnpm i --offline"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",

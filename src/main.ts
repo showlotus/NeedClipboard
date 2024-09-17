@@ -20,9 +20,6 @@ import './style/theme.css'
 // hotkeys.unbind()
 const db = createDatabase()
 db.ClipboardTable.clear()
-db.TextTable.clear()
-db.ImageTable.clear()
-db.FileTable.clear()
 // TEST local dev
 Promise.all(
   genMockData(20).map((v) => {

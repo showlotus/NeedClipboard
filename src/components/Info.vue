@@ -44,7 +44,7 @@ const ops = {
     return [
       [t('NC.source'), data.application],
       [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
-      [t('NC.characters'), data.characters],
+      [t('NC.characters'), data.content.length],
       [t('NC.copied'), data.createTime]
     ]
   },
@@ -61,7 +61,7 @@ const ops = {
     return [
       [t('NC.source'), data.application],
       [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
-      [t('NC.characters'), data.characters],
+      [t('NC.characters'), data.content.length],
       [t('NC.copied'), data.createTime]
     ]
   },

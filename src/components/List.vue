@@ -86,17 +86,14 @@ const {
   isFullLoad
 } = useSearch(searchParams)
 const elScrollbarRef = ref()
-const refresh = () => {
-  search().then(() => {
-    elScrollbarRef.value?.setScrollTop(0)
-    activeIndex.value = 0
-    mainStore.updateActiveRecord(flattenData.value[0])
-  })
-}
 watch(
   searchParams,
   () => {
-    refresh()
+    search().then(() => {
+      elScrollbarRef.value?.setScrollTop(0)
+      activeIndex.value = 0
+      mainStore.updateActiveRecord(flattenData.value[0])
+    })
   },
   { immediate: true }
 )
@@ -216,13 +213,16 @@ hotkeys('delete', 'home', () => {
 
 ipcOnShowWin(() => {
   // BUG 重新打开后，选中第一项会有闪烁问题
-  refresh()
+  // 是否需要重新打开面板时，重新选中第一项？
+  search().then(() => {
+    scrollIntoView()
+  })
   hotkeys.trigger('/', 'home')
 })
 ipcOnHideWin(() => {
   console.log('hide', Date.now())
-  activeIndex.value = 0
-  mainStore.updateActiveRecord(flattenData.value[activeIndex.value])
+  // activeIndex.value = 0
+  // mainStore.updateActiveRecord(flattenData.value[activeIndex.value])
 })
 </script>
 
