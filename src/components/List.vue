@@ -64,7 +64,7 @@ import { fetchDelete } from '@/database/api'
 import { useSearch } from '@/hooks/useSearch'
 import { useMainStore } from '@/stores/main'
 import { debounce } from '@/utils/debounce'
-import { ipcOnHideWin, ipcOnShowWin } from '@/utils/ipc'
+import { ipcOnBeforeHideWin, ipcOnShowWin } from '@/utils/ipc'
 import { ipcGetTheme } from '@/utils/ipc/theme'
 import { throttle } from '@/utils/throttle'
 
@@ -212,17 +212,17 @@ hotkeys('delete', 'home', () => {
 })
 
 ipcOnShowWin(() => {
-  // BUG 重新打开后，选中第一项会有闪烁问题
-  // 是否需要重新打开面板时，重新选中第一项？
   search().then(() => {
+    activeIndex.value = 0
+    mainStore.updateActiveRecord(flattenData.value[0])
     scrollIntoView()
   })
   hotkeys.trigger('/', 'home')
 })
-ipcOnHideWin(() => {
-  console.log('hide', Date.now())
-  // activeIndex.value = 0
-  // mainStore.updateActiveRecord(flattenData.value[activeIndex.value])
+ipcOnBeforeHideWin(() => {
+  // 清空当前选中项
+  activeIndex.value = -1
+  mainStore.updateActiveRecord({})
 })
 </script>
 

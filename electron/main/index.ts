@@ -147,7 +147,10 @@ export function toggleWindowVisible() {
   }
 
   if (win.isVisible()) {
-    win.hide()
+    win.webContents.send('before-hide-win')
+    Promise.resolve().then(() => {
+      win.hide()
+    })
   } else {
     win.show()
   }
@@ -235,11 +238,9 @@ async function createWindow() {
   registerShortcut(SettingsStore.get('shortcutKey'))
 
   win.on('show', () => {
-    console.log('win show')
     win.webContents.send('show-win')
   })
   win.on('hide', () => {
-    console.log('win hide', Date.now())
     win.webContents.send('hide-win')
   })
   // TODO 模拟当前 Active App 发生改变
@@ -254,7 +255,8 @@ async function createWindow() {
 
   // TODO 开机启动时隐藏窗口
   // TODO 打包时，改为 once
-  win.on('ready-to-show', () => {
+  const eventType = VITE_DEV_SERVER_URL ? 'on' : 'once'
+  win[eventType]('ready-to-show', () => {
     console.log(process.argv.includes('--openAsHidden'))
     if (!process.argv.includes('--openAsHidden')) {
       win.show()
