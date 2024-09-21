@@ -23,6 +23,25 @@
   "editor.quickSuggestions": {
     "strings": "on"
   },
-  "cSpell.words": ["Dexie", "mouseleave", "mousemove", "pinia"],
+  "cSpell.words": [
+    "CHANGECBCHAIN",
+    "CLIPBOARDUPDATE",
+    "Dexie",
+    "DRAWCLIPBOARD",
+    "hwnd",
+    "HWND",
+    "LPARAM",
+    "lpfn",
+    "lpsz",
+    "LRESULT",
+    "mouseleave",
+    "mousemove",
+    "OVERLAPPEDWINDOW",
+    "pinia",
+    "UNICODETEXT",
+    "USEDEFAULT",
+    "WNDCLASS",
+    "WPARAM"
+  ],
   "ti18n.shortcutLanguages": ["zh_CN", "en_US"]
 }
