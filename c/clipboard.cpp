@@ -32,6 +32,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd,
     default:
       return DefWindowProc(hwnd, uMsg, wParam, lParam);
   }
+  std::cout << "uMsg" << std::endl;
   return 0;
 }
 
@@ -54,7 +55,6 @@ void ClipboardWatcherThread() {
   while (GetMessage(&msg, NULL, 0, 0)) {
     TranslateMessage(&msg);
     DispatchMessage(&msg);
-    std::cout << "00" << std::endl;
   }
 
   DestroyWindow(hwnd);
