@@ -1,9 +1,9 @@
-#include <windows.h>
 #include <psapi.h>
+#include <windows.h>
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
-#include <algorithm> 
 
 HWND hClipboardViewer = NULL;
 boolean isFirst = true;
@@ -63,7 +63,7 @@ std::string removeExeSuffix(const std::string& str) {
     // 将后缀部分转换为小写，进行比较
     std::string processNameLower = str.substr(str.length() - exeSuffix.length());
     std::transform(processNameLower.begin(), processNameLower.end(), processNameLower.begin(), ::tolower);
-    
+
     // 如果后缀是 ".exe"，则去掉
     if (processNameLower == exeSuffix) {
       return str.substr(0, str.length() - exeSuffix.length());
@@ -84,7 +84,7 @@ std::string GetProcessNameByPID(DWORD processID) {
   DWORD cbNeeded;
   if (EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded)) {
     GetModuleBaseName(hProcess, hMod, processName, sizeof(processName) / sizeof(char));
-  }  
+  }
   CloseHandle(hProcess);
   return removeExeSuffix(processName);
 }
