@@ -1,5 +1,4 @@
 #include <windows.h>
-// #
 #include <psapi.h>
 #include <iostream>
 #include <string>
@@ -13,15 +12,15 @@ std::wstring GetProcessDescription(const std::wstring& filePath) {
   }
 
   std::vector<BYTE> versionData(size);
-  if (!GetFileVersionInfoW(filePath.c_str(), 0, size, versionData.data())) {
-    return L"";
-  }
+  // if (!GetFileVersionInfoW(filePath.c_str(), 0, size, versionData.data())) {
+  //   return L"";
+  // }
 
-  VS_FIXEDFILEINFO* fileInfo = nullptr;
+  // VS_FIXEDFILEINFO* fileInfo = nullptr;
   UINT len = 0;
-  if (!VerQueryValueW(versionData.data(), L"\\", (LPVOID*)&fileInfo, &len)) {
-    return L"";
-  }
+  // if (!VerQueryValueW(versionData.data(), L"\\", (LPVOID*)&fileInfo, &len)) {
+  //   return L"";
+  // }
 
   // 查找文件描述
   void* descriptionPtr = nullptr;
@@ -29,16 +28,18 @@ std::wstring GetProcessDescription(const std::wstring& filePath) {
     return std::wstring((WCHAR*)descriptionPtr);
   }
 
+  std::cout << "no FileDescription info" << std::endl;
+
   return L"";
 }
 
 int main() {
-  DWORD processID = 58708;  // 替换为你要查询的进程ID
+  DWORD processID = 9660;  // 替换为你要查询的进程ID
 
   HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
   if (hProcess) {
     wchar_t processName[MAX_PATH] = {0};
-    if (K32GetModuleFileNameExW(hProcess, NULL, processName, MAX_PATH)) {
+    if (GetModuleFileNameExW(hProcess, NULL, processName, MAX_PATH)) {
       std::wcout << L"Process path: " << processName << std::endl;
 
       // 获取并打印文件的描述信息

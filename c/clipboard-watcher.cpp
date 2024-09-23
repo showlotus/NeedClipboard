@@ -1,8 +1,9 @@
 #include <windows.h>
+#include <psapi.h>
 #include <iostream>
 #include <string>
 #include <vector>
-#include "psapi.h"
+#include <algorithm> 
 
 HWND hClipboardViewer = NULL;
 boolean isFirst = true;
@@ -21,33 +22,57 @@ std::string GetProcessPath(DWORD processID) {
   return "";
 }
 
-// 从文件中提取产品名称
 std::string GetAppNameFromFile(const std::string& filePath) {
   DWORD verHandle = 0;
-  // DWORD verSize = GetFileVersionInfoSizeA(filePath.c_str(), &verHandle);
-  // if (verSize == 0) {
-  //   return "";
-  // }
+  DWORD verSize = GetFileVersionInfoSizeA(filePath.c_str(), &verHandle);
+  if (verSize == 0) {
+    return "";
+  }
 
-  // std::vector<char> verData(verSize);
+  std::vector<char> verData(verSize);
 
-  // if (GetFileVersionInfoA(filePath.c_str(), verHandle, verSize, verData.data())) {
-  //   VS_FIXEDFILEINFO* fileInfo = nullptr;
-  //   UINT size = 0;
-  //   if (VerQueryValueA(verData.data(), "\\", (LPVOID*)&fileInfo, &size) && size > 0) {
-  //     if (fileInfo->dwSignature == 0xfeef04bd) {
-  //       // 查找产品名称
-  //       char* productName = nullptr;
-  //       UINT productNameLen = 0;
-  //       if (VerQueryValueA(verData.data(), "\\StringFileInfo\\040904B0\\ProductName", (LPVOID*)&productName, &productNameLen)) {
-  //         return std::string(productName, productNameLen);
-  //       }
-  //     }
-  //   }
-  // }
+  if (GetFileVersionInfoA(filePath.c_str(), verHandle, verSize, verData.data())) {
+    VS_FIXEDFILEINFO* fileInfo = nullptr;
+    UINT size = 0;
+    if (VerQueryValueA(verData.data(), "\\", (LPVOID*)&fileInfo, &size) && size > 0) {
+      if (fileInfo->dwSignature == 0xfeef04bd) {
+        char* productName = nullptr;
+        UINT productNameLen = 0;
+        // 查找应用程序的名称
+        if (VerQueryValueA(verData.data(), "\\StringFileInfo\\040904B0\\ProductName", (LPVOID*)&productName, &productNameLen)) {
+          return std::string(productName, productNameLen);
+        }
+
+        char* description = nullptr;
+        UINT descriptionLen = 0;
+        // 查找应用程序的描述
+        if (VerQueryValueA(verData.data(), "\\StringFileInfo\\040904B0\\FileDescription", (LPVOID*)&description, &descriptionLen)) {
+          return std::string(description, descriptionLen);
+        }
+      }
+    }
+  }
+  std::cout << "no version info" << std::endl;
   return "";
 }
 
+// 移除 .exe 后缀
+std::string removeExeSuffix(const std::string& str) {
+  std::string exeSuffix = ".exe";
+  if (str.length() >= exeSuffix.length()) {
+    // 将后缀部分转换为小写，进行比较
+    std::string processNameLower = str.substr(str.length() - exeSuffix.length());
+    std::transform(processNameLower.begin(), processNameLower.end(), processNameLower.begin(), ::tolower);
+    
+    // 如果后缀是 ".exe"，则去掉
+    if (processNameLower == exeSuffix) {
+      return str.substr(0, str.length() - exeSuffix.length());
+    }
+  }
+  return str;
+}
+
+// 获取进程名称
 std::string GetProcessNameByPID(DWORD processID) {
   HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
   if (NULL == hProcess) {
@@ -55,24 +80,29 @@ std::string GetProcessNameByPID(DWORD processID) {
   }
 
   char processName[MAX_PATH] = "<unknown>";
+  HMODULE hMod;
+  DWORD cbNeeded;
+  if (EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded)) {
+    GetModuleBaseName(hProcess, hMod, processName, sizeof(processName) / sizeof(char));
+  }  
+  CloseHandle(hProcess);
+  return removeExeSuffix(processName);
+}
 
-  // 获取进程名称
-  if (hProcess) {
-    HMODULE hMod;
-    DWORD cbNeeded;
-    if (EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded)) {
-      GetModuleBaseName(hProcess, hMod, processName, sizeof(processName) / sizeof(char));
-    }
+// 获取进程可执行文件的绝对路径
+std::string GetProcessAbsolutePathByPID(DWORD processID) {
+  HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
+  if (NULL == hProcess) {
+    return "";
+  }
 
-    std::string processPath = GetProcessPath(processID);
-    if (!processPath.empty()) {
-      return std::string(processPath);
-    }
+  std::string processPath = GetProcessPath(processID);
+  if (!processPath.empty()) {
+    return std::string(processPath);
   }
 
   CloseHandle(hProcess);
-
-  return std::string(processName);
+  return "";
 }
 
 // 窗口过程，用于处理消息
@@ -103,20 +133,27 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
         }
         CloseClipboard();
 
-        HWND activeWindow = GetForegroundWindow();
-        if (activeWindow) {
+        // HWND activeWindow = GetForegroundWindow();
+        // TODO 获取到的是 webview 子进程
+        HWND clipboardOwner = GetClipboardOwner();
+        if (clipboardOwner) {
           char title[256];
-          GetWindowText(activeWindow, title, sizeof(title));  // 获取窗口标题
+          GetWindowText(clipboardOwner, title, sizeof(title));  // 获取窗口标题
           std::cout << "Current Active Window Title: " << title << std::endl;
 
           DWORD processId;
-          GetWindowThreadProcessId(activeWindow, &processId);  // 获取窗口所属的进程ID
+          GetWindowThreadProcessId(clipboardOwner, &processId);  // 获取窗口所属的进程ID
+          HWND hwndParent = GetParent(clipboardOwner);
+          DWORD parentProcessId;
+          std::string processPath = GetProcessAbsolutePathByPID(processId);
           std::string processName = GetProcessNameByPID(processId);
+          std::string appName = GetAppNameFromFile(processPath);
+          std::string applicationName = !appName.empty() ? appName : processName;
           std::cout << "Process ID: " << processId << std::endl;
           // TODO 无法获取系统应用
-          std::cout << "Process Name: " << processName << std::endl;
-          std::cout << "Application Name: " << GetAppNameFromFile(processName) << std::endl;
-
+          std::cout << "Process Path: " << processPath << std::endl;
+          // std::cout << "Process Name: " << processName << std::endl;
+          std::cout << "Application Name: [" << applicationName << "]" << std::endl;
           std::cout << "-------------------" << std::endl;
         }
       }

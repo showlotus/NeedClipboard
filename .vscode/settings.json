@@ -55,7 +55,24 @@
     "xstddef": "cpp",
     "xstring": "cpp",
     "xtr1common": "cpp",
-    "xutility": "cpp"
+    "xutility": "cpp",
+    "charconv": "cpp",
+    "cstdarg": "cpp",
+    "format": "cpp",
+    "functional": "cpp",
+    "list": "cpp",
+    "locale": "cpp",
+    "mutex": "cpp",
+    "optional": "cpp",
+    "ratio": "cpp",
+    "stop_token": "cpp",
+    "thread": "cpp",
+    "unordered_map": "cpp",
+    "xhash": "cpp",
+    "xlocbuf": "cpp",
+    "xlocmes": "cpp",
+    "xlocmon": "cpp",
+    "xloctime": "cpp"
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
@@ -63,8 +80,7 @@
   },
   "code-runner.executorMap": {
     "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
-    "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
-    "cpp2": "cd $dir && g++ $fileName -o $fileNameWithoutExt -lpsapi -lgdi32 -luser32 && $dir$fileNameWithoutExt"
+    "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt -lpsapi -lgdi32 -luser32 -lversion && $dir$fileNameWithoutExt"
   },
   "editor.quickSuggestions": {
     "strings": "on"
