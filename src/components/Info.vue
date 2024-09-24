@@ -21,8 +21,7 @@
           v-else
           class="text-[--el-color-primary] text-xs flex-1 flex justify-end gap-2 text-ellipsis overflow-hidden"
           v-html="item[1]"
-          ></div
-        >
+        ></div>
       </div>
     </div>
   </div>
@@ -33,7 +32,12 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { TYPE_VALUE } from '@/constants/type'
-import { ClipboardTableType, FileDataType, ImageDataType, TextDataType } from '@/database'
+import {
+  ClipboardTableType,
+  FileDataType,
+  ImageDataType,
+  TextDataType
+} from '@/database'
 import { useMainStore } from '@/stores/main'
 
 const { t } = useI18n()

@@ -1,10 +1,10 @@
 import { globalShortcut, ipcMain, nativeTheme } from 'electron'
+import { createRequire } from 'node:module'
 
 import { getWinWebContents, toggleWindowVisible } from '.'
 import { SettingsStore, store } from './store'
-import { createRequire } from 'node:module'
 
-const getFileIcon = createRequire(import.meta.url)("extract-file-icon")
+const getFileIcon = createRequire(import.meta.url)('extract-file-icon')
 
 ipcMain.handle('toggle-visible', () => {
   toggleWindowVisible()
@@ -47,6 +47,7 @@ ipcMain.handle('get-theme', (_event) => {
 })
 
 ipcMain.handle('get-app-icon', (_event, path: string) => {
-  const base64Str = 'data:image/png;base64,' + getFileIcon(path, 16).toString('base64')
+  const base64Str =
+    'data:image/png;base64,' + getFileIcon(path, 16).toString('base64')
   return Promise.resolve(base64Str)
 })
