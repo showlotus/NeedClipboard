@@ -1,9 +1,10 @@
-#include <psapi.h>
 #include <windows.h>
 #include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
+#include "psapi.h"
+#include "tlhelp32.h"
 
 HWND hClipboardViewer = NULL;
 boolean isFirst = true;
@@ -105,8 +106,63 @@ std::string GetProcessAbsolutePathByPID(DWORD processID) {
   return "";
 }
 
+// 枚举所有窗口
+BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
+  DWORD pid;
+  GetWindowThreadProcessId(hwnd, &pid);
+
+  if (pid == lParam) {
+    // 检查窗口是否可见
+    if (IsWindowVisible(hwnd)) {
+      // std::cout << "Found a visible window for the process." << std::endl;
+      return FALSE;  // 找到可见窗口后停止枚举
+    }
+  }
+  return TRUE;  // 继续枚举窗口
+}
+
+// 判断是否是应用进程
+bool IsApplicationProcess(DWORD pid) {
+  // 枚举所有窗口，检查是否有窗口属于该进程
+  if (!EnumWindows(EnumWindowsProc, pid)) {
+    // std::cout << "Has visible window found for the process." << std::endl;
+    return true;  // 找到可见窗口，认为是前台应用
+  }
+
+  // std::cout << "No visible window found for the process." << std::endl;
+  return false;  // 未找到窗口，认为是后台进程
+}
+
+// 获取父进程 ID
+DWORD GetParentProcessId(DWORD pid) {
+  HANDLE hProcessSnap;
+  PROCESSENTRY32 pe32;
+  pe32.dwSize = sizeof(PROCESSENTRY32);
+
+  // 创建一个进程快照
+  hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+  if (hProcessSnap == INVALID_HANDLE_VALUE) {
+    return 0;
+  }
+
+  // 遍历进程快照
+  if (Process32First(hProcessSnap, &pe32)) {
+    do {
+      if (pe32.th32ProcessID == pid) {
+        DWORD parentPid = pe32.th32ParentProcessID;
+        CloseHandle(hProcessSnap);
+        return parentPid;
+      }
+    } while (Process32Next(hProcessSnap, &pe32));
+  }
+
+  CloseHandle(hProcessSnap);
+  return 0;
+}
+
 // 窗口过程，用于处理消息
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
+  std::cout << "-------------------" << std::endl;
   std::cout << "Message: " << message << std::endl;
   switch (message) {
     case WM_CREATE:
@@ -115,6 +171,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
       break;
 
     case WM_DRAWCLIPBOARD: {
+      // BUG 关闭窗口时，会再次触发一次？？？
       std::cout << "WM_DRAWCLIPBOARD: " << message << std::endl;
       if (isFirst) {
         isFirst = false;
@@ -134,7 +191,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
         CloseClipboard();
 
         // HWND activeWindow = GetForegroundWindow();
-        // TODO 获取到的是 webview 子进程
         HWND clipboardOwner = GetClipboardOwner();
         if (clipboardOwner) {
           char title[256];
@@ -143,17 +199,21 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
           DWORD processId;
           GetWindowThreadProcessId(clipboardOwner, &processId);  // 获取窗口所属的进程ID
-          HWND hwndParent = GetParent(clipboardOwner);
-          DWORD parentProcessId;
+
+          // 如果是后台进程则获取父进程
+          if (!IsApplicationProcess(processId)) {
+            processId = GetParentProcessId(processId);
+          }
+          // HWND hwndParent = GetParent(clipboardOwner);
+          // DWORD parentProcessId;
           std::string processPath = GetProcessAbsolutePathByPID(processId);
           std::string processName = GetProcessNameByPID(processId);
           std::string appName = GetAppNameFromFile(processPath);
           std::string applicationName = !appName.empty() ? appName : processName;
           std::cout << "Process ID: " << processId << std::endl;
-          // TODO 无法获取系统应用
           std::cout << "Process Path: " << processPath << std::endl;
           // std::cout << "Process Name: " << processName << std::endl;
-          std::cout << "Application Name: [" << applicationName << "]" << std::endl;
+          std::cout << "Application Name: " << applicationName << std::endl;
           std::cout << "-------------------" << std::endl;
         }
       }
