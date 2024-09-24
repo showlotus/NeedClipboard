@@ -17,10 +17,11 @@
           :key="activeRecord.id"
           :value="item[1]"
         />
-        <span
+        <div
           v-else
-          class="text-[--el-color-primary] text-xs flex-1 text-right text-ellipsis overflow-hidden"
-          >{{ item[1] }}</span
+          class="text-[--el-color-primary] text-xs flex-1 flex justify-end gap-2 text-ellipsis overflow-hidden"
+          v-html="item[1]"
+          ></div
         >
       </div>
     </div>
@@ -32,17 +33,23 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { TYPE_VALUE } from '@/constants/type'
-import { FileDataType, ImageDataType, TextDataType } from '@/database'
+import { ClipboardTableType, FileDataType, ImageDataType, TextDataType } from '@/database'
 import { useMainStore } from '@/stores/main'
 
 const { t } = useI18n()
 const mainStore = useMainStore()
 const activeRecord = computed(() => mainStore.activeRecord)
 const isFile = computed(() => activeRecord.value.type === TYPE_VALUE.file)
+const genSource = (data: ClipboardTableType) => {
+  return /* html */ `
+    <img src="${data.application.icon}" />
+    ${data.application.name}
+  `
+}
 const ops = {
   [TYPE_VALUE.text]: (data: TextDataType) => {
     return [
-      [t('NC.source'), data.application],
+      [t('NC.source'), genSource(data)],
       [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
       [t('NC.characters'), data.content.length],
       [t('NC.copied'), data.createTime]
@@ -50,7 +57,7 @@ const ops = {
   },
   [TYPE_VALUE.image]: (data: ImageDataType) => {
     return [
-      [t('NC.source'), data.application],
+      [t('NC.source'), genSource(data)],
       [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
       [t('NC.dimensions'), `${data.size}×${data.height}`],
       [t('NC.imageSize'), data.size],
@@ -59,7 +66,7 @@ const ops = {
   },
   [TYPE_VALUE.link]: (data: TextDataType) => {
     return [
-      [t('NC.source'), data.application],
+      [t('NC.source'), genSource(data)],
       [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
       [t('NC.characters'), data.content.length],
       [t('NC.copied'), data.createTime]
@@ -67,14 +74,14 @@ const ops = {
   },
   [TYPE_VALUE.color]: (data: TextDataType) => {
     return [
-      [t('NC.source'), data.application],
+      [t('NC.source'), genSource(data)],
       [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
       [t('NC.copied'), data.createTime]
     ]
   },
   [TYPE_VALUE.file]: (data: FileDataType) => {
     return [
-      [t('NC.source'), data.application],
+      [t('NC.source'), genSource(data)],
       [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
       [t('NC.path'), data.path],
       // [t('NC.fileSize'), data.size],

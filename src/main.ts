@@ -21,12 +21,12 @@ import './style/theme.css'
 const db = createDatabase()
 db.ClipboardTable.clear()
 // TEST local dev
-Promise.all(
-  genMockData(20).map((v) => {
+Promise.all(genMockData(20)).then((res) => {
+  console.log(res)
+  res.forEach((v) => {
     delete v.id
-    return fetchInsert(v)
+    fetchInsert(v)
   })
-).then(() => {
   console.log('database init...')
 })
 

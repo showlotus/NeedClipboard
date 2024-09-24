@@ -19,6 +19,10 @@ import { initTray } from './tray'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+// console.log('data:image/png;base64,' + fileIcon('C:\\Users\\showlotus\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe', 32).toString('base64'))
+// console.log('data:image/png;base64,' + fileIcon('C:\\Program Files\\Clash Verge\\Clash Verge.exe', 32).toString('base64'))
+
 // const NativeClipboard = require('../../packages/native-clipboard')
 // in mac development
 const NativeClipboard = {

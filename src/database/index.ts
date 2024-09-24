@@ -8,7 +8,10 @@ export interface ClipboardTableType {
   type: ClipboardType
   content: string
   createTime: string
-  application?: string
+  application: {
+    name: string
+    icon: string
+  }
 }
 
 export interface TextDataType extends ClipboardTableType {

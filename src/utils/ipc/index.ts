@@ -55,3 +55,7 @@ export function ipcOnBeforeHideWin(callback: (...args: any[]) => void) {
 export function ipcOnHideWin(callback: (...args: any[]) => void) {
   window.ipcRenderer.on('hide-win', callback)
 }
+
+export function ipcGetAppIcon(path: string) {
+  return window.ipcRenderer.invoke('get-app-icon', path)
+}

@@ -17,6 +17,7 @@ import {
   isToday,
   isYesterday
 } from '@/utils/date'
+import { ipcGetAppIcon } from '@/utils/ipc'
 
 function calculateBase64Size(base64String: string) {
   // 去掉 Base64 前缀
@@ -31,9 +32,18 @@ function calculateBase64Size(base64String: string) {
   return sizeInBytes
 }
 
+export function genMockApplications() {
+  return [
+    { name: 'Visual Studio Code', icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHsSURBVDhPjdLfT9NQFMDxs9XAJCE65lQiJKxlxH8A/wR98n/QxMSYCP4a2yJsgTrYBpoVHzTGGIMyMbq5OSJjbL4RYkIYlG4sxviAProHugIvkBxvK12OD2Rr8nnqvd/enlyAJh9eLNy5MLe9LySrh/zzH/Emt/1b1jlWmIHAV9T1ze8ahET10PXsu9Qw5AjkkzBcQFNfRkPq2MBFf95hH8kl4GEeKXdaQwpOS+WPML2Ftli5wktlt17UN9v8uQr4c0hxvkXNnWIBAiBWRhMXK9XORuUbNl+2At5FpNp82W/3U0p3b1JDCpyPlVvwpIT/EVcQhhbqOrxfJvWTIWJbb6KGlDGDrkjpknVK2YMpBesmVtHqWdA6vfNXzEGxwEnhQw0p4935B5l+i3dpFyIyQnSzzhqVNeekcpkEbMJ7FiDAfi9zE+5m0OBhQwsVEcIsQrRPyOGjX2jl52pIAQx+RpNlMK22e7LXuHG5BOPsNERLSF6++u7nOT6uIgWtA+k4DKSRu51SnJ5Pgv6lU+FNOyeuK/BoAylLaEN1zapIHXuR9EiLWJwFcR0p1xsWIBpe5RPB4lsYZXM50jOjItUwoC/gAsWnEGQRpuf1jqH7ZfXgjPQr0lRAX2QNrl13TP/Wul78OXBI26/MjX8B31GcF8UYjTwAAAAASUVORK5CYII=' },
+    { name: 'Clash Verge', icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALdSURBVDhPbVNrTxNBFF31Txli4g/yQ6NYWyi0uyDBIB9QxNgaMRHS8BKRCAF5VGgKPspSW1EJlVcppdilLXS72+3MHG8LBTRO9mbu3jvnnnsmcyWJFoCrlb3qJzLX+Uiknz0M7DF5ijF5mvHOhSQfWvNjO193fq6GuQw23673GO5ZlBqnUHZPoyzPwJJnYbnnKbYAwx2GOZbyEubKv8RSzrcW0G4HkG8KiKISYIY8Kwx5HobnA3Q5KApKmOWboyJbH0fOlw1eJpYyY8meHdsKUh7V1DpU5F2L0AlYUII4UZaR93xB1vUV2c5N/Jb3zf07WeTeWL6qHH1Lv/7TEcfPxriIu9ZhHVnQQwc4qP+IQ/snpO1hHNz9SjEN5SOGfU8GCXeB77osFH/hhrTj1/rVO0lEnEkWU1JgBqfugMJqDiehDE6WNOir+WqMGwKJ9gK2mk226eQ4GMCQpLZqex/tGSzZNfFFyaFcFAB9/1uccpsPSthoYiLeBGy1Iy0tOXMs5DhG0H6CJXcBVuECLRj5/OK/TLmNNo51Aq97gB9uCGnRUWCLTh1zNh3RXqNKnApbSEfL500cqhxa7LTQbp/ANwfwXQZiHioQajGT8/cMTNuKItpXqh7aXrDw+dlpMcGAlR6GdPi0wPaAwIoDIkIdxCoSov2Wf8pWwvsGk03YS0iECXG2dlY5kmsXElKqQIja/ySDhRpIxgCGJW0DdZP1DBMNZTHuZBhxMKjvOIrHALPoCkiJTr46KTBO4GlinlPAZ8g/2sTN6luIDHPv4C2BUTc3B5qBXjvQ1wKMPwfGyHrbAC8x+ik2eh/mIOXVN3hRm4vKMF2Ze4rgCxvwqhn8ZQuYV4Z4QizdZD3k+9rAelvBvfeAqedYJsy10+k7m6rKHnoNn9cFPG4EntAtP20lMFm3AjyqFKL2A8RcA9ewf41zkp7nxCCGfB1IdykQXS3E3on0uyEM79Y0XyL+A5Wb/oFWe3GcAAAAAElFTkSuQmCC' },
+    { name: 'Microsoft Edge', icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAMcSURBVDhPXdNrSJNhFAfw11S8TLdZVEJUBH3qOqe00pGS2EU3tzSzpBUllUU3CEsp0zA1y+vMlbaCihC7YB+KIGvbO5fLvOTu2eYNStMuq7RBSPv3XtTKA+fD8+H8znkOz0MQMyJK+10dpR91R+o/QNjqQJTRhnUdXYg1kZ546xNdYt+DxTNrmHOk1iOO1Ix7onTfEEF+QERLH1YZ7BC0mql8g+jOFsSZn0Hy7o53+6BK/R9CFwtf/PAKtW5E6D5iNTmIlXonA6w0sMCa163YaL+PLT2NUAxdROZI9l9E8PynR6gZg0D7GQLdMFaRA1hOOrBMb6bShAhjO9Z2aBBvvQepsx67h85h/+hRHPu6V0ysbvaoBS/GsEjtwJySNswu7cbcyyaEVxixpKGTAegUGkmIOx9jk7UecmcZDn46hCNfMlzEiqaR3/zClwgttoFX5kRYZS/mKPswT9WP8Ku9WFDbxgACgxYx7feQaKtAqqsAisEs7B/aAWKhuh9B+SZwSnoQWuqkEBeLFHVhcYX51nyVi1z64BVExruIa69GoqUEMutxKAb24cB7CQi6a0CBHUEX3iK4uAchpe/AzdaBk3TJOLVp0aOXvWsNVxHbVo6EriIGSLenYU8vBfjl2eCf70DAeQcCaaTQDo68BqEpdSenAKH2ulpEKiFuLcfm1wchM2VipyMFuxxxbmLWGRv88uzTSNCxZoTIr1DANf00oKkfFmkvIkZfgA0tByDvlGN7d4I3wxKdTvjk2Nw04juJBGc+RMhWFUJSVF5O2s10GhFpC8UiTXHTejJrOKEl3Z1klDaldcSK2QanrWqfXBsY5KwdAYeesgA9xbbrXm5q3f+vbnKsMEkZg7ORY/X45FoZxP+EgSquZQAa4qbWg5tybYInq3Vxk2t0fGm1my+pnOAnlnn+AqetYiLH4p1CghUNLCBTgru1lgbAk6vAk10BP7kafEmFl5pg8gpTDIOwk/jmmBGsaGSvIa1CaHIVeMlKNiVVnjBJ1Yzif78WtRO/XMu4b64F/qc6EHi4GRxqsbMVt39xpcobM7/yH8MX8z4v1sxGAAAAAElFTkSuQmCC' }
+  ]
+}
+
 export function genMockData(n = 10) {
+  const applications = genMockApplications()
   const t = ['Text', 'Image', 'File', 'Link', 'Color']
-  return new Array(n).fill(0).map((_, i) => {
+  return new Array(n).fill(0).map(async (_, i) => {
     const type = t[i % t.length]
     const data = {} as any
     if (type === 'Color') {
@@ -112,7 +122,7 @@ export function genMockData(n = 10) {
       id: faker.string.uuid(),
       type,
       ...data,
-      application: null, // faker.person.fullName(),
+      application: applications[i % applications.length], // faker.person.fullName(),
       createTime: dayjs()
         .subtract(Math.floor(Math.random() * 100), 'day')
         .format(DATE_TEMPLATE)

@@ -3,8 +3,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "psapi.h"
-#include "tlhelp32.h"
+#include <psapi.h>
+#include <tlhelp32.h>
 
 HWND hClipboardViewer = NULL;
 boolean isFirst = true;

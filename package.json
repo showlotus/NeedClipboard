@@ -43,6 +43,7 @@
     "eslint": "^9.7.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.27.0",
+    "extract-file-icon": "^0.3.2",
     "fake-indexeddb": "^6.0.0",
     "hotkeys-js": "^3.13.7",
     "jsdom": "^24.1.1",
