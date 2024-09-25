@@ -34,6 +34,20 @@ std::wstring GetProcessDescription(const std::wstring& filePath) {
   return L"";
 }
 
+std::string getAppInfo(LPCVOID info, WORD language, WORD codePage, std::string field) {
+  char query[256];
+  char* str = nullptr;
+  UINT strLen = 0;
+  sprintf(query, "\\StringFileInfo\\%04x%04x\\%s", language, codePage, field.c_str());
+  std::cout << query << std::endl;
+  char* res = nullptr;
+  UINT resLen = 0;
+  if (VerQueryValueA(info, query, (LPVOID*)&res, &resLen)) {
+    return std::string(res, resLen);
+  }
+  return "";
+}
+
 std::string GetAppNameFromFile(const std::string& filePath) {
   DWORD verHandle = 0;
   DWORD verSize = GetFileVersionInfoSizeA(filePath.c_str(), &verHandle);
@@ -47,20 +61,81 @@ std::string GetAppNameFromFile(const std::string& filePath) {
     VS_FIXEDFILEINFO* fileInfo = nullptr;
     UINT size = 0;
     if (VerQueryValueA(verData.data(), "\\", (LPVOID*)&fileInfo, &size) && size > 0) {
+      // 获取语言和编码信息
+      struct LANGANDCODEPAGE {
+        WORD wLanguage;
+        WORD wCodePage;
+      }* lpTranslate;
+
+      UINT cbTranslate = 0;
+      if (!VerQueryValueA(verData.data(), "\\VarFileInfo\\Translation", (LPVOID*)&lpTranslate, &cbTranslate)) {
+        return "Error querying translation info";
+      }
+
       if (fileInfo->dwSignature == 0xfeef04bd) {
-        char* productName = nullptr;
-        UINT productNameLen = 0;
-        // 查找应用程序的名称
-        if (VerQueryValueA(verData.data(), "\\StringFileInfo\\040904B0\\ProductName", (LPVOID*)&productName, &productNameLen)) {
-          return std::string(productName, productNameLen);
+        // 0409 英文
+        // 0804 中文
+        // 04B0 Unicode 代码页
+
+        // TODO 判断是否为系统应用
+        if (filePath.find(":\\Windows")) {
+          std::cout << "is under Windows dir...." << std::endl;
+          // 1. 获取应用程序的描述
+          std::string fileDescription = getAppInfo(verData.data(), lpTranslate->wLanguage, lpTranslate->wCodePage, "FileDescription");
+          if (!fileDescription.empty()) {
+            return fileDescription;
+          }
+
+          // 2. 获取应用程序的产品名称
+          std::string productName = getAppInfo(verData.data(), lpTranslate->wLanguage, lpTranslate->wCodePage, "ProductName");
+          if (!productName.empty()) {
+            return productName;
+          }
+        } else {
+          // 1. 获取应用程序的产品名称
+          std::string productName = getAppInfo(verData.data(), lpTranslate->wLanguage, lpTranslate->wCodePage, "ProductName");
+          if (!productName.empty()) {
+            return productName;
+          }
+
+          // 2. 获取应用程序的描述
+          std::string fileDescription = getAppInfo(verData.data(), lpTranslate->wLanguage, lpTranslate->wCodePage, "FileDescription");
+          if (!fileDescription.empty()) {
+            return fileDescription;
+          }
         }
 
-        char* description = nullptr;
-        UINT descriptionLen = 0;
+        // 查找应用程序的名称
+        // char queryProduct[256];
+        // char* productName = nullptr;
+        // UINT productNameLen = 0;
+        // sprintf(queryProduct, "\\StringFileInfo\\%04x%04x\\ProductName", lpTranslate->wLanguage, lpTranslate->wCodePage);
+
+        // if (VerQueryValueA(verData.data(), queryProduct, (LPVOID*)&productName, &productNameLen)) {
+        //   std::cout << std::string(productName, productNameLen) << std::endl;
+        //   return std::string(productName, productNameLen);
+        // }
+
+        // char queryFileDescription[256];
+        // sprintf(queryFileDescription, "\\StringFileInfo\\%04x%04x\\FileDescription", lpTranslate->wLanguage, lpTranslate->wCodePage);
+        // // std::cout << query << std::endl;
+
+        // char* description = nullptr;
+        // UINT descriptionLen = 0;
+
+        // 0409 英文
+        // 0804 中文
+        // 04B0 Unicode 代码页
+
         // 查找应用程序的描述
-        if (VerQueryValueA(verData.data(), "\\StringFileInfo\\040904B0\\FileDescription", (LPVOID*)&description, &descriptionLen)) {
-          return std::string(description, descriptionLen);
-        }
+        // if (VerQueryValueA(verData.data(), "\\StringFileInfo\\040904B0\\FileDescription", (LPVOID*)&description, &descriptionLen)) {
+        //   return std::string(description, descriptionLen);
+        // }
+
+        // // "\\StringFileInfo\\080404B0\\FileDescription"
+        // if (VerQueryValueA(verData.data(), queryFileDescription, (LPVOID*)&description, &descriptionLen)) {
+        //   return std::string(description, descriptionLen);
+        // }
       }
     }
   }
@@ -121,9 +196,10 @@ bool IsApplicationProcess(DWORD pid) {
 }
 
 int main() {
-  DWORD processID = 53524;  // MouseInc Webview
-  // processID = 20748;        // MouseInc
-  processID = 10964;  // Outlook
+  DWORD processID = 23832;
+  // processID = 20748;  // MouseInc
+  // processID = 10964;  // Outlook
+  // processID = 63816;  // VS Code
 
   if (!IsApplicationProcess(processID)) {
     processID = GetParentProcessId(processID);
@@ -134,7 +210,11 @@ int main() {
   // IsApplicationProcess(processID);
   // IsApplicationProcess(parentPid);
 
-  // std::cout << "Parent Process ID: " << parentPid << std::endl;
+  std::cout << "Process ID: " << processID << std::endl;
+  std::cout << "Explorer: " << GetAppNameFromFile("C:\\Windows\\explorer.exe") << std::endl;
+  std::cout << "Notepad: " << GetAppNameFromFile("C:\\Windows\\notepad.exe") << std::endl;
+  std::cout << "设置: " << GetAppNameFromFile("C:\\Windows\\ImmersiveControlPanel\\SystemSettings.exe") << std::endl;
+  return 0;
   // std::cout << "GrandParent Process ID: " << GetParentProcessId(parentPid) << std::endl;
   HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
   if (hProcess) {

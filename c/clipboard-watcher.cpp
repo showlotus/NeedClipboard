@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+//
 #include <psapi.h>
 #include <tlhelp32.h>
 
@@ -23,6 +24,20 @@ std::string GetProcessPath(DWORD processID) {
   return "";
 }
 
+std::string getAppInfo(LPCVOID info, WORD language, WORD codePage, std::string field) {
+  char query[256];
+  char* str = nullptr;
+  UINT strLen = 0;
+  sprintf(query, "\\StringFileInfo\\%04x%04x\\%s", language, codePage, field.c_str());
+  std::cout << query << std::endl;
+  char* res = nullptr;
+  UINT resLen = 0;
+  if (VerQueryValueA(info, query, (LPVOID*)&res, &resLen)) {
+    return std::string(res, resLen);
+  }
+  return "";
+}
+
 std::string GetAppNameFromFile(const std::string& filePath) {
   DWORD verHandle = 0;
   DWORD verSize = GetFileVersionInfoSizeA(filePath.c_str(), &verHandle);
@@ -36,19 +51,50 @@ std::string GetAppNameFromFile(const std::string& filePath) {
     VS_FIXEDFILEINFO* fileInfo = nullptr;
     UINT size = 0;
     if (VerQueryValueA(verData.data(), "\\", (LPVOID*)&fileInfo, &size) && size > 0) {
-      if (fileInfo->dwSignature == 0xfeef04bd) {
-        char* productName = nullptr;
-        UINT productNameLen = 0;
-        // 查找应用程序的名称
-        if (VerQueryValueA(verData.data(), "\\StringFileInfo\\040904B0\\ProductName", (LPVOID*)&productName, &productNameLen)) {
-          return std::string(productName, productNameLen);
-        }
+      struct LANGANDCODEPAGE {
+        WORD wLanguage;
+        WORD wCodePage;
+      }* lpTranslate;
+      UINT cbTranslate = 0;
 
-        char* description = nullptr;
-        UINT descriptionLen = 0;
-        // 查找应用程序的描述
-        if (VerQueryValueA(verData.data(), "\\StringFileInfo\\040904B0\\FileDescription", (LPVOID*)&description, &descriptionLen)) {
-          return std::string(description, descriptionLen);
+      // 获取语言和编码信息，如果没有语言信息，则默认为英文
+      if (!VerQueryValueA(verData.data(), "\\VarFileInfo\\Translation", (LPVOID*)&lpTranslate, &cbTranslate)) {
+        // 0409 英文
+        // 0804 中文
+        // 04B0 Unicode 代码页
+        lpTranslate->wLanguage = 0x0409;
+        lpTranslate->wCodePage = 0x04B0;
+        std::cout << "Error querying translation info" << std::endl;
+      }
+
+      if (fileInfo->dwSignature == 0xfeef04bd) {
+        // TODO 判断是否为系统应用
+        std::string::size_type isSystemApp = filePath.find(":\\Windows");
+        if (isSystemApp != std::string::npos) {
+          std::cout << "is under Windows dir...." << std::endl;
+          // 1. 获取应用程序的描述
+          std::string fileDescription = getAppInfo(verData.data(), lpTranslate->wLanguage, lpTranslate->wCodePage, "FileDescription");
+          if (!fileDescription.empty()) {
+            return fileDescription;
+          }
+
+          // 2. 获取应用程序的产品名称
+          std::string productName = getAppInfo(verData.data(), lpTranslate->wLanguage, lpTranslate->wCodePage, "ProductName");
+          if (!productName.empty()) {
+            return productName;
+          }
+        } else {
+          // 1. 获取应用程序的产品名称
+          std::string productName = getAppInfo(verData.data(), lpTranslate->wLanguage, lpTranslate->wCodePage, "ProductName");
+          if (!productName.empty()) {
+            return productName;
+          }
+
+          // 2. 获取应用程序的描述
+          std::string fileDescription = getAppInfo(verData.data(), lpTranslate->wLanguage, lpTranslate->wCodePage, "FileDescription");
+          if (!fileDescription.empty()) {
+            return fileDescription;
+          }
         }
       }
     }
@@ -122,6 +168,7 @@ BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
 }
 
 // 判断是否是应用进程
+// BUG 判断有问题，Windows 进程也会返回 true，可以用系统设置做测试
 bool IsApplicationProcess(DWORD pid) {
   // 枚举所有窗口，检查是否有窗口属于该进程
   if (!EnumWindows(EnumWindowsProc, pid)) {

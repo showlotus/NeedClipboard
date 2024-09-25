@@ -1,5 +1,5 @@
 {
-  "name": "native-clipboard",
+  "name": "@showlotus/native-clipboard",
   "version": "0.0.1",
   "description": "",
   "main": "build/Release/native-clipboard.node",
