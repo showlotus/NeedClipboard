@@ -195,12 +195,32 @@ bool IsApplicationProcess(DWORD pid) {
   return false;  // 未找到窗口，认为是后台进程
 }
 
+bool IsAppProcess(DWORD processID) {
+  HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
+  if (!process) {
+    return false;
+  }
+
+  HANDLE token;
+  if (OpenProcessToken(process, TOKEN_QUERY, &token)) {
+    DWORD sessionId;
+    DWORD size;
+    if (GetTokenInformation(token, TokenSessionId, &sessionId, sizeof(DWORD), &size)) {
+      CloseHandle(token);
+      return (sessionId != 0);  // sessionId == 0 表示是服务
+    }
+    CloseHandle(token);
+  }
+  CloseHandle(process);
+  return false;
+}
+
 int main() {
-  DWORD processID = 82436;
+  DWORD processID = 260;
   // processID = 20748;  // MouseInc
   // processID = 10964;  // Outlook
   // processID = 63816;  // VS Code
-
+  std::cout << "IsAppProcess: " << (IsAppProcess(processID) ? "true" : "false") << std::endl;
   if (!IsApplicationProcess(processID)) {
     processID = GetParentProcessId(processID);
   }
@@ -211,9 +231,9 @@ int main() {
   // IsApplicationProcess(parentPid);
 
   std::cout << "Process ID: " << processID << std::endl;
-  std::cout << "Explorer: " << GetAppNameFromFile("C:\\Windows\\explorer.exe") << std::endl;
-  std::cout << "Notepad: " << GetAppNameFromFile("C:\\Windows\\notepad.exe") << std::endl;
-  std::cout << "设置: " << GetAppNameFromFile("C:\\Windows\\ImmersiveControlPanel\\SystemSettings.exe") << std::endl;
+  // std::cout << "Explorer: " << GetAppNameFromFile("C:\\Windows\\explorer.exe") << std::endl;
+  // std::cout << "Notepad: " << GetAppNameFromFile("C:\\Windows\\notepad.exe") << std::endl;
+  // std::cout << "设置: " << GetAppNameFromFile("C:\\Windows\\ImmersiveControlPanel\\SystemSettings.exe") << std::endl;
   // return 0;
   // std::cout << "GrandParent Process ID: " << GetParentProcessId(parentPid) << std::endl;
   HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
