@@ -39,7 +39,7 @@ std::string getAppInfo(LPCVOID info, WORD language, WORD codePage, std::string f
   char* str = nullptr;
   UINT strLen = 0;
   sprintf(query, "\\StringFileInfo\\%04x%04x\\%s", language, codePage, field.c_str());
-  std::cout << query << std::endl;
+  // std::cout << query << std::endl;
   char* res = nullptr;
   UINT resLen = 0;
   if (VerQueryValueA(info, query, (LPVOID*)&res, &resLen)) {
@@ -78,7 +78,7 @@ std::string GetAppNameFromFile(const std::string& filePath) {
         // 04B0 Unicode 代码页
 
         // TODO 判断是否为系统应用
-        if (filePath.find(":\\Windows")) {
+        if (filePath.find(":\\Windows") != std::string::npos) {
           std::cout << "is under Windows dir...." << std::endl;
           // 1. 获取应用程序的描述
           std::string fileDescription = getAppInfo(verData.data(), lpTranslate->wLanguage, lpTranslate->wCodePage, "FileDescription");
@@ -196,7 +196,7 @@ bool IsApplicationProcess(DWORD pid) {
 }
 
 int main() {
-  DWORD processID = 23832;
+  DWORD processID = 82436;
   // processID = 20748;  // MouseInc
   // processID = 10964;  // Outlook
   // processID = 63816;  // VS Code
@@ -214,7 +214,7 @@ int main() {
   std::cout << "Explorer: " << GetAppNameFromFile("C:\\Windows\\explorer.exe") << std::endl;
   std::cout << "Notepad: " << GetAppNameFromFile("C:\\Windows\\notepad.exe") << std::endl;
   std::cout << "设置: " << GetAppNameFromFile("C:\\Windows\\ImmersiveControlPanel\\SystemSettings.exe") << std::endl;
-  return 0;
+  // return 0;
   // std::cout << "GrandParent Process ID: " << GetParentProcessId(parentPid) << std::endl;
   HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
   if (hProcess) {
