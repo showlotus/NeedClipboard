@@ -1,11 +1,13 @@
 <template>
   <div
-    class="py-1 px-1 flex gap-2 items-center text-xs rounded text-[--nc-code-color] font-bold"
+    class="py-1 px-1 flex gap-2 items-center text-xs rounded text-[--nc-code-color]"
     :class="{
       'group hover:bg-[--nc-item-color-hover]': openHoverStyle
     }"
   >
-    <span v-if="label" class="pl-1">{{ label }}</span>
+    <span v-if="label" class="pl-1 text-[--el-text-color-regular]">{{
+      label
+    }}</span>
     <div class="flex flex-wrap gap-1">
       <span
         v-for="(t, i) in keys"

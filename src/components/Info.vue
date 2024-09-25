@@ -9,7 +9,7 @@
         :key="i"
         class="h-7 flex justify-between items-center text-xs border-b border-[--nc-info-border-color] last:border-none"
       >
-        <span class="font-bold text-[--nc-group-label-color] min-w-40">{{
+        <span class="text-[--nc-group-label-color] min-w-40">{{
           item[0]
         }}</span>
         <AutoTooltip

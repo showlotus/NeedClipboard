@@ -2,9 +2,7 @@
   <el-scrollbar ref="elScrollbarRef">
     <div v-infinite-scroll="loadMore" :infinite-scroll-immediate="false">
       <div v-for="group in groupedData" :key="group.label">
-        <div
-          class="mt-4 ml-4 mb-2 text-xs font-bold text-[--nc-group-label-color]"
-        >
+        <div class="mt-4 ml-4 mb-2 text-xs text-[--nc-group-label-color]">
           {{ $t(group.label) }}
         </div>
         <div
@@ -24,7 +22,7 @@
           <TypeIcon :data="item" class="min-w-6" />
           <span
             v-if="item.type !== 'Image'"
-            class="overflow-hidden text-ellipsis whitespace-nowrap"
+            class="overflow-hidden text-sm text-ellipsis whitespace-nowrap"
           >
             {{ item.content }}
           </span>

@@ -8,12 +8,12 @@
         @click="handleToggleSettingPanel"
       >
         <LogoSvg class="w-4 h-4 text-[--el-text-color-regular]" />
-        <div class="ml-2 pr-1 text-sm mt-0.5">
+        <div class="ml-2 pr-1 text-sm mt-0.5 font-mono">
           {{ appName }}
         </div>
         <span
           v-if="isBeta"
-          class="px-0.5 border border-solid border-current rounded-sm italic font-bold text-[9.5px] text-[--nc-group-label-color] opacity-50"
+          class="px-0.5 border border-solid border-current rounded-sm text-[9.5px] text-[--nc-group-label-color] opacity-50"
           >Beta
         </span>
       </div>

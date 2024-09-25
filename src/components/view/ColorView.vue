@@ -7,7 +7,7 @@
         backgroundColor: value
       }"
     ></div>
-    <span>{{ value }}</span>
+    <span class="text-xs">{{ value }}</span>
   </div>
 </template>
 
