@@ -178,7 +178,8 @@ const scrollIntoView = () => {
     })
   })
 }
-
+// keyboard-first
+// TODO 再新增另一个快捷键
 hotkeys('up', 'home', (e) => {
   showScrollbar()
   e.preventDefault()
@@ -188,6 +189,7 @@ hotkeys('up', 'home', (e) => {
   activeIndex.value--
   scrollIntoView()
 })
+// TODO 再新增另一个快捷键
 hotkeys('down', 'home', (e) => {
   showScrollbar()
   e.preventDefault()
@@ -203,6 +205,7 @@ hotkeys('tab', 'home', () => {
     menuVisible.value = !menuVisible.value
   }
 })
+// TODO 再新增另一个快捷键
 hotkeys('delete', 'home', () => {
   if (activeItem.value) {
     handleMenuDelete()
