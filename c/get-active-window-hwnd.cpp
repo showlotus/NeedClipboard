@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <psapi.h>
 #include <tchar.h>
+#include <string>
 
 void GetActiveWindowIconPath() {
     HWND hwnd = GetForegroundWindow();
@@ -30,9 +31,25 @@ void GetActiveWindowIconPath() {
     std::cout << "------------------------------------------" << std::endl;
 }
 
+std::string hwndToString(HWND hwnd) {
+    return std::to_string(reinterpret_cast<uintptr_t>(hwnd));
+}
+
+HWND stringToHwnd(const std::string& hwndStr) {
+    // 将字符串转换为 unsigned long long
+    unsigned long long hwndInt = std::stoull(hwndStr);
+    
+    // 将 unsigned long long 转换为 HWND
+    return reinterpret_cast<HWND>(hwndInt);
+}
+
 void PrintActiveWindowTitle() {
     HWND hwnd = GetForegroundWindow(); // 获取当前活动窗口的句柄
     if (hwnd) {
+        std::string hwnd_str = hwndToString(hwnd);
+        std::cout << "HWND: " << hwnd << std::endl;
+        std::cout << "HWND string: " << hwnd_str << std::endl;
+        std::cout << "HWND from string: " << stringToHwnd(hwnd_str) << std::endl;
         char title[256];
         GetWindowText(hwnd, title, sizeof(title)); // 获取窗口标题
         std::cout << "Current Active Window Title: " << title << std::endl;
