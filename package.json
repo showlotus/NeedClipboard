@@ -37,7 +37,7 @@
     "dayjs": "^1.11.12",
     "dexie": "^4.0.8",
     "electron": "31.2.1",
-    "electron-builder": "^24.13.3",
+    "electron-builder": "^25.0.5",
     "electron-store": "^10.0.0",
     "element-plus": "^2.7.8",
     "eslint": "^9.7.0",
