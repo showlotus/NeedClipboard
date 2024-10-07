@@ -1,8 +1,8 @@
 BasedOnStyle: Chromium
 Language: Cpp
 # AllowAllArgumentsOnNextLine: true
-IndentWidth: 2
-ContinuationIndentWidth: 2
+IndentWidth: 4
+ContinuationIndentWidth: 4
 ColumnLimit: 0
 # AccessModifierOffset: 1
 # AlignAfterOpenBracket: AlwaysBreak

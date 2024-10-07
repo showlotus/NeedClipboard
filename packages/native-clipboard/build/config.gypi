@@ -429,6 +429,7 @@
     "node_gyp": "C:\\Program Files\\nodejs\\node_modules\\npm\\node_modules\\node-gyp\\bin\\node-gyp.js",
     "npm_version": "10.7.0",
     "prefix": "C:\\Users\\showlotus\\AppData\\Roaming\\npm",
+    "registry": "https://registry.npmmirror.com",
     "userconfig": "C:\\Users\\showlotus\\.npmrc",
     "user_agent": "npm/10.7.0 node/v20.15.0 win32 x64 workspaces/false"
   }

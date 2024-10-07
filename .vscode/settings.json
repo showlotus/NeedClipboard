@@ -74,6 +74,7 @@
     "xlocmon": "cpp",
     "xloctime": "cpp"
   },
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "never"

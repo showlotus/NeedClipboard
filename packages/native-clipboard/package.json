@@ -4,7 +4,7 @@
   "description": "",
   "main": "build/Release/native-clipboard.node",
   "scripts": {
-    "test": "node ./test/index.js",
+    "install": "npm run build",
     "build": "node-gyp configure build",
     "rebuild": "rm -rf ./build && node-gyp configure build"
   },

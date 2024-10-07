@@ -23,9 +23,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 // console.log('data:image/png;base64,' + fileIcon('C:\\Users\\showlotus\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe', 32).toString('base64'))
 // console.log('data:image/png;base64,' + fileIcon('C:\\Program Files\\Clash Verge\\Clash Verge.exe', 32).toString('base64'))
 
-// const NativeClipboard = require('../../packages/native-clipboard')
+const NativeClipboard = require('../../packages/native-clipboard')
 // in mac development
-const NativeClipboard = {
+const NativeClipboard1 = {
   startWatching(callback: () => void) {
     callback()
   },
@@ -37,26 +37,35 @@ const NativeClipboard = {
 }
 console.log(NativeClipboard)
 
-// TODO 监听剪贴板变化，更新 Store，通知 View 更新
-NativeClipboard.startWatching(() => {
-  // TODO 检测与上一次剪贴板内容的区别
-  const [type, path] = NativeClipboard.getClipboardType()
-  const data = { type } as any
-  if (type === 'File') {
-    data.path = path
-  } else if (type === 'Image') {
-    const img = clipboard.readImage()
-    data.size = img.getSize()
-    data.bitmap = img.toBitmap()
-    data.png = img.toPNG()
-    data.jpg = img.toJPEG(100)
-    data.miniUrl = img.resize({ height: 28, quality: 'good' }).toDataURL()
-    data.url = img.toDataURL()
-  } else if (type === 'Text') {
-    data.content = clipboard.readText()
-  }
-  // win?.webContents.send('clipboard-change', data)
+NativeClipboard.watch((type, data, source) => {
+  console.log(type, data, source)
 })
+
+setTimeout(() => {
+  console.log('unwatch -----------------------')
+  NativeClipboard.unwatch()
+}, 2000)
+
+// TODO 监听剪贴板变化，更新 Store，通知 View 更新
+// NativeClipboard.startWatching(() => {
+//   // TODO 检测与上一次剪贴板内容的区别
+//   const [type, path] = NativeClipboard.getClipboardType()
+//   const data = { type } as any
+//   if (type === 'File') {
+//     data.path = path
+//   } else if (type === 'Image') {
+//     const img = clipboard.readImage()
+//     data.size = img.getSize()
+//     data.bitmap = img.toBitmap()
+//     data.png = img.toPNG()
+//     data.jpg = img.toJPEG(100)
+//     data.miniUrl = img.resize({ height: 28, quality: 'good' }).toDataURL()
+//     data.url = img.toDataURL()
+//   } else if (type === 'Text') {
+//     data.content = clipboard.readText()
+//   }
+//   // win?.webContents.send('clipboard-change', data)
+// })
 
 // The built directory structure
 //

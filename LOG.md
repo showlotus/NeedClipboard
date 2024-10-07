@@ -45,6 +45,36 @@ npm install --global --production windows-build-tools@4.0.0
 
 ## log
 
+## 10/07
+
+- 剪贴板 SDK
+
+  - `watch`：开始监听
+
+    ```ts
+    function watch(
+      callback: (
+        type: 'Text' | 'Image' | 'File',
+        data: string | string[],
+        source: string
+      ) => void
+    ) {
+      // 开启一个线程监听剪贴板变化，每当发生变化时
+      // 获取当前剪贴板类型（type）、数据（data）、来源应用（source）
+      // 将这三个作为回调的入参传入
+      const type = ''
+      const data = ''
+      const source = ''
+      callback(type, data, source)
+    }
+    ```
+
+  - `unwatch`：停止监听
+
+    ```ts
+    function unwatch() {}
+    ```
+
 ## 09/28
 
 - 从剪贴板上获取到的纯文本能直接粘贴到窗口中，但是复制的文件无法粘贴到文件夹中。在考虑先不实现文件的复制了，初版只实现文本和图片的粘贴，那这样基本功能就已经实现完毕了。
