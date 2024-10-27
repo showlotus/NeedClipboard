@@ -45,7 +45,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\index.cpp">
+    <ClCompile Include="..\src\1015.cpp">
       <Filter>..\src</Filter>
     </ClCompile>
     <ClCompile Include="C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\node_modules\node-gyp\src\win_delay_load_hook.cc">

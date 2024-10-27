@@ -6,7 +6,7 @@
   "scripts": {
     "install": "npm run build",
     "build": "node-gyp configure build",
-    "rebuild": "rm -rf ./build && node-gyp configure build"
+    "rebuild": "npx rimraf ./build && node-gyp configure build"
   },
   "keywords": [],
   "author": "",

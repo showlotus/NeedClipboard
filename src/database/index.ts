@@ -8,7 +8,7 @@ export interface ClipboardTableType {
   type: ClipboardType
   content: string
   createTime: string
-  application: {
+  application?: {
     name: string
     icon: string
   }

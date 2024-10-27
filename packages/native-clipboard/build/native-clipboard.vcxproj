@@ -139,8 +139,8 @@
     <None Include="..\binding.gyp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\index.cpp">
-      <ObjectFileName>$(IntDir)\src\index.obj</ObjectFileName>
+    <ClCompile Include="..\src\1015.cpp">
+      <ObjectFileName>$(IntDir)\src\1015.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="C:\Users\showlotus\Desktop\WinCode\NeedClipboard\packages\native-clipboard\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
   </ItemGroup>

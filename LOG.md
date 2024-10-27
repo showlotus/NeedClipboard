@@ -60,7 +60,7 @@ npm install --global --production windows-build-tools@4.0.0
       ) => void
     ) {
       // 开启一个线程监听剪贴板变化，每当发生变化时
-      // 获取当前剪贴板类型（type）、数据（data）、来源应用（source）
+      // 获取当前剪贴板类型（type）、数据（data）、来源应用（source：应用程序 exe 文件的路径）
       // 将这三个作为回调的入参传入
       const type = ''
       const data = ''
@@ -74,6 +74,8 @@ npm install --global --production windows-build-tools@4.0.0
     ```ts
     function unwatch() {}
     ```
+
+  - ``
 
 ## 09/28
 

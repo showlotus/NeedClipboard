@@ -20,7 +20,7 @@
   "win": {
     "target": [
       {
-        "target": "nsis",
+        "target": "msi",
         "arch": [
           "x64"
         ]
@@ -28,11 +28,9 @@
     ],
     "artifactName": "${productName}-Windows-${version}-Setup.${ext}"
   },
-  "nsis": {
+  "msi": {
     "oneClick": false,
-    "perMachine": false,
-    "allowToChangeInstallationDirectory": true,
-    "deleteAppDataOnUninstall": false
+    "perMachine": false
   },
   "linux": {
     "target": [

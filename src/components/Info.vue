@@ -46,8 +46,8 @@ const activeRecord = computed(() => mainStore.activeRecord)
 const isFile = computed(() => activeRecord.value.type === TYPE_VALUE.file)
 const genSource = (data: ClipboardTableType) => {
   return /* html */ `
-    <img src="${data.application.icon}" />
-    ${data.application.name}
+    <img src="${data.application!.icon}" />
+    ${data.application!.name}
   `
 }
 const ops = {

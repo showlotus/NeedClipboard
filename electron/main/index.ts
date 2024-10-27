@@ -24,27 +24,23 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 // console.log('data:image/png;base64,' + fileIcon('C:\\Program Files\\Clash Verge\\Clash Verge.exe', 32).toString('base64'))
 
 const NativeClipboard = require('../../packages/native-clipboard')
-// in mac development
-const NativeClipboard1 = {
-  startWatching(callback: () => void) {
-    callback()
-  },
-  getClipboardType() {
-    return [] as any
-  },
-  writeFilesToClipboard(..._args: any[]) {},
-  stopWatching() {}
-}
+
 console.log(NativeClipboard)
 
-NativeClipboard.watch((type, data, source) => {
-  console.log(type, data, source)
+NativeClipboard.watch((type, data, source, app) => {
+  console.log('clipboard changed!')
+  console.log(type, data, source, app)
 })
 
+// setInterval(() => {
+//   console.log(NativeClipboard.getCurrentWindowHandle())
+// }, 500)
+
 setTimeout(() => {
-  console.log('unwatch -----------------------')
-  NativeClipboard.unwatch()
-}, 2000)
+  // console.log('unwatch -----------------------')
+  // NativeClipboard.unwatch()
+  // NativeClipboard.activateWindow('9110730')
+}, 15000)
 
 // TODO 监听剪贴板变化，更新 Store，通知 View 更新
 // NativeClipboard.startWatching(() => {
