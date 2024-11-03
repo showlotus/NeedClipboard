@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <thread>
+#include <chrono>
 #include <vector>
 //
 #include <psapi.h>
@@ -15,6 +16,7 @@
 
 std::atomic<bool> isRunning(false);
 HWND hwnd = nullptr;
+HWND hClipboardViewer = NULL;
 Napi::ThreadSafeFunction tsfn;
 
 std::string getAppInfo(LPCVOID info, WORD language, WORD codePage, std::string field) {
@@ -215,82 +217,118 @@ DWORD GetParentProcessId(DWORD pid) {
 }
 
 // 剪贴板更新事件处理程序
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-    if (uMsg == WM_CLIPBOARDUPDATE) {
-        if (OpenClipboard(hwnd)) {
-            // 通知 JavaScript 剪贴板内容已更改
-            // TODO 处理剪贴板更新事件，触发回调，传递参数
-            tsfn.BlockingCall([](Napi::Env env, Napi::Function callback) {
-                /**
-                 * 剪贴板格式对应的常量：https://learn.microsoft.com/zh-cn/windows/win32/dataxchg/standard-clipboard-formats#constants
-                 */
-                Napi::String type = Napi::String::New(env, "");
-                if (IsClipboardFormatAvailable(CF_UNICODETEXT)) {
-                    type = Napi::String::New(env, "Text");
-                } else if (IsClipboardFormatAvailable(CF_HDROP)) {
-                    type = Napi::String::New(env, "File");
-                } else if (IsClipboardFormatAvailable(CF_DIB)) {
-                    type = Napi::String::New(env, "Image");
-                }
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
+    std::cout << "-------------------" << std::endl;
+    std::cout << "Message: " << message << std::endl;
+    switch (message) {
+        case WM_DRAWCLIPBOARD: {
+            if (OpenClipboard(hwnd)) {
+                tsfn.BlockingCall([](Napi::Env env, Napi::Function callback) {
+                    callback.Call({Napi::String::New(env, "Text"), Napi::String::New(env, "Text"), Napi::String::New(env, "Text"), Napi::String::New(env, "Text")});
+                });
+
                 CloseClipboard();
-
-                HWND clipboardOwner = GetClipboardOwner();
-                if (clipboardOwner) {
-                    DWORD processId;
-                    GetWindowThreadProcessId(clipboardOwner, &processId);  // 获取窗口所属的进程ID
-
-                    // 如果是后台进程则获取父进程
-                    if (!IsApplicationProcess(processId)) {
-                        processId = GetParentProcessId(processId);
-                    }
-
-                    std::string processPath = GetProcessAbsolutePathByPID(processId);
-                    std::string processName = GetProcessNameByPID(processId);
-                    std::string appName = GetAppNameFromFile(processPath);
-                    std::string applicationName = !appName.empty() ? appName : processName;
-
-                    Napi::String data = Napi::String::New(env, "xxx");
-                    Napi::String source = Napi::String::New(env, processPath);
-                    Napi::String app = Napi::String::New(env, applicationName);
-                    callback.Call({type, data, source, app});
+                // 通知下一个观察者
+                if (hClipboardViewer != nullptr) {
+                    SendMessage(hClipboardViewer, message, wParam, lParam);
                 }
-            });
+                break;
+
+                // 通知 JavaScript 剪贴板内容已更改
+                // TODO 处理剪贴板更新事件，触发回调，传递参数
+
+                tsfn.BlockingCall([](Napi::Env env, Napi::Function callback) {
+                    /**
+                     * 剪贴板格式对应的常量：https://learn.microsoft.com/zh-cn/windows/win32/dataxchg/standard-clipboard-formats#constants
+                     */
+                    Napi::String type = Napi::String::New(env, "");
+                    if (IsClipboardFormatAvailable(CF_UNICODETEXT)) {
+                        type = Napi::String::New(env, "Text");
+                    } else if (IsClipboardFormatAvailable(CF_HDROP)) {
+                        type = Napi::String::New(env, "File");
+                    } else if (IsClipboardFormatAvailable(CF_DIB)) {
+                        type = Napi::String::New(env, "Image");
+                    }
+                    CloseClipboard();
+
+                    HWND clipboardOwner = GetClipboardOwner();
+                    if (clipboardOwner) {
+                        DWORD processId;
+                        GetWindowThreadProcessId(clipboardOwner, &processId);  // 获取窗口所属的进程ID
+
+                        // 如果是后台进程则获取父进程
+                        if (!IsApplicationProcess(processId)) {
+                            processId = GetParentProcessId(processId);
+                        }
+
+                        std::string processPath = GetProcessAbsolutePathByPID(processId);
+                        std::string processName = GetProcessNameByPID(processId);
+                        std::string appName = GetAppNameFromFile(processPath);
+                        std::string applicationName = !appName.empty() ? appName : processName;
+
+                        Napi::String data = Napi::String::New(env, "xxx");
+                        Napi::String source = Napi::String::New(env, processPath);
+                        Napi::String app = Napi::String::New(env, applicationName);
+                        callback.Call({type, data, source, app});
+                    }
+                });
+            }
+
+            // 通知下一个观察者
+            if (hClipboardViewer != nullptr) {
+                SendMessage(hClipboardViewer, message, wParam, lParam);
+            }
+            break;
         }
-        SendMessage(hwnd, WM_DRAWCLIPBOARD, wParam, lParam);
+
+        case WM_DESTROY: {
+            ChangeClipboardChain(hwnd, hClipboardViewer);
+            PostQuitMessage(0);
+            break;
+        }
     }
-    return DefWindowProc(hwnd, uMsg, wParam, lParam);
+    return DefWindowProc(hwnd, message, wParam, lParam);
 }
 
 // 消息循环线程
 void MessageLoop() {
     // 创建一个隐藏的窗口用于处理剪贴板事件
-    const char* className = "ClipboardListener";
+    const char* CLASS_NAME = "ClipboardListener";
+    const char* WINDOW_NAME = "ClipboardWatcher Window";
     WNDCLASS wc = {};
     wc.lpfnWndProc = WindowProc;
     wc.hInstance = GetModuleHandle(nullptr);
-    wc.lpszClassName = className;
+    wc.lpszClassName = CLASS_NAME;
     RegisterClass(&wc);
 
-    hwnd = CreateWindowEx(0, className, "Clipboard Listener", 0, 0, 0, 0, 0, HWND_MESSAGE, nullptr, GetModuleHandle(nullptr), nullptr);
+    hwnd = CreateWindowEx(
+        0,
+        CLASS_NAME,
+        WINDOW_NAME, 
+        0,
+        0, 0, 0, 0,
+        HWND_MESSAGE,
+        NULL,
+        GetModuleHandle(NULL),
+        NULL);
 
     // 注册剪贴板监听
-    AddClipboardFormatListener(hwnd);
+    // AddClipboardFormatListener(hwnd);
 
     // 消息循环
     MSG msg;
-    while (isRunning) {
-        while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-        Sleep(1000);
-        // std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    while (/* isRunning &&  */GetMessage(&msg, NULL, 0, 0)) {
+        std::cout << "<<<<<<<<<<<<<<<<<<<<<<< GetMessage " << std::endl;
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+        // Sleep(1000);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 
     // 移除剪贴板监听
-    RemoveClipboardFormatListener(hwnd);
-    DestroyWindow(hwnd);
-    UnregisterClass(className, GetModuleHandle(nullptr));
+    // RemoveClipboardFormatListener(hwnd);
+    // DestroyWindow(hwnd);
+    // UnregisterClass(className, GetModuleHandle(nullptr));
 }
 
 // 启动剪贴板监听
@@ -303,12 +341,53 @@ Napi::Value watch(const Napi::CallbackInfo& info) {
         return env.Undefined();
     }
 
-    // 创建一个线程安全的回调函数
-    tsfn = Napi::ThreadSafeFunction::New(env, callback, "ClipboardListener", 0, 1);
+    // 创建 ThreadSafeFunction
+    tsfn = Napi::ThreadSafeFunction::New(env, callback, "ClipboardWatcher", 0, 1);
+
+    // 启动线程，创建窗口
+    std::thread watcherThread([]() {
+        HINSTANCE hInstance = GetModuleHandle(nullptr);
+        const char CLASS_NAME[] = "ClipboardWatcher";
+
+        WNDCLASS wc = {};
+        wc.lpfnWndProc = WindowProc;
+        wc.hInstance = hInstance;
+        wc.lpszClassName = CLASS_NAME;
+
+        RegisterClass(&wc);
+
+        hwnd = CreateWindowEx(
+            0,
+            CLASS_NAME,
+            "Clipboard Watcher",
+            0,
+            CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+            nullptr, nullptr, hInstance, nullptr
+        );
+
+        // 注册为剪贴板查看器
+        hClipboardViewer = SetClipboardViewer(hwnd);
+
+        // 进入消息循环
+        MSG msg;
+        while (isRunning && GetMessage(&msg, nullptr, 0, 0)) {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+
+        // 清理
+        if (hClipboardViewer != nullptr) {
+            ChangeClipboardChain(hwnd, hClipboardViewer);
+            hClipboardViewer = nullptr;
+        }
+        DestroyWindow(hwnd);
+        tsfn.Release();
+    });
+
+    watcherThread.detach();
 
     // 启动消息循环线程
     isRunning = true;
-    std::thread(MessageLoop).detach();
 
     return env.Undefined();
 }
@@ -323,9 +402,9 @@ Napi::Value unwatch(const Napi::CallbackInfo& info) {
     }
 
     isRunning = false;
-
-    // 关闭线程安全函数
-    tsfn.Release();
+    if (hwnd) {
+        PostMessage(hwnd, WM_DESTROY, 0, 0);
+    }
 
     return env.Undefined();
 }

@@ -32,16 +32,6 @@ NativeClipboard.watch((type, data, source, app) => {
   console.log(type, data, source, app)
 })
 
-// setInterval(() => {
-//   console.log(NativeClipboard.getCurrentWindowHandle())
-// }, 500)
-
-setTimeout(() => {
-  // console.log('unwatch -----------------------')
-  // NativeClipboard.unwatch()
-  // NativeClipboard.activateWindow('9110730')
-}, 15000)
-
 // TODO 监听剪贴板变化，更新 Store，通知 View 更新
 // NativeClipboard.startWatching(() => {
 //   // TODO 检测与上一次剪贴板内容的区别

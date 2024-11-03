@@ -2,7 +2,7 @@
   "targets": [
     {
       "target_name": "native-clipboard",
-      "sources": ["src/1015.cpp"],
+      "sources": ["lib/main.cpp"],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")"
       ],
