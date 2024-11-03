@@ -223,6 +223,51 @@ std::wstring stringToWstring(const std::string& str) {
     return wstr;
 }
 
+// 获取剪贴板文本内容
+std::string getClipboardText() {
+    std::string utf8Text = "";
+    // 优先尝试获取 Unicode 格式的文本（UTF-16）
+    HANDLE hData = GetClipboardData(CF_UNICODETEXT);
+    if (hData != nullptr) {
+        // 锁定内存，获取宽字符文本指针
+        wchar_t* pText = static_cast<wchar_t*>(GlobalLock(hData));
+        if (pText != nullptr) {
+            // 将宽字符文本（UTF-16）转换为 UTF-8 编码的 std::string
+            int utf8Length = WideCharToMultiByte(CP_UTF8, 0, pText, -1, nullptr, 0, nullptr, nullptr);
+            if (utf8Length > 0) {
+                utf8Text.resize(utf8Length - 1); // 去除末尾的空字符
+                WideCharToMultiByte(CP_UTF8, 0, pText, -1, &utf8Text[0], utf8Length, nullptr, nullptr);
+            }
+            GlobalUnlock(hData);
+        }
+    }
+
+    return utf8Text;
+}
+
+// 转为 UTF-8 格式
+std::string convertToUtf8(const std::string& input) {
+    // 将 std::string (ANSI) 转换为 std::wstring (UTF-16)
+    int wideCharLength = MultiByteToWideChar(CP_ACP, 0, input.c_str(), -1, nullptr, 0);
+    if (wideCharLength == 0) {
+        return ""; // 转换失败，返回空字符串
+    }
+
+    std::wstring wideString(wideCharLength - 1, L'\0'); // 去掉 null 终止符
+    MultiByteToWideChar(CP_ACP, 0, input.c_str(), -1, &wideString[0], wideCharLength);
+
+    // 将 std::wstring (UTF-16) 转换为 std::string (UTF-8)
+    int utf8Length = WideCharToMultiByte(CP_UTF8, 0, wideString.c_str(), -1, nullptr, 0, nullptr, nullptr);
+    if (utf8Length == 0) {
+        return ""; // 转换失败，返回空字符串
+    }
+
+    std::string utf8String(utf8Length - 1, '\0'); // 去掉 null 终止符
+    WideCharToMultiByte(CP_UTF8, 0, wideString.c_str(), -1, &utf8String[0], utf8Length, nullptr, nullptr);
+
+    return utf8String;
+}
+
 // 剪贴板更新事件处理程序
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
@@ -232,8 +277,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
                  * 剪贴板格式对应的常量：https://learn.microsoft.com/zh-cn/windows/win32/dataxchg/standard-clipboard-formats#constants
                  */
                 std::string clipboard_type = "";
+                std::string clipboard_data = "";
                 if (IsClipboardFormatAvailable(CF_UNICODETEXT)) {
                     clipboard_type = "TEXT";
+                    clipboard_data = getClipboardText();
                 } else if (IsClipboardFormatAvailable(CF_HDROP)) {
                     clipboard_type = "FILE";
                 } else if (IsClipboardFormatAvailable(CF_DIB)) {
@@ -242,7 +289,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
                 CloseClipboard();
                 // 通知 JavaScript 剪贴板内容已更改
                 // TODO 处理剪贴板更新事件，触发回调，传递参数
-                tsfn.BlockingCall([clipboard_type](Napi::Env env, Napi::Function callback) {
+                tsfn.BlockingCall([clipboard_type, clipboard_data](Napi::Env env, Napi::Function callback) {
                     if (clipboard_type == "") {
                         return;
                     }
@@ -262,9 +309,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
                         std::string applicationName = !appName.empty() ? appName : processName;
 
                         Napi::String type = Napi::String::New(env, clipboard_type);
-                        Napi::String data = Napi::String::New(env, "xxx");
-                        Napi::String source = Napi::String::New(env, processPath);
-                        Napi::String app = Napi::String::New(env, applicationName);
+                        Napi::String data = Napi::String::New(env, clipboard_data);
+                        Napi::String source = Napi::String::New(env, convertToUtf8(processPath));
+                        Napi::String app = Napi::String::New(env, convertToUtf8(applicationName));
                         callback.Call({type, data, source, app});
                     }
                 });
