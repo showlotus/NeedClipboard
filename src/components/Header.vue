@@ -24,6 +24,7 @@
 import hotkeys from 'hotkeys-js'
 import { computed, ref, watch } from 'vue'
 
+import { HOTKEY } from '@/constants/hotkey'
 import { OptionType, useQueryTypeOptions } from '@/hooks/useTypeOptions'
 import { SearchParams, useMainStore } from '@/stores/main'
 import { ipcToggleVisible } from '@/utils/ipc'
@@ -46,26 +47,26 @@ watch(
   () => elSelectRef.value?.expanded,
   (newVal: boolean) => {
     if (!newVal) {
-      hotkeys.trigger('/', 'home')
+      hotkeys.trigger(HOTKEY.home_focus, 'home')
     }
   }
 )
 
 hotkeys.filter = () => true
-hotkeys('esc', 'home', () => {
+hotkeys(HOTKEY.home_esc, 'home', () => {
   if (keyword.value) {
     keyword.value = ''
   } else {
     ipcToggleVisible()
   }
 })
-hotkeys('ctrl+p', 'home', () => {
+hotkeys(HOTKEY.home_filter, 'home', () => {
   elSelectRef.value?.focus()
   elSelectRef.value?.toggleMenu()
 })
 
 // 禁用 TAB 键的默认行为
-hotkeys('tab', 'home', () => {
+hotkeys(HOTKEY.home_tab, 'home', () => {
   return false
 })
 </script>

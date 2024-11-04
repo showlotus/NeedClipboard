@@ -58,6 +58,7 @@
 import hotkeys from 'hotkeys-js'
 import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue'
 
+import { HOTKEY } from '@/constants/hotkey'
 import { fetchDelete } from '@/database/api'
 import { useSearch } from '@/hooks/useSearch'
 import { useMainStore } from '@/stores/main'
@@ -178,9 +179,8 @@ const scrollIntoView = () => {
     })
   })
 }
-// keyboard-first
-// TODO 再新增另一个快捷键
-hotkeys('up', 'home', (e) => {
+
+hotkeys(HOTKEY.home_up, 'home', (e) => {
   showScrollbar()
   e.preventDefault()
   if (activeIndex.value === 0) {
@@ -189,8 +189,7 @@ hotkeys('up', 'home', (e) => {
   activeIndex.value--
   scrollIntoView()
 })
-// TODO 再新增另一个快捷键
-hotkeys('down', 'home', (e) => {
+hotkeys(HOTKEY.home_down, 'home', (e) => {
   showScrollbar()
   e.preventDefault()
   if (activeIndex.value === flattenData.value.length - 1) {
@@ -199,14 +198,13 @@ hotkeys('down', 'home', (e) => {
   activeIndex.value++
   scrollIntoView()
 })
-hotkeys('tab', 'home', () => {
+hotkeys(HOTKEY.home_menu, 'home', () => {
   if (activeItem.value) {
     menuTriggerRef.value = getCurrActiveItemEl()
     menuVisible.value = !menuVisible.value
   }
 })
-// TODO 再新增另一个快捷键
-hotkeys('delete', 'home', () => {
+hotkeys(HOTKEY.home_delete, 'home', () => {
   if (activeItem.value) {
     handleMenuDelete()
   }
@@ -218,7 +216,7 @@ ipcOnShowWin(() => {
     mainStore.updateActiveRecord(flattenData.value[0])
     scrollIntoView()
   })
-  hotkeys.trigger('/', 'home')
+  hotkeys.trigger(HOTKEY.home_focus, 'home')
 })
 ipcOnBeforeHideWin(() => {
   // 清空当前选中项

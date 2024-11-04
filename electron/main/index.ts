@@ -8,50 +8,17 @@ import {
   screen,
   shell
 } from 'electron'
-import { createRequire } from 'node:module'
 import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { NativeClipboard } from './clipboard'
+import './clipboard'
 import './ipc'
 import { SettingsStore, registerShortcut } from './store'
 import { initTray } from './tray'
 
-const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-
-// console.log('data:image/png;base64,' + fileIcon('C:\\Users\\showlotus\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe', 32).toString('base64'))
-// console.log('data:image/png;base64,' + fileIcon('C:\\Program Files\\Clash Verge\\Clash Verge.exe', 32).toString('base64'))
-
-const NativeClipboard = require('../../packages/native-clipboard')
-
-console.log(NativeClipboard)
-
-NativeClipboard.watch((type, data, source, app) => {
-  console.log('clipboard changed!')
-  console.log(type, data, source, app)
-})
-
-// TODO 监听剪贴板变化，更新 Store，通知 View 更新
-// NativeClipboard.startWatching(() => {
-//   // TODO 检测与上一次剪贴板内容的区别
-//   const [type, path] = NativeClipboard.getClipboardType()
-//   const data = { type } as any
-//   if (type === 'File') {
-//     data.path = path
-//   } else if (type === 'Image') {
-//     const img = clipboard.readImage()
-//     data.size = img.getSize()
-//     data.bitmap = img.toBitmap()
-//     data.png = img.toPNG()
-//     data.jpg = img.toJPEG(100)
-//     data.miniUrl = img.resize({ height: 28, quality: 'good' }).toDataURL()
-//     data.url = img.toDataURL()
-//   } else if (type === 'Text') {
-//     data.content = clipboard.readText()
-//   }
-//   // win?.webContents.send('clipboard-change', data)
-// })
 
 // The built directory structure
 //
@@ -105,7 +72,7 @@ if (app.isPackaged) {
   console.log('openAtLogin', openAtLogin, process.argv)
 }
 ipcMain.handle('update-clipboard-file', (_event, files) => {
-  NativeClipboard.writeFilesToClipboard(files)
+  // NativeClipboard.writeFilesToClipboard(files)
 })
 ipcMain.handle('update-clipboard-image', (_event, image) => {
   // const img = nativeImage.createFromDataURL(image)
@@ -151,6 +118,13 @@ export function toggleWindowVisible() {
       win.hide()
     })
   } else {
+    // TODO 更新当前 Active App
+    win.webContents.send(
+      'update-active-app',
+      btoa(String(Date.now() % 10000))
+        .slice(0, 6)
+        .toUpperCase()
+    )
     win.show()
   }
 }
@@ -242,15 +216,6 @@ async function createWindow() {
   win.on('hide', () => {
     win.webContents.send('hide-win')
   })
-  // TODO 模拟当前 Active App 发生改变
-  // setInterval(() => {
-  //   win.webContents.send(
-  //     'update-active-app',
-  //     btoa(String(Date.now() % 10000))
-  //       .slice(0, 6)
-  //       .toUpperCase()
-  //   )
-  // }, 5000)
 
   // TODO 开机启动时隐藏窗口
   // TODO 打包时，改为 once
@@ -275,9 +240,7 @@ app.on('window-all-closed', () => {
 })
 
 app.on('before-quit', () => {
-  // TODO 关闭剪贴板监听
-  NativeClipboard.stopWatching()
-  console.log('before quit')
+  NativeClipboard.unwatch()
 })
 
 app.on('second-instance', () => {

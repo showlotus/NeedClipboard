@@ -2,6 +2,7 @@ import { globalShortcut, ipcMain, nativeTheme } from 'electron'
 import { createRequire } from 'node:module'
 
 import { getWinWebContents, toggleWindowVisible } from '.'
+import { NativeClipboard } from './clipboard'
 import { SettingsStore, store } from './store'
 
 const getFileIcon = createRequire(import.meta.url)(
@@ -53,3 +54,8 @@ ipcMain.handle('get-app-icon', (_event, path: string) => {
     'data:image/png;base64,' + getFileIcon(path, 16).toString('base64')
   return Promise.resolve(base64Str)
 })
+
+// ipcMain.handle('get-active-app', (_event) => {
+//   const handle = NativeClipboard.getCurrentWindowHandle()
+//   return NativeClipboard.getAppNameByHandle(handle)
+// })

@@ -49,6 +49,7 @@ import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import LogoSvg from '@/assets/icons/logo.svg'
+import { HOTKEY } from '@/constants/hotkey'
 import { useMainStore } from '@/stores/main'
 import { ipcOnUpdateActiveApp } from '@/utils/ipc'
 
@@ -79,10 +80,10 @@ const triggerLabelList = computed(() => {
 })
 
 const handleTriggerEnter = () => {
-  hotkeys.trigger('enter', 'home')
+  hotkeys.trigger(HOTKEY.home_enter, 'home')
 }
 const handleTriggerCtrlEnter = () => {
-  hotkeys.trigger('ctrl+enter', 'home')
+  hotkeys.trigger(HOTKEY.home_ctrl_enter, 'home')
 }
 
 const activeRecord = computed(() => mainStore.activeRecord)
@@ -108,9 +109,9 @@ watch(primaryAction, (val) => {
   }
 })
 
-hotkeys('enter', 'home', () => triggerEvents.enter())
-hotkeys('ctrl+enter', 'home', () => triggerEvents.ctrlEnter())
-hotkeys('ctrl+,', () => {
+hotkeys(HOTKEY.home_enter, 'home', () => triggerEvents.enter())
+hotkeys(HOTKEY.home_ctrl_enter, 'home', () => triggerEvents.ctrlEnter())
+hotkeys(HOTKEY.home_setting, () => {
   handleToggleSettingPanel()
 })
 
@@ -121,7 +122,7 @@ watch(
       hotkeys.setScope('all')
     } else {
       hotkeys.setScope('home')
-      hotkeys.trigger('/', 'home')
+      hotkeys.trigger(HOTKEY.home_focus, 'home')
     }
   },
   { immediate: true }

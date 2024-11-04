@@ -2,12 +2,13 @@
 #include <windows.h>
 //
 #include <atomic>
+#include <chrono>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <thread>
-#include <chrono>
 #include <vector>
+
 //
 #include <psapi.h>
 #include <tlhelp32.h>
@@ -235,7 +236,7 @@ std::string getClipboardText() {
             // 将宽字符文本（UTF-16）转换为 UTF-8 编码的 std::string
             int utf8Length = WideCharToMultiByte(CP_UTF8, 0, pText, -1, nullptr, 0, nullptr, nullptr);
             if (utf8Length > 0) {
-                utf8Text.resize(utf8Length - 1); // 去除末尾的空字符
+                utf8Text.resize(utf8Length - 1);  // 去除末尾的空字符
                 WideCharToMultiByte(CP_UTF8, 0, pText, -1, &utf8Text[0], utf8Length, nullptr, nullptr);
             }
             GlobalUnlock(hData);
@@ -250,19 +251,19 @@ std::string convertToUtf8(const std::string& input) {
     // 将 std::string (ANSI) 转换为 std::wstring (UTF-16)
     int wideCharLength = MultiByteToWideChar(CP_ACP, 0, input.c_str(), -1, nullptr, 0);
     if (wideCharLength == 0) {
-        return ""; // 转换失败，返回空字符串
+        return "";  // 转换失败，返回空字符串
     }
 
-    std::wstring wideString(wideCharLength - 1, L'\0'); // 去掉 null 终止符
+    std::wstring wideString(wideCharLength - 1, L'\0');  // 去掉 null 终止符
     MultiByteToWideChar(CP_ACP, 0, input.c_str(), -1, &wideString[0], wideCharLength);
 
     // 将 std::wstring (UTF-16) 转换为 std::string (UTF-8)
     int utf8Length = WideCharToMultiByte(CP_UTF8, 0, wideString.c_str(), -1, nullptr, 0, nullptr, nullptr);
     if (utf8Length == 0) {
-        return ""; // 转换失败，返回空字符串
+        return "";  // 转换失败，返回空字符串
     }
 
-    std::string utf8String(utf8Length - 1, '\0'); // 去掉 null 终止符
+    std::string utf8String(utf8Length - 1, '\0');  // 去掉 null 终止符
     WideCharToMultiByte(CP_UTF8, 0, wideString.c_str(), -1, &utf8String[0], utf8Length, nullptr, nullptr);
 
     return utf8String;
@@ -294,6 +295,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
                         return;
                     }
                     HWND clipboardOwner = GetClipboardOwner();
+                    if (clipboardOwner == NULL) {
+                        clipboardOwner = GetForegroundWindow();
+                    }
                     if (clipboardOwner) {
                         DWORD processId;
                         GetWindowThreadProcessId(clipboardOwner, &processId);  // 获取窗口所属的进程ID
@@ -316,7 +320,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
                     }
                 });
             }
-            
+
             // 通知下一个观察者
             if (hClipboardViewer != nullptr) {
                 SendMessage(hClipboardViewer, message, wParam, lParam);
@@ -365,8 +369,7 @@ Napi::Value watch(const Napi::CallbackInfo& info) {
             WINDOW_NAME,
             0,
             0, 0, 0, 0,
-            NULL, NULL, hInstance, NULL
-        );
+            NULL, NULL, hInstance, NULL);
 
         // 注册为剪贴板查看器
         hClipboardViewer = SetClipboardViewer(hwnd);
@@ -421,7 +424,7 @@ Napi::Value write(const Napi::CallbackInfo& info) {
 }
 
 // 根据句柄激活窗口
-Napi::Value activateWindow(const Napi::CallbackInfo& info) {
+Napi::Value activateWindowByHandle(const Napi::CallbackInfo& info) {
     Napi::Env env = info.Env();
     std::string hwndStr = info[0].As<Napi::String>();
     unsigned long long hwndInt = std::stoull(hwndStr);
@@ -435,6 +438,33 @@ Napi::Value activateWindow(const Napi::CallbackInfo& info) {
     SetForegroundWindow(hwnd);
     SetFocus(hwnd);
     return env.Undefined();
+}
+
+// TODO 待测试：根据句柄获取应用名称
+Napi::Value getAppNameByHandle(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+    std::string hwndStr = info[0].As<Napi::String>();
+    unsigned long long hwndInt = std::stoull(hwndStr);
+    HWND hwnd = reinterpret_cast<HWND>(hwndInt);
+    // 检查窗口句柄是否有效
+    if (!IsWindow(hwnd)) {
+        return env.Undefined();
+    }
+
+    DWORD processId;
+    GetWindowThreadProcessId(hwnd, &processId);  // 获取窗口所属的进程ID
+
+    // 如果是后台进程则获取父进程
+    if (!IsApplicationProcess(processId)) {
+        processId = GetParentProcessId(processId);
+    }
+
+    std::string processPath = GetProcessAbsolutePathByPID(processId);
+    std::string processName = GetProcessNameByPID(processId);
+    std::string appName = GetAppNameFromFile(processPath);
+    std::string applicationName = !appName.empty() ? appName : processName;
+
+    return Napi::String::New(env, applicationName);
 }
 
 // 获取当前窗口的句柄
@@ -451,7 +481,8 @@ Napi::Object Init(Napi::Env env, Napi::Object exports) {
     exports.Set(Napi::String::New(env, "watch"), Napi::Function::New(env, watch));
     exports.Set(Napi::String::New(env, "unwatch"), Napi::Function::New(env, unwatch));
     exports.Set(Napi::String::New(env, "getCurrentWindowHandle"), Napi::Function::New(env, getCurrentWindowHandle));
-    exports.Set(Napi::String::New(env, "activateWindow"), Napi::Function::New(env, activateWindow));
+    exports.Set(Napi::String::New(env, "activateWindowByHandle"), Napi::Function::New(env, activateWindowByHandle));
+    exports.Set(Napi::String::New(env, "getAppNameByHandle"), Napi::Function::New(env, getAppNameByHandle));
     return exports;
 }
 

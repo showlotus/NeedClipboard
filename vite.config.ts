@@ -26,6 +26,13 @@ export default defineConfig(({ command }) => {
         $: resolve(__dirname)
       }
     },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern'
+        }
+      }
+    },
     plugins: [
       vue(),
       svgLoader(),
@@ -95,15 +102,19 @@ export default defineConfig(({ command }) => {
         renderer: {}
       })
     ],
-    server:
-      process.env.VSCODE_DEBUG &&
-      (() => {
-        const url = new URL(pkg.debug.env.VITE_DEV_SERVER_URL)
-        return {
-          host: url.hostname,
-          port: +url.port
-        }
-      })(),
+    server: {
+      // port: 3872,
+      ...((process.env.VSCODE_DEBUG &&
+        (() => {
+          const url = new URL(pkg.debug.env.VITE_DEV_SERVER_URL)
+          console.log(url.host, url.port)
+          return {
+            host: url.hostname,
+            port: +url.port
+          }
+        })()) ||
+        {})
+    },
     clearScreen: false
   }
 })

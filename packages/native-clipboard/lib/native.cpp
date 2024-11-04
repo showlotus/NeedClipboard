@@ -238,8 +238,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 }
                 CloseClipboard();
 
-                // HWND activeWindow = GetForegroundWindow();
                 HWND clipboardOwner = GetClipboardOwner();
+                if (clipboardOwner == NULL) {
+                    clipboardOwner = GetForegroundWindow();
+                }
                 if (clipboardOwner) {
                     char title[256];
                     GetWindowText(clipboardOwner, title, sizeof(title));  // 获取窗口标题

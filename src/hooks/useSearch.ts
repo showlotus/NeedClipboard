@@ -17,7 +17,6 @@ import {
   isToday,
   isYesterday
 } from '@/utils/date'
-import { ipcGetAppIcon } from '@/utils/ipc'
 
 function calculateBase64Size(base64String: string) {
   // 去掉 Base64 前缀
@@ -31,10 +30,6 @@ function calculateBase64Size(base64String: string) {
 
   return sizeInBytes
 }
-
-ipcGetAppIcon('C:\\Windows\\explorer.exe').then((res) => {
-  console.log('Explorer', res)
-})
 
 export function genMockApplications() {
   return [
@@ -65,6 +60,14 @@ export function genMockApplications() {
     {
       name: 'Notepad',
       icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIoSURBVDhPhZDbU1JhFMV5yAem/iGnG2WgoIFWapJl2cXKFEqzmmb6C6yZ8qF6LTXUakLNFDGLuCsKyEVKUzQNDletGR9Xm4/THO0wtmfWzPfw/dZae0v+naLWx9k9ui79bu+C0+KIbj2I/Ma+juco7XfibnCD3s9wzGBHmy+FvfSW9VjR4uGgNQW3eEyYZuca7oc3cS+0gTuBLG7PZdDmT+OmNwndbAKtMxxuTMdxfSqGOnMEPCZMk32VUrPoILCdwFuUqv8LevLgNfdPNLnWUGMKiw0u26IMLNJ37aqLFHRqNCQ2aLQssbqaQS/URi8q3s2SZqB664HyzTRKSYqBKZy3RlE5EhAbNHz6vmPPq+51XKG7XHL8YKkXrCto+LKMsxSkHvaLDeonFxhYqPZ2aScXUT7oExtozV/pQOsoy9V9navrhnzAhZI+F472OSEzOHC4146aiW9Q0no8Jkzt+Dyr22hbpT1XcI7q1n9ewhlarY5SaycWUE0hJ8cjkNNdeEyY6rEw27NQ7e2qHA2jhBrymDBVI0E60HK+7qt83UO9NhzotmF/txXFLy0ofmHBcfon63eLDTTDc9BS3dMfF9merK4pgqqxeWgoNQeWvw9ASf8OGpxigxNGz449c2CurvpDCBUEqggsG/JDYfThSI9FbGB+okMmk0E6nUYqlWJKJpNIJBLgOI4pHo8jFothqLNZbPBUJd18pJDiofz/6lRIf+UpieQP9dD8kPxOLfAAAAAASUVORK5CYII='
+    },
+    {
+      name: 'OUTLOOK',
+      icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFlSURBVDhPtZPLSsNAFIYPCELBtxF8GkEQFBfai8ZU3AruXAnSVVdCRWgXim4EkaZpUi0GBHHR2otWLNVgaWytJXqcGTNDpgQFLz/8zHAy85FzGRCK5UOwZI4Tz0JU34RI7gTmszYsaEhW9E4FSDUyoBRKsGwiKAbCInFMR4jmEMLE3wLiBQSV+N8BNOZ3ROuRVDckgLJfx/vOAJ2+i+tHDRyJkoMeYFjHpfYnhAMmU2X2IWU94uHVE9vHMtVAQLbSwbEVco/+CQfoNQe3zx9ECpfNLlqNZwFIX9jSZWWvJgPaLy5O7ZQFIKE38dV9F4BRUp/VgzqGVBPjJFUqCdAbvOH07rUEoDEOSBhNFqcQLglg3XUxedYSgOKtg8UbR6pBxe6zlUsCzKWrLJg8bYkiztCUAorIJQFoG9dI62gtqGkb/XMwLJaev41/Mkg/G+VfPyYu+pzV/IT3nLcIQIOw1v4aAPABUxc7Sp66oigAAAAASUVORK5CYII='
+    },
+    {
+      name: 'WeLinkPC',
+      icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAF7SURBVDhPpVPLSwJBHN7/K8pDUJQbCEUiGB2id/QSM0ixQw8hrCgikqT3oUuHCjSoDgVFoFT3IHpAlhT7dF11/doZUVjZQ+bhg/n9vsdvZphhRNYS+LHWZHm2Fpz1byBa4iFehizMRH8B8TKVTC4H8TJmRCWgAeLkMOR5n6lAHOmC5HebcgQ0QPKOI/f+aipQtjcgL86ZcgSFI7Q3Ia9p4O3N4DtsUPbDkKZGqUC9iEIc6wFnq4eyt4nMzRVS60tlATpyby+QfC7IywGol2fIPsTAtTYg+xgH19ZIe7nnJygHW9ASH0itLhgD1PMInZw+PYIcnEFeTUN09VMjx9YV6mkPMrfXekgYvNNmDEitBZGJ3yF7HwPvYKF9JaAc7kLZCVFeS35CDq1AdA/Q6cWLLQUIvU7kJQlq9ITWauSYTpP8E7SWZr10F9p3UteJEAY7jQEEQrcDnN1aqPXzC31OcC2WEk+2LXqG6IUWe4aA/6D6p1z1Z6ruO1sCv+bRqURsuTZHAAAAAElFTkSuQmCC'
     }
   ]
 }

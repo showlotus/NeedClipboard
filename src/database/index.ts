@@ -16,6 +16,7 @@ export interface ClipboardTableType {
 
 export interface TextDataType extends ClipboardTableType {
   type: 'Text' | 'Link' | 'Color'
+  characters: number
 }
 
 export interface FileDataType extends ClipboardTableType {

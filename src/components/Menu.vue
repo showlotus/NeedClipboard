@@ -49,6 +49,8 @@ import hotkeys from 'hotkeys-js'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { HOTKEY } from '@/constants/hotkey'
+
 withDefaults(defineProps<{ triggerRef: any }>(), {
   triggerRef: null
 })
@@ -80,31 +82,31 @@ watch(
     } else {
       activeIndex.value = -1
       hotkeys.setScope('home')
-      hotkeys.trigger('/', 'home')
+      hotkeys.trigger(HOTKEY.home_focus, 'home')
     }
   },
   { immediate: true }
 )
-hotkeys('tab', 'menu', () => {
+hotkeys(HOTKEY.menu_tab, 'menu', () => {
   modelValue.value = !modelValue.value
   return false
 })
-hotkeys('up', 'menu', () => {
+hotkeys(HOTKEY.menu_up, 'menu', () => {
   const len = options.value.length
   activeIndex.value = (activeIndex.value - 1 + len) % len
   return false
 })
-hotkeys('down', 'menu', () => {
+hotkeys(HOTKEY.menu_down, 'menu', () => {
   activeIndex.value = (activeIndex.value + 1) % options.value.length
   return false
 })
-hotkeys('enter', 'menu', () => {
+hotkeys(HOTKEY.menu_enter, 'menu', () => {
   if (activeIndex.value >= 0) {
     options.value[activeIndex.value].click()
   }
   return false
 })
-hotkeys('esc', 'menu', () => {
+hotkeys(HOTKEY.menu_esc, 'menu', () => {
   close()
 })
 const options = computed(() => [

@@ -59,3 +59,7 @@ export function ipcOnHideWin(callback: (...args: any[]) => void) {
 export function ipcGetAppIcon(path: string): Promise<string> {
   return window.ipcRenderer.invoke('get-app-icon', path)
 }
+
+export function ipcOnUpdateClipboard(callback: (...args: any[]) => void) {
+  window.ipcRenderer.on('update-clipboard', callback)
+}
