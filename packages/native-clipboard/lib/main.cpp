@@ -369,7 +369,8 @@ Napi::Value watch(const Napi::CallbackInfo& info) {
             WINDOW_NAME,
             0,
             0, 0, 0, 0,
-            NULL, NULL, hInstance, NULL);
+            NULL, NULL, hInstance, NULL
+        );
 
         // 注册为剪贴板查看器
         hClipboardViewer = SetClipboardViewer(hwnd);
@@ -440,7 +441,7 @@ Napi::Value activateWindowByHandle(const Napi::CallbackInfo& info) {
     return env.Undefined();
 }
 
-// TODO 待测试：根据句柄获取应用名称
+// 根据句柄获取应用名称
 Napi::Value getAppNameByHandle(const Napi::CallbackInfo& info) {
     Napi::Env env = info.Env();
     std::string hwndStr = info[0].As<Napi::String>();
@@ -464,7 +465,7 @@ Napi::Value getAppNameByHandle(const Napi::CallbackInfo& info) {
     std::string appName = GetAppNameFromFile(processPath);
     std::string applicationName = !appName.empty() ? appName : processName;
 
-    return Napi::String::New(env, applicationName);
+    return Napi::String::New(env, convertToUtf8(applicationName));
 }
 
 // 获取当前窗口的句柄

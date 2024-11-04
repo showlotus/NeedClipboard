@@ -72,7 +72,10 @@
     "xlocbuf": "cpp",
     "xlocmes": "cpp",
     "xlocmon": "cpp",
-    "xloctime": "cpp"
+    "xloctime": "cpp",
+    "chrono": "cpp",
+    "forward_list": "cpp",
+    "iomanip": "cpp"
   },
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {

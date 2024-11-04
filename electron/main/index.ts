@@ -12,7 +12,7 @@ import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { NativeClipboard } from './clipboard'
+import { NativeClipboard, updateCurrActiveWindowHandle } from './clipboard'
 import './clipboard'
 import './ipc'
 import { SettingsStore, registerShortcut } from './store'
@@ -118,13 +118,11 @@ export function toggleWindowVisible() {
       win.hide()
     })
   } else {
-    // TODO 更新当前 Active App
-    win.webContents.send(
-      'update-active-app',
-      btoa(String(Date.now() % 10000))
-        .slice(0, 6)
-        .toUpperCase()
-    )
+    // 更新当前 Active App
+    const handle = NativeClipboard.getCurrentWindowHandle()
+    const appName = NativeClipboard.getAppNameByHandle(handle)
+    updateCurrActiveWindowHandle(handle)
+    win.webContents.send('update-active-app', appName)
     win.show()
   }
 }

@@ -63,7 +63,11 @@ import { fetchDelete } from '@/database/api'
 import { useSearch } from '@/hooks/useSearch'
 import { useMainStore } from '@/stores/main'
 import { debounce } from '@/utils/debounce'
-import { ipcOnBeforeHideWin, ipcOnShowWin } from '@/utils/ipc'
+import {
+  ipcOnBeforeHideWin,
+  ipcOnShowWin,
+  ipcOnUpdateClipboard
+} from '@/utils/ipc'
 import { ipcGetTheme } from '@/utils/ipc/theme'
 import { throttle } from '@/utils/throttle'
 
@@ -209,7 +213,12 @@ hotkeys(HOTKEY.home_delete, 'home', () => {
     handleMenuDelete()
   }
 })
-
+ipcOnUpdateClipboard(() => {
+  const activeId = activeItem.value.id
+  search().then(() => {
+    activeIndex.value = flattenData.value.findIndex((v) => v.id === activeId)
+  })
+})
 ipcOnShowWin(() => {
   search().then(() => {
     activeIndex.value = 0
@@ -224,5 +233,3 @@ ipcOnBeforeHideWin(() => {
   mainStore.updateActiveRecord({})
 })
 </script>
-
-<style lang="scss" scoped></style>

@@ -63,3 +63,11 @@ export function ipcGetAppIcon(path: string): Promise<string> {
 export function ipcOnUpdateClipboard(callback: (...args: any[]) => void) {
   window.ipcRenderer.on('update-clipboard', callback)
 }
+
+export function ipcCopyToClipboard(data: any) {
+  window.ipcRenderer.invoke('copy-to-clipboard', data)
+}
+
+export function ipcPastToActiveApp(data: any) {
+  window.ipcRenderer.invoke('past-to-active-app', data)
+}

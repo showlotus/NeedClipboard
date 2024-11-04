@@ -50,8 +50,13 @@ import { useI18n } from 'vue-i18n'
 
 import LogoSvg from '@/assets/icons/logo.svg'
 import { HOTKEY } from '@/constants/hotkey'
+import { fetchUpdate } from '@/database/api'
 import { useMainStore } from '@/stores/main'
-import { ipcOnUpdateActiveApp } from '@/utils/ipc'
+import {
+  ipcCopyToClipboard,
+  ipcOnUpdateActiveApp,
+  ipcPastToActiveApp
+} from '@/utils/ipc'
 
 const isBeta = pkg.version.includes('beta')
 const appName = pkg.name
@@ -88,12 +93,12 @@ const handleTriggerCtrlEnter = () => {
 
 const activeRecord = computed(() => mainStore.activeRecord)
 const triggerCopyToClipboard = () => {
-  // TODO
-  console.log('Copy to Clipboard', activeRecord.value)
+  fetchUpdate(activeRecord.value.id)
+  ipcCopyToClipboard(JSON.parse(JSON.stringify(activeRecord.value)))
 }
 const triggerPastToActiveApp = () => {
-  // TODO
-  console.log('Past to Action App', activeRecord.value)
+  fetchUpdate(activeRecord.value.id)
+  ipcPastToActiveApp(JSON.parse(JSON.stringify(activeRecord.value)))
 }
 const triggerEvents = {
   enter: () => {},
@@ -128,5 +133,3 @@ watch(
   { immediate: true }
 )
 </script>
-
-<style scoped></style>

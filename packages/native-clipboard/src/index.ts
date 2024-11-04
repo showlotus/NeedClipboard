@@ -38,7 +38,7 @@ export interface NativeClipboardType {
   /**
    * 根据句柄获取应用名称
    */
-  getAppNameByHandle(hwnd: string): void
+  getAppNameByHandle(hwnd: string): string
 }
 
 export default {
@@ -54,7 +54,7 @@ export default {
   activateWindowByHandle(hwnd: string): void {
     return NativeClipboard.activateWindowByHandle(hwnd)
   },
-  getAppNameByHandle(hwnd: string): void {
+  getAppNameByHandle(hwnd: string): string {
     return NativeClipboard.getAppNameByHandle(hwnd)
   }
 } as NativeClipboardType
