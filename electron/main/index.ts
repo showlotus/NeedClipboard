@@ -114,9 +114,10 @@ export function toggleWindowVisible() {
 
   if (win.isVisible()) {
     win.webContents.send('before-hide-win')
-    Promise.resolve().then(() => {
-      win.hide()
-    })
+    win.minimize()
+    // setTimeout(() => {
+    //   win.hide()
+    // }, 50)
   } else {
     // 更新当前 Active App
     const handle = NativeClipboard.getCurrentWindowHandle()
@@ -175,7 +176,7 @@ async function createWindow() {
   // 禁用手动调整窗口大小
   win.setResizable(false)
   // TODO 不在任务栏中显示
-  // win.setSkipTaskbar(true)
+  win.setSkipTaskbar(true)
 
   // TODO 窗口失焦时，隐藏窗口
   win.on('blur', () => {
