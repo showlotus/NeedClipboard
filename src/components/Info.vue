@@ -63,7 +63,7 @@ const ops = {
     return [
       [t('NC.source'), genSource(data)],
       [t('NC.type'), t(`NC.${data.type.toLowerCase()}`)],
-      [t('NC.dimensions'), `${data.size}×${data.height}`],
+      [t('NC.dimensions'), `${data.width}×${data.height}`],
       [t('NC.imageSize'), data.size],
       [t('NC.copied'), data.createTime]
     ]

@@ -28,7 +28,7 @@ export async function fetchSearch(params: SearchParams) {
     if (!keyword) {
       return true
     }
-    return v.content.includes(keyword)
+    return v.content.toLowerCase().includes(keyword.toLowerCase())
   }
   let data: ClipboardTableType[]
   let totals = 0

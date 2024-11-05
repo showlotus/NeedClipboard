@@ -10,7 +10,7 @@ import { DATE_TEMPLATE } from './constants/date'
 import { TextDataType, createDatabase } from './database'
 import { InsertDataType, fetchInsert } from './database/api'
 import './demos/ipc'
-import { genMockData } from './hooks/useSearch'
+import { calculateBase64Size, genMockData } from './hooks/useSearch'
 import i18nConfig from './i18n'
 import './style/style.css'
 import './style/theme.css'
@@ -33,20 +33,22 @@ const db = createDatabase()
 // })
 
 ipcOnUpdateClipboard(async (_, { type, data, source, app }) => {
-  let res
   const icon = await ipcGetAppIcon(source)
+  const res = {
+    application: {
+      name: app,
+      icon
+    },
+    createTime: dayjs().format(DATE_TEMPLATE)
+  } as any
   if (type === 'TEXT') {
-    res = {
-      type: 'Text',
-      application: {
-        name: app,
-        icon
-      },
-      characters: data.length,
-      content: data,
-      createTime: dayjs().format(DATE_TEMPLATE)
-    } as TextDataType
+    res.type = 'Text'
+    res.characters = data.length
+    res.content = data
   } else if (type === 'IMAGE') {
+    res.type = 'Image'
+    res.size = calculateBase64Size(data.url)
+    Object.assign(res, data)
   } else if (type === 'FILE') {
   }
   console.log(type, data, source, app)

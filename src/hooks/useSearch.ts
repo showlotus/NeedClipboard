@@ -18,17 +18,31 @@ import {
   isYesterday
 } from '@/utils/date'
 
-function calculateBase64Size(base64String: string) {
-  // 去掉 Base64 前缀
+export function calculateBase64Size(base64String: string) {
   const base64Data = base64String.split(',')[1]
-
-  // 计算等号的数量
   const padding = (base64Data.match(/=/g) || []).length
+  const sizeInBytes = ((base64Data.length * 3) / 4 - padding) / 1024
+  const unitArr = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+  const idx = Math.floor(Math.log(sizeInBytes) / Math.log(1024))
+  const size = (sizeInBytes / Math.pow(1024, idx)).toFixed(2)
+  return `${size} ${unitArr[idx]}`
+}
 
-  // 计算实际有效长度
-  const sizeInBytes = (base64Data.length * 3) / 4 - padding
-
-  return sizeInBytes
+export function calculateBase64Size2(base64String: string) {
+  const [prefix, base64Data] = base64String.split(',')
+  const mime = prefix.split(/:|;/)[1]
+  const bstr = atob(base64Data)
+  let n = bstr.length
+  const u8arr = new Uint8Array(n)
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n)
+  }
+  const bytes = new File([u8arr], 'image', { type: mime }).size / 1024
+  console.log(bytes)
+  const unitArr = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+  const idx = Math.floor(Math.log(bytes) / Math.log(1024))
+  const size = (bytes / Math.pow(1024, idx)).toFixed(2)
+  return `${size} ${unitArr[idx]}`
 }
 
 export function genMockApplications() {

@@ -1,6 +1,6 @@
 export const HOTKEY = {
-  home_up: 'up,ctrl+j',
-  home_down: 'down,ctrl+k',
+  home_prev: 'up,ctrl+j',
+  home_next: 'down,ctrl+k',
   home_tab: 'tab',
   home_menu: 'tab',
   home_delete: 'delete,ctrl+d',

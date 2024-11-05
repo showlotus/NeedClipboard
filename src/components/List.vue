@@ -184,7 +184,7 @@ const scrollIntoView = () => {
   })
 }
 
-hotkeys(HOTKEY.home_up, 'home', (e) => {
+hotkeys(HOTKEY.home_prev, 'home', (e) => {
   showScrollbar()
   e.preventDefault()
   if (activeIndex.value === 0) {
@@ -193,7 +193,7 @@ hotkeys(HOTKEY.home_up, 'home', (e) => {
   activeIndex.value--
   scrollIntoView()
 })
-hotkeys(HOTKEY.home_down, 'home', (e) => {
+hotkeys(HOTKEY.home_next, 'home', (e) => {
   showScrollbar()
   e.preventDefault()
   if (activeIndex.value === flattenData.value.length - 1) {
@@ -213,12 +213,13 @@ hotkeys(HOTKEY.home_delete, 'home', () => {
     handleMenuDelete()
   }
 })
-ipcOnUpdateClipboard(() => {
-  const activeId = activeItem.value.id
-  search().then(() => {
-    activeIndex.value = flattenData.value.findIndex((v) => v.id === activeId)
-  })
-})
+// TODO 好像没有必要？？？
+// ipcOnUpdateClipboard((_) => {
+//   const activeId = activeItem.value.id
+//   search().then(() => {
+//     activeIndex.value = flattenData.value.findIndex((v) => v.id === activeId)
+//   })
+// })
 ipcOnShowWin(() => {
   search().then(() => {
     activeIndex.value = 0
