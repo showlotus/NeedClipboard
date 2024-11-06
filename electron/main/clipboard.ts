@@ -44,7 +44,11 @@ export function writeClipboard(data: any) {
 
 // TODO
 export function pastActiveApp(data: any) {
-  console.log('pastActiveApp', data)
+  const handle = getCurrActiveWindowHandle()
+  if (handle) {
+    console.log('pastActiveApp', NativeClipboard.getAppNameByHandle(handle))
+  }
+  //   NativeClipboard.activateWindowByHandle(getCurrActiveWindowHandle())
   toggleWindowVisible()
 }
 

@@ -20,7 +20,9 @@ import { ipcGetAppIcon, ipcOnUpdateClipboard } from './utils/ipc'
 // import './demos/node'
 
 // hotkeys.unbind()
-const db = createDatabase()
+setTimeout(() => {
+  const db = createDatabase()
+})
 // db.ClipboardTable.clear()
 // TEST local dev
 // Promise.all(genMockData(20)).then((res) => {

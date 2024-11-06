@@ -106,6 +106,14 @@ export function getWinWebContents() {
   return win?.webContents
 }
 
+// 更新当前 Active App
+function updateActiveApp() {
+  const handle = NativeClipboard.getCurrentWindowHandle()
+  const appName = NativeClipboard.getAppNameByHandle(handle)
+  updateCurrActiveWindowHandle(handle)
+  win.webContents.send('update-active-app', appName)
+}
+
 export function toggleWindowVisible() {
   if (!win) {
     createWindow()
@@ -119,11 +127,7 @@ export function toggleWindowVisible() {
     //   win.hide()
     // }, 50)
   } else {
-    // 更新当前 Active App
-    const handle = NativeClipboard.getCurrentWindowHandle()
-    const appName = NativeClipboard.getAppNameByHandle(handle)
-    updateCurrActiveWindowHandle(handle)
-    win.webContents.send('update-active-app', appName)
+    updateActiveApp()
     win.show()
   }
 }
@@ -135,10 +139,10 @@ async function createWindow() {
   const winHeight = height * 1
   win = new BrowserWindow({
     title: 'Main window',
-    // width: width * 0.4,
-    // height: height * 0.5,
-    width: winWidth,
-    height: winHeight,
+    width: width * 0.4,
+    height: height * 0.5,
+    // width: winWidth,
+    // height: winHeight,
     // icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
       preload,
@@ -162,7 +166,7 @@ async function createWindow() {
   })
 
   // TEST 靠右显示
-  win.setPosition(width - winWidth, 0)
+  // win.setPosition(width - winWidth, 0)
 
   // 隐藏菜单栏
   // Menu.setApplicationMenu(null)
@@ -180,14 +184,14 @@ async function createWindow() {
 
   // TODO 窗口失焦时，隐藏窗口
   win.on('blur', () => {
-    // win.hide()
+    win.minimize()
   })
 
   if (VITE_DEV_SERVER_URL) {
     // #298
     win.loadURL(VITE_DEV_SERVER_URL)
     // Open devTool if the app is not packaged
-    win.webContents.openDevTools()
+    // win.webContents.openDevTools()
   } else {
     win.loadFile(indexHtml)
   }
@@ -210,6 +214,7 @@ async function createWindow() {
   registerShortcut(SettingsStore.get('shortcutKey'))
 
   win.on('show', () => {
+    // updateActiveApp()
     win.webContents.send('show-win')
   })
   win.on('hide', () => {
@@ -222,6 +227,7 @@ async function createWindow() {
   win[eventType]('ready-to-show', () => {
     console.log(process.argv.includes('--openAsHidden'))
     if (!process.argv.includes('--openAsHidden')) {
+      updateActiveApp()
       win.show()
     }
   })
