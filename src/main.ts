@@ -15,6 +15,8 @@ import i18nConfig from './i18n'
 import './style/style.css'
 import './style/theme.css'
 import { ipcGetAppIcon, ipcOnUpdateClipboard } from './utils/ipc'
+import { isLink } from './utils/isLink'
+import { isValidColorString } from './utils/isValidColorString'
 
 // If you want use Node.js, the`nodeIntegration` needs to be enabled in the Main process.
 // import './demos/node'
@@ -44,7 +46,13 @@ ipcOnUpdateClipboard(async (_, { type, data, source, app }) => {
     createTime: dayjs().format(DATE_TEMPLATE)
   } as any
   if (type === 'TEXT') {
-    res.type = 'Text'
+    if (isValidColorString(data)) {
+      res.type = 'Color'
+    } else if (isLink(data)) {
+      res.type = 'Link'
+    } else {
+      res.type = 'Text'
+    }
     res.characters = data.length
     res.content = data
   } else if (type === 'IMAGE') {
