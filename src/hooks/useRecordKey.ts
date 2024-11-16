@@ -3,6 +3,7 @@ import { Ref, nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { EVENT_CODE } from '@/constants/aria'
+import { HOTKEY } from '@/constants/hotkey'
 import { ipcValidateShortcutIsRegistered } from '@/utils/ipc'
 
 const formatKey = (key: string) => {
@@ -25,6 +26,10 @@ const formatKey = (key: string) => {
   return key.replace(/^[\s\S]/, (val) => val.toUpperCase())
 }
 
+const isConflict = (key: string) => {
+  return Object.values(HOTKEY).join(' ').includes(key.toLowerCase())
+}
+
 export function useRecordKey(initialValue: Ref<string>) {
   const recordingKeys = ref<string>(initialValue.value || '')
   const pressKeys = new Set<string>()
@@ -36,6 +41,7 @@ export function useRecordKey(initialValue: Ref<string>) {
   })
 
   // BUG 同时按下 Alt + Space 时，会默认打开调整窗口菜单面板
+  // BUG 触发 Ctrl + Enter 时，会报错
   const onKeydown = async (e: KeyboardEvent) => {
     // 禁止的按键
     const uselessKeys = [EVENT_CODE.esc]
@@ -43,8 +49,9 @@ export function useRecordKey(initialValue: Ref<string>) {
       const value = Array.from(recordKeys.values())
 
       const shortcutKeys = value.join('+')
+      console.log('shortcutKeys', shortcutKeys)
       const isRegistered = await ipcValidateShortcutIsRegistered(shortcutKeys)
-      if (isRegistered) {
+      if (isRegistered || isConflict(shortcutKeys)) {
         return ElMessage({
           message: t('NC.conflictShortcut'),
           type: 'warning',

@@ -229,8 +229,6 @@ ipcOnShowWin(() => {
   hotkeys.trigger(HOTKEY.home_focus, 'home')
 })
 ipcOnBeforeHideWin(() => {
-  console.log('hide')
-  return
   // 清空当前选中项
   activeIndex.value = -1
   mainStore.updateActiveRecord({})
