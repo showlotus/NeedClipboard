@@ -271,12 +271,13 @@ function handleGroup(data: any[]) {
 
 export function useSearch(params: Ref<SearchParams>) {
   let currPage = 1
-  const pageSize = 20
+  const DEFAULT_PAGE_SIZE = 20
   const isFullLoad = ref(false)
   const groupedData = ref<any[]>([])
   const flattenData = ref<any[]>([])
-  const search = async (page?: number) => {
-    currPage = !page ? 1 : page
+  const search = async (options?: { page: number; pageSize?: number }) => {
+    const { page, pageSize = DEFAULT_PAGE_SIZE } = options || { page: 1 }
+    currPage = page
     const prevData = currPage === 1 ? [] : flattenData.value
     const { result, totals } = await fetchSearch({
       ...params.value,
@@ -289,11 +290,17 @@ export function useSearch(params: Ref<SearchParams>) {
     flattenData.value = groupRes.flattenData
   }
 
-  const next = () => {
+  const next = async () => {
     if (isFullLoad.value) {
       return
     }
-    search(++currPage)
+    await search({ page: ++currPage })
   }
-  return { groupedData, flattenData, search, next, isFullLoad }
+
+  const refresh = async () => {
+    const page = currPage
+    await search({ page: 1, pageSize: flattenData.value.length })
+    currPage = page
+  }
+  return { groupedData, flattenData, search, next, refresh, isFullLoad }
 }

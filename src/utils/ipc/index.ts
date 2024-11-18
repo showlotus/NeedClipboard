@@ -48,10 +48,6 @@ export function ipcOnShowWin(callback: (...args: any[]) => void) {
   window.ipcRenderer.on('show-win', callback)
 }
 
-export function ipcOnBeforeHideWin(callback: (...args: any[]) => void) {
-  window.ipcRenderer.on('before-hide-win', callback)
-}
-
 export function ipcOnHideWin(callback: (...args: any[]) => void) {
   window.ipcRenderer.on('hide-win', callback)
 }

@@ -8,7 +8,12 @@ import { createI18n } from 'vue-i18n'
 import App from './App.vue'
 import { DATE_TEMPLATE } from './constants/date'
 import { TextDataType, createDatabase } from './database'
-import { InsertDataType, fetchInsert, fetchIsExistInDB } from './database/api'
+import {
+  InsertDataType,
+  fetchInsert,
+  fetchIsExistInDB,
+  fetchUpdate
+} from './database/api'
 import './demos/ipc'
 import { calculateBase64Size, genMockData } from './hooks/useSearch'
 import i18nConfig from './i18n'
@@ -62,7 +67,11 @@ ipcOnUpdateClipboard(async (_, { type, data, source, app }) => {
   } else if (type === 'FILE') {
   }
   console.log(type, data, source, app)
-  if (res && !(await fetchIsExistInDB(res))) {
+  if (!res.type) return
+  const id = await fetchIsExistInDB(res)
+  if (id) {
+    fetchUpdate(id)
+  } else {
     fetchInsert(res)
   }
 })

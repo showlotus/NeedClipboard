@@ -63,11 +63,7 @@ import { fetchDelete } from '@/database/api'
 import { useSearch } from '@/hooks/useSearch'
 import { useMainStore } from '@/stores/main'
 import { debounce } from '@/utils/debounce'
-import {
-  ipcOnBeforeHideWin,
-  ipcOnShowWin,
-  ipcOnUpdateClipboard
-} from '@/utils/ipc'
+import { ipcOnHideWin, ipcOnShowWin, ipcOnUpdateClipboard } from '@/utils/ipc'
 import { ipcGetTheme } from '@/utils/ipc/theme'
 import { throttle } from '@/utils/throttle'
 
@@ -85,6 +81,7 @@ const {
   groupedData,
   flattenData,
   search,
+  refresh,
   next,
   isFullLoad
 } = useSearch(searchParams)
@@ -162,7 +159,7 @@ const handleOpenMenu = (item: any) => {
 }
 const handleMenuDelete = async () => {
   await fetchDelete(activeId.value)
-  await search()
+  await refresh()
   activeIndex.value = Math.min(
     Math.max(activeIndex.value, 0),
     flattenData.value.length - 1
@@ -213,24 +210,19 @@ hotkeys(HOTKEY.home_delete, 'home', () => {
     handleMenuDelete()
   }
 })
-// TODO 好像没有必要？？？
-// ipcOnUpdateClipboard((_) => {
-//   const activeId = activeItem.value.id
-//   search().then(() => {
-//     activeIndex.value = flattenData.value.findIndex((v) => v.id === activeId)
-//   })
-// })
-ipcOnShowWin(() => {
+ipcOnUpdateClipboard((_) => {
   search().then(() => {
     activeIndex.value = 0
-    mainStore.updateActiveRecord(flattenData.value[0])
+    mainStore.updateActiveRecord(flattenData.value[activeIndex.value])
     scrollIntoView()
   })
+})
+ipcOnShowWin(() => {
   hotkeys.trigger(HOTKEY.home_focus, 'home')
 })
-ipcOnBeforeHideWin(() => {
-  // 清空当前选中项
-  activeIndex.value = -1
-  mainStore.updateActiveRecord({})
+ipcOnHideWin(() => {
+  activeIndex.value = 0
+  mainStore.updateActiveRecord(flattenData.value[0])
+  scrollIntoView()
 })
 </script>

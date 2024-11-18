@@ -1,5 +1,8 @@
 <template>
-  <div class="py-2 text-sm flex flex-col cursor-default select-none">
+  <div
+    v-show="info.length"
+    class="py-2 text-sm flex flex-col cursor-default select-none"
+  >
     <!-- <div class="py-1 px-3 text-sm font-bold text-[--nc-group-label-color]">
       {{ $t('NC.information') }}
     </div> -->

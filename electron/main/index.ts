@@ -121,12 +121,7 @@ export function toggleWindowVisible() {
   }
 
   if (win.isVisible()) {
-    win.webContents.send('before-hide-win')
-    // win.minimize()
     win.hide()
-    // setTimeout(() => {
-    //   win.hide()
-    // }, 50)
   } else {
     updateActiveApp()
     win.show()
@@ -140,10 +135,10 @@ async function createWindow() {
   const winHeight = height * 1
   win = new BrowserWindow({
     title: 'Main window',
-    // width: width * 0.4,
-    // height: height * 0.5,
-    width: winWidth,
-    height: winHeight,
+    width: width * 0.4,
+    height: height * 0.5,
+    // width: winWidth,
+    // height: winHeight,
     // icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
       preload,
@@ -154,7 +149,9 @@ async function createWindow() {
       // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
       // contextIsolation: false,
       // 禁用拼写检查
-      spellcheck: false
+      spellcheck: false,
+      // 窗口未可见时，也开启更新
+      backgroundThrottling: false
     },
     // transparent: true,
     // TODO publish 时需要隐藏标题栏
@@ -162,7 +159,7 @@ async function createWindow() {
     // 无边框窗口，隐藏标题和菜单栏
     frame: false
     // 设置高斯模糊
-    // TODO 会导致打开窗口时有闪烁问题
+    // 会导致打开窗口时有闪烁问题
     // backgroundMaterial: 'mica' // mica acrylic
   })
 
@@ -180,12 +177,10 @@ async function createWindow() {
   // win.setMovable(false)
   // 禁用手动调整窗口大小
   win.setResizable(false)
-  // TODO 不在任务栏中显示
   win.setSkipTaskbar(true)
 
-  // TODO 窗口失焦时，隐藏窗口
+  // 窗口失焦时，隐藏窗口
   win.on('blur', () => {
-    // win.minimize()
     win.hide()
   })
 
