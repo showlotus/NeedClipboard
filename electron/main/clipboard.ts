@@ -1,5 +1,8 @@
 import { clipboard, nativeImage } from 'electron'
+import { encode } from 'iconv-lite'
+import { exec } from 'node:child_process'
 import { createRequire } from 'node:module'
+import path from 'node:path'
 
 import { getWinWebContents, toggleWindowVisible } from '.'
 import type { NativeClipboardType } from '../../packages/native-clipboard'
@@ -67,6 +70,19 @@ NativeClipboard.watch((type, data, source, app) => {
       content: ''
     } as any
   } else if (type === 'FILE') {
+    console.log(clipboard.readBuffer('FileNameW').toString('utf-8'))
+    console.log(clipboard.readBuffer('CD_HDROP').toString('ucs2'))
+    console.log(
+      clipboard
+        .readBuffer('FileNameW')
+        .toString('ucs2')
+        .replace(RegExp(String.fromCharCode(0), 'g'), '')
+    )
+    // exec(
+    //   `chcp 65001;Get-Content -Encoding Byte ${encode(clipboard.readBuffer('FileNameW').toString('utf-8'), 'utf8').toString()} | Set-Clipboard`,
+    //   { shell: 'powershell.exe' },
+    //   () => {}
+    // )
   }
 
   getWinWebContents().send('update-clipboard', {
