@@ -28,7 +28,7 @@ export function updateCurrActiveWindowHandle(handle: string) {
 
 export function writeClipboard(data: any) {
   updateShouldUpdateHistory(false)
-
+  console.log(data.type, data.content)
   if (data.type === 'Text') {
     console.log('write text')
     clipboard.writeText(data.content)
@@ -38,10 +38,7 @@ export function writeClipboard(data: any) {
   } else if (data.type === 'File') {
     console.log('write file')
   }
-
-  setTimeout(() => {
-    updateShouldUpdateHistory(true)
-  })
+  updateShouldUpdateHistory(true)
   toggleWindowVisible()
 }
 
@@ -51,7 +48,6 @@ export function pastActiveApp(data: any) {
   if (handle) {
     console.log('pastActiveApp', NativeClipboard.getAppNameByHandle(handle))
   }
-  //   NativeClipboard.activateWindowByHandle(getCurrActiveWindowHandle())
   toggleWindowVisible()
 }
 

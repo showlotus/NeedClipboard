@@ -2,12 +2,7 @@ import { globalShortcut, ipcMain, nativeTheme } from 'electron'
 import { createRequire } from 'node:module'
 
 import { getWinWebContents, toggleWindowVisible } from '.'
-import {
-  NativeClipboard,
-  pastActiveApp,
-  updateShouldUpdateHistory,
-  writeClipboard
-} from './clipboard'
+import { pastActiveApp, writeClipboard } from './clipboard'
 import { SettingsStore, store } from './store'
 
 const getFileIcon = createRequire(import.meta.url)(
