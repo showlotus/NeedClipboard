@@ -19,6 +19,7 @@ export default defineConfig(({ command }) => {
   const isBuild = command === 'build'
   const sourcemap = isServe || !!process.env.VSCODE_DEBUG
 
+
   return {
     resolve: {
       alias: {

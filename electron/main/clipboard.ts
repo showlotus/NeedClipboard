@@ -1,12 +1,12 @@
 import { clipboard, nativeImage } from 'electron'
+import type { NativeClipboardType } from 'native-clipboard'
 import { createRequire } from 'node:module'
 
 import { getWinWebContents, toggleWindowVisible } from '.'
-import type { NativeClipboardType } from '../../packages/native-clipboard'
 
 export const NativeClipboard: NativeClipboardType = createRequire(
   import.meta.url
-)('../../packages/native-clipboard').default
+)('native-clipboard').default
 
 let shouldUpdateHistory = true
 let currActiveWindowHandle = ''

@@ -46,6 +46,15 @@ npm install --global --production windows-build-tools@4.0.0
 
 ## log
 
+## 11/19
+
+- `electron-rebuild` 打包报错 `ModuleNotFoundError: No module named 'distutils'`
+
+  ```shell
+  # Solved
+  python3 -m pip install --upgrade setuptools
+  ```
+
 ## 10/07
 
 - 剪贴板 SDK

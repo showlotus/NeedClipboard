@@ -28,6 +28,7 @@ describe('test fetchSearch', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Text',
       content,
+      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
@@ -155,6 +156,7 @@ describe('test fetchInsert', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Text',
       content,
+      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
@@ -168,6 +170,7 @@ describe('test fetchInsert', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Color',
       content,
+      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
@@ -181,6 +184,7 @@ describe('test fetchInsert', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Link',
       content,
+      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
@@ -258,6 +262,7 @@ describe('test fetchDelete', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Text',
       content,
+      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
@@ -272,6 +277,7 @@ describe('test fetchDelete', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Link',
       content,
+      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
@@ -286,6 +292,7 @@ describe('test fetchDelete', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Color',
       content,
+      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
     const id = await fetchInsert(data)
@@ -369,6 +376,7 @@ describe('test fetchIsExistInDB', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Text',
       content,
+      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
 
@@ -485,6 +493,7 @@ describe('test fetchUpdate', () => {
     const data: Omit<TextDataType, 'id'> = {
       type: 'Text',
       content,
+      characters: content.length,
       createTime: dayjs().format(DATE_TEMPLATE)
     }
 

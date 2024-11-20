@@ -1,9 +1,9 @@
 {
   "name": "NeedClipboard",
-  "version": "0.1.0-beta.1",
+  "version": "0.1.0-beta.2",
   "main": "dist-electron/main/index.js",
   "description": "Really simple Electron + Vue + Vite boilerplate.",
-  "author": "草鞋没号 <308487730@qq.com>",
+  "author": "showlotus <showlotus2000@gmail.com>",
   "license": "MIT",
   "private": true,
   "packageManager": "pnpm@8.10.0",
@@ -27,7 +27,8 @@
     "test": "vitest",
     "lint": "eslint \"src/**/*.{js,ts,vue}\" \"electron/**/*.ts\"",
     "prettier": "prettier --write \"src/**/*.{js,ts,vue}\" \"electron/**/*.ts\"",
-    "refresh": "npx rifraf ./node_modules && pnpm i --offline"
+    "refresh": "npx rifraf ./node_modules && pnpm i --offline",
+    "rebuild-native": "set DEBUG=electron-rebuild && electron-rebuild -v 33.2.0 -a x64"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
@@ -36,8 +37,9 @@
     "autoprefixer": "^10.4.19",
     "dayjs": "^1.11.12",
     "dexie": "^4.0.8",
-    "electron": "33.0.2",
+    "electron": "^33.2.0",
     "electron-builder": "^24.13.3",
+    "electron-rebuild": "^3.2.9",
     "electron-store": "^10.0.0",
     "element-plus": "^2.7.8",
     "eslint": "^9.7.0",
@@ -65,9 +67,16 @@
     "vue-i18n": "^9.13.1",
     "vue-tsc": "^2.0.6"
   },
+  "dependencies": {
+    "extract-file-icon": "file:plugins\\extract-file-icon",
+    "native-clipboard": "file:plugins\\native-clipboard"
+  },
   "pnpm": {
     "patchedDependencies": {
       "conf@13.0.1": "patches/conf@13.0.1.patch"
     }
-  }
+  },
+  "workspaces": [
+    "./plugins/*"
+  ]
 }

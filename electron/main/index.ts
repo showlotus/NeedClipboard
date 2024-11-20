@@ -20,6 +20,8 @@ import { initTray } from './tray'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
+console.log('process.versions.node', process.versions.node)
+
 // The built directory structure
 //
 // ├─┬ dist-electron
