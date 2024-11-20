@@ -28,8 +28,8 @@ export function updateCurrActiveWindowHandle(handle: string) {
 
 export function writeClipboard(data: any) {
   updateShouldUpdateHistory(false)
-  console.log(data.type, data.content)
-  if (data.type === 'Text') {
+  console.log(data.type)
+  if (['Text', 'Link', 'Color'].includes(data.type)) {
     console.log('write text')
     clipboard.writeText(data.content)
   } else if (data.type === 'Image') {
@@ -40,6 +40,7 @@ export function writeClipboard(data: any) {
   }
   updateShouldUpdateHistory(true)
   toggleWindowVisible()
+  getWinWebContents().send('update-clipboard')
 }
 
 // TODO
@@ -49,6 +50,7 @@ export function pastActiveApp(data: any) {
     console.log('pastActiveApp', NativeClipboard.getAppNameByHandle(handle))
   }
   toggleWindowVisible()
+  getWinWebContents().send('update-clipboard')
 }
 
 NativeClipboard.watch((type, data, source, app) => {

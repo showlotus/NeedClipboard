@@ -1,0 +1,45 @@
+{
+  "name": "extract-file-icon",
+  "description": "Get associated file icon",
+  "version": "0.3.2",
+  "author": "sentialx",
+  "bugs": {
+    "url": "https://github.com/sentialx/extract-file-icon/issues"
+  },
+  "homepage": "https://github.com/sentialx/extract-file-icon",
+  "keywords": [
+    "file",
+    "icon",
+    "windows",
+    "extract"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sentialx/extract-file-icon.git"
+  },
+  "scripts": {
+    "install": "npm run build && npm run rebuild",
+    "rebuild": "node-gyp rebuild --runtime=electron --target=20.18.0",
+    "build": "tsc -p .",
+    "watch": "tsc --watch -p .",
+    "prepublishOnly": "npm run build && npm run rebuild",
+    "rebuild2": "electron-rebuild",
+    "1postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "node-addon-api": "1.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "12.12.9",
+    "node-gyp": "^10.1.0",
+    "tslint": "5.20.1",
+    "typescript": "3.7.2"
+  },
+  "files": [
+    "lib/",
+    "dist/",
+    "binding.gyp"
+  ]
+}

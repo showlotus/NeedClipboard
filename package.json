@@ -68,8 +68,8 @@
     "vue-tsc": "^2.0.6"
   },
   "dependencies": {
-    "extract-file-icon": "file:plugins\\extract-file-icon",
-    "native-clipboard": "file:plugins\\native-clipboard"
+    "extract-file-icon": "file:native\\extract-file-icon",
+    "native-clipboard": "file:native\\native-clipboard"
   },
   "pnpm": {
     "patchedDependencies": {
@@ -77,6 +77,6 @@
     }
   },
   "workspaces": [
-    "./plugins/*"
+    "./native/*"
   ]
 }

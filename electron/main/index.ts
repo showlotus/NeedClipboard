@@ -121,7 +121,7 @@ async function createWindow() {
   console.log(width, height)
   const winWidth = width * 0.4
   const winHeight = height * 1
-  const IS_DEV = false
+  const IS_DEV = !false
   const wh =
     VITE_DEV_SERVER_URL && IS_DEV
       ? { width: winWidth, height: winHeight }

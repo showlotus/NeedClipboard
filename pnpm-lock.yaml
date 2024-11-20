@@ -14,11 +14,11 @@ importers:
   .:
     dependencies:
       extract-file-icon:
-        specifier: file:plugins\extract-file-icon
-        version: link:plugins/extract-file-icon
+        specifier: file:native\extract-file-icon
+        version: link:native/extract-file-icon
       native-clipboard:
-        specifier: file:plugins\native-clipboard
-        version: link:plugins/native-clipboard
+        specifier: file:native\native-clipboard
+        version: link:native/native-clipboard
     devDependencies:
       '@faker-js/faker':
         specifier: ^8.4.1
@@ -126,7 +126,7 @@ importers:
         specifier: ^2.0.6
         version: 2.1.10(typescript@5.6.3)
 
-  plugins/extract-file-icon:
+  native/extract-file-icon:
     dependencies:
       node-addon-api:
         specifier: 1.7.1
@@ -145,7 +145,7 @@ importers:
         specifier: 3.7.2
         version: 3.7.2
 
-  plugins/native-clipboard:
+  native/native-clipboard:
     devDependencies:
       '@types/node':
         specifier: ^22.8.7
