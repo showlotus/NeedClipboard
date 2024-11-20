@@ -55,16 +55,30 @@
 </template>
 
 <script lang="ts" setup>
+import dayjs from 'dayjs'
 import hotkeys from 'hotkeys-js'
 import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue'
 
+import { DATE_TEMPLATE } from '@/constants/date'
 import { HOTKEY } from '@/constants/hotkey'
-import { fetchDelete } from '@/database/api'
-import { useSearch } from '@/hooks/useSearch'
+import {
+  fetchDelete,
+  fetchInsert,
+  fetchIsExistInDB,
+  fetchUpdate
+} from '@/database/api'
+import { calculateBase64Size, useSearch } from '@/hooks/useSearch'
 import { useMainStore } from '@/stores/main'
 import { debounce } from '@/utils/debounce'
-import { ipcOnHideWin, ipcOnShowWin, ipcOnUpdateClipboard } from '@/utils/ipc'
+import {
+  ipcGetAppIcon,
+  ipcOnHideWin,
+  ipcOnShowWin,
+  ipcOnUpdateClipboard
+} from '@/utils/ipc'
 import { ipcGetTheme } from '@/utils/ipc/theme'
+import { isLink } from '@/utils/isLink'
+import { isValidColorString } from '@/utils/isValidColorString'
 import { throttle } from '@/utils/throttle'
 
 const mainStore = useMainStore()
@@ -210,12 +224,47 @@ hotkeys(HOTKEY.home_delete, 'home', () => {
     handleMenuDelete()
   }
 })
-ipcOnUpdateClipboard((_) => {
-  search().then(() => {
-    activeIndex.value = 0
-    mainStore.updateActiveRecord(flattenData.value[activeIndex.value])
-    scrollIntoView()
-  })
+ipcOnUpdateClipboard(async (_, clipboardData) => {
+  if (clipboardData) {
+    const { type, data, source, app } = clipboardData
+    const icon = await ipcGetAppIcon(source)
+    const res = {
+      application: {
+        name: app,
+        icon
+      },
+      createTime: dayjs().format(DATE_TEMPLATE)
+    } as any
+    if (type === 'TEXT') {
+      if (isValidColorString(data)) {
+        res.type = 'Color'
+      } else if (isLink(data)) {
+        res.type = 'Link'
+      } else {
+        res.type = 'Text'
+      }
+      res.characters = data.length
+      res.content = data
+    } else if (type === 'IMAGE') {
+      res.type = 'Image'
+      res.size = calculateBase64Size(data.url)
+      Object.assign(res, data)
+    } else if (type === 'FILE') {
+    }
+    console.log(type, data, source, app)
+    if (!res.type) return
+    const id = await fetchIsExistInDB(res)
+    if (id) {
+      await fetchUpdate(id)
+    } else {
+      await fetchInsert(res)
+    }
+  }
+
+  await search()
+  activeIndex.value = 0
+  mainStore.updateActiveRecord(flattenData.value[activeIndex.value])
+  scrollIntoView()
 })
 ipcOnShowWin(() => {
   hotkeys.trigger(HOTKEY.home_focus, 'home')

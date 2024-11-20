@@ -92,27 +92,31 @@ const handleTriggerCtrlEnter = () => {
 }
 
 const activeRecord = computed(() => mainStore.activeRecord)
-const triggerCopyToClipboard = () => {
-  fetchUpdate(activeRecord.value.id)
+const triggerCopyToClipboard = async () => {
+  await fetchUpdate(activeRecord.value.id)
   ipcCopyToClipboard(JSON.parse(JSON.stringify(activeRecord.value)))
 }
-const triggerPastToActiveApp = () => {
-  fetchUpdate(activeRecord.value.id)
+const triggerPastToActiveApp = async () => {
+  await fetchUpdate(activeRecord.value.id)
   ipcPastToActiveApp(JSON.parse(JSON.stringify(activeRecord.value)))
 }
 const triggerEvents = {
   enter: () => {},
   ctrlEnter: () => {}
 }
-watch(primaryAction, (val) => {
-  if (val === 'app') {
-    triggerEvents.enter = triggerPastToActiveApp
-    triggerEvents.ctrlEnter = triggerCopyToClipboard
-  } else {
-    triggerEvents.enter = triggerCopyToClipboard
-    triggerEvents.ctrlEnter = triggerPastToActiveApp
-  }
-})
+watch(
+  primaryAction,
+  (val) => {
+    if (val === 'app') {
+      triggerEvents.enter = triggerPastToActiveApp
+      triggerEvents.ctrlEnter = triggerCopyToClipboard
+    } else {
+      triggerEvents.enter = triggerCopyToClipboard
+      triggerEvents.ctrlEnter = triggerPastToActiveApp
+    }
+  },
+  { immediate: true }
+)
 
 hotkeys(HOTKEY.home_enter, 'home', () => triggerEvents.enter())
 hotkeys(HOTKEY.home_ctrl_enter, 'home', () => triggerEvents.ctrlEnter())

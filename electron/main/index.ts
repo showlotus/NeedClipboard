@@ -1,9 +1,7 @@
 import {
   BrowserWindow,
   app,
-  clipboard,
   ipcMain,
-  nativeImage,
   nativeTheme,
   screen,
   shell
@@ -12,7 +10,11 @@ import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { NativeClipboard, updateCurrActiveWindowHandle } from './clipboard'
+import {
+  NativeClipboard,
+  getCurrActiveWindowHandle,
+  updateCurrActiveWindowHandle
+} from './clipboard'
 import './clipboard'
 import './ipc'
 import { SettingsStore, registerShortcut } from './store'
@@ -73,31 +75,6 @@ if (app.isPackaged) {
   })
   console.log('openAtLogin', openAtLogin, process.argv)
 }
-ipcMain.handle('update-clipboard-file', (_event, files) => {
-  // NativeClipboard.writeFilesToClipboard(files)
-})
-ipcMain.handle('update-clipboard-image', (_event, image) => {
-  // const img = nativeImage.createFromDataURL(image)
-
-  const base64Data = image.replace(/^data:image\/\w+;base64,/, '')
-  const imageBuffer = Buffer.from(base64Data, 'base64')
-  // const tempFilePath = path.join(__dirname, 'temp_image.png')
-  // fs.writeFileSync(tempFilePath, imageBuffer)
-  const img = nativeImage.createFromBuffer(imageBuffer)
-  clipboard.writeImage(img)
-})
-ipcMain.handle('update-clipboard-image-buffer', (_event, data) => {
-  const img = nativeImage.createFromBuffer(data.image.jpg)
-  clipboard.writeImage(img)
-})
-ipcMain.handle('update-clipboard-image-url', (_event, data) => {
-  console.log(data.image.url.length)
-  const img = nativeImage.createFromDataURL(data.image.url)
-  clipboard.writeImage(img)
-})
-ipcMain.handle('update-clipboard-text', (_event, text) => {
-  clipboard.writeText(text)
-})
 
 // TODO 获取当前活动应用，监听当前活动应用是否更新，通知视图层更新
 ipcMain.handle('get-active-app', (_event) => {
@@ -116,14 +93,23 @@ function updateActiveApp() {
   win.webContents.send('update-active-app', appName)
 }
 
+// 激活来源窗口
+function activateSourceWindow() {
+  const handle = getCurrActiveWindowHandle()
+  if (handle) {
+    console.log('Activate window')
+    NativeClipboard.activateWindowByHandle(handle)
+  }
+}
+
 export function toggleWindowVisible() {
   if (!win) {
-    createWindow()
+    // createWindow()
     return
   }
 
   if (win.isVisible()) {
-    win.hide()
+    win.blur()
   } else {
     updateActiveApp()
     win.show()
@@ -135,12 +121,14 @@ async function createWindow() {
   console.log(width, height)
   const winWidth = width * 0.4
   const winHeight = height * 1
+  const IS_DEV = false
+  const wh =
+    VITE_DEV_SERVER_URL && IS_DEV
+      ? { width: winWidth, height: winHeight }
+      : { width: width * 0.4, height: height * 0.5 }
   win = new BrowserWindow({
     title: 'Main window',
-    width: width * 0.4,
-    height: height * 0.5,
-    // width: winWidth,
-    // height: winHeight,
+    ...wh,
     // icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
     webPreferences: {
       preload,
@@ -213,10 +201,11 @@ async function createWindow() {
   registerShortcut(SettingsStore.get('shortcutKey'))
 
   win.on('show', () => {
-    // updateActiveApp()
     win.webContents.send('show-win')
   })
   win.on('hide', () => {
+    console.log('hide')
+    activateSourceWindow()
     win.webContents.send('hide-win')
   })
 

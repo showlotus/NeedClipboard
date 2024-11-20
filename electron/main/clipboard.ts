@@ -1,6 +1,9 @@
 import { clipboard, nativeImage } from 'electron'
+import { encode } from 'iconv-lite'
+import { exec } from 'node:child_process'
 import type { NativeClipboardType } from 'native-clipboard'
 import { createRequire } from 'node:module'
+import path from 'node:path'
 
 import { getWinWebContents, toggleWindowVisible } from '.'
 
@@ -25,7 +28,7 @@ export function updateCurrActiveWindowHandle(handle: string) {
 
 export function writeClipboard(data: any) {
   updateShouldUpdateHistory(false)
-
+  console.log(data.type, data.content)
   if (data.type === 'Text') {
     console.log('write text')
     clipboard.writeText(data.content)
@@ -35,10 +38,7 @@ export function writeClipboard(data: any) {
   } else if (data.type === 'File') {
     console.log('write file')
   }
-
-  setTimeout(() => {
-    updateShouldUpdateHistory(true)
-  })
+  updateShouldUpdateHistory(true)
   toggleWindowVisible()
 }
 
@@ -48,7 +48,6 @@ export function pastActiveApp(data: any) {
   if (handle) {
     console.log('pastActiveApp', NativeClipboard.getAppNameByHandle(handle))
   }
-  //   NativeClipboard.activateWindowByHandle(getCurrActiveWindowHandle())
   toggleWindowVisible()
 }
 
@@ -67,6 +66,19 @@ NativeClipboard.watch((type, data, source, app) => {
       content: ''
     } as any
   } else if (type === 'FILE') {
+    console.log(clipboard.readBuffer('FileNameW').toString('utf-8'))
+    console.log(clipboard.readBuffer('CD_HDROP').toString('ucs2'))
+    console.log(
+      clipboard
+        .readBuffer('FileNameW')
+        .toString('ucs2')
+        .replace(RegExp(String.fromCharCode(0), 'g'), '')
+    )
+    // exec(
+    //   `chcp 65001;Get-Content -Encoding Byte ${encode(clipboard.readBuffer('FileNameW').toString('utf-8'), 'utf8').toString()} | Set-Clipboard`,
+    //   { shell: 'powershell.exe' },
+    //   () => {}
+    // )
   }
 
   getWinWebContents().send('update-clipboard', {
