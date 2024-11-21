@@ -21,7 +21,7 @@
   },
   "scripts": {
     "install": "npm run build && npm run rebuild",
-    "rebuild": "node-gyp rebuild --runtime=electron --target=20.18.0",
+    "rebuild": "node-gyp rebuild --target=33.2.0 --arch=x64 --dist-url=https://electronjs.org/headers",
     "build": "tsc -p .",
     "watch": "tsc --watch -p .",
     "prepublishOnly": "npm run build && npm run rebuild",

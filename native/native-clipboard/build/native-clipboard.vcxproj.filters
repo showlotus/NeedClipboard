@@ -16,22 +16,31 @@
     <Filter Include="C:\Users\showlotus">
       <UniqueIdentifier>{6DDF57A5-CAA7-BF79-04B2-1DF2F54475EC}</UniqueIdentifier>
     </Filter>
-    <Filter Include="C:\Users\showlotus\Desktop">
-      <UniqueIdentifier>{B23D6E4D-7634-EF57-62FC-46A6189C0B6E}</UniqueIdentifier>
+    <Filter Include="C:\Users\showlotus\AppData">
+      <UniqueIdentifier>{F852EB63-437C-846A-220F-8D9ED6DAEC1D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="C:\Users\showlotus\Desktop\WinCode">
-      <UniqueIdentifier>{1C2F073A-531C-403E-C099-CBEA1287667E}</UniqueIdentifier>
+    <Filter Include="C:\Users\showlotus\AppData\Roaming">
+      <UniqueIdentifier>{D51E5808-912B-5C70-4BB7-475D1DBFA067}</UniqueIdentifier>
     </Filter>
-    <Filter Include="C:\Users\showlotus\Desktop\WinCode\NeedClipboard">
-      <UniqueIdentifier>{50ADC827-F608-70D7-7882-919B3EEB1CCA}</UniqueIdentifier>
+    <Filter Include="C:\Users\showlotus\AppData\Roaming\npm">
+      <UniqueIdentifier>{741E0E76-39B2-B1AB-9FA1-F1A20B16F295}</UniqueIdentifier>
     </Filter>
-    <Filter Include="C:\Users\showlotus\Desktop\WinCode\NeedClipboard\node_modules">
+    <Filter Include="C:\Users\showlotus\AppData\Roaming\npm\node_modules">
       <UniqueIdentifier>{56DF7A98-063D-FB9D-485C-089023B4C16A}</UniqueIdentifier>
     </Filter>
-    <Filter Include="C:\Users\showlotus\Desktop\WinCode\NeedClipboard\node_modules\node-gyp">
+    <Filter Include="C:\Users\showlotus\AppData\Roaming\npm\node_modules\pnpm">
+      <UniqueIdentifier>{1EA99597-72F7-7B8A-65CA-22260344E439}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="C:\Users\showlotus\AppData\Roaming\npm\node_modules\pnpm\dist">
+      <UniqueIdentifier>{64E3201F-8721-A2FA-DD0A-6C3AF45797EA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="C:\Users\showlotus\AppData\Roaming\npm\node_modules\pnpm\dist\node_modules">
+      <UniqueIdentifier>{56DF7A98-063D-FB9D-485C-089023B4C16A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="C:\Users\showlotus\AppData\Roaming\npm\node_modules\pnpm\dist\node_modules\node-gyp">
       <UniqueIdentifier>{77348C0E-2034-7791-74D5-63C077DF5A3B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="C:\Users\showlotus\Desktop\WinCode\NeedClipboard\node_modules\node-gyp\src">
+    <Filter Include="C:\Users\showlotus\AppData\Roaming\npm\node_modules\pnpm\dist\node_modules\node-gyp\src">
       <UniqueIdentifier>{8CDEE807-BC53-E450-C8B8-4DEBB66742D4}</UniqueIdentifier>
     </Filter>
     <Filter Include="..">
@@ -42,8 +51,8 @@
     <ClCompile Include="..\lib\main.cpp">
       <Filter>..\lib</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\showlotus\Desktop\WinCode\NeedClipboard\node_modules\node-gyp\src\win_delay_load_hook.cc">
-      <Filter>C:\Users\showlotus\Desktop\WinCode\NeedClipboard\node_modules\node-gyp\src</Filter>
+    <ClCompile Include="C:\Users\showlotus\AppData\Roaming\npm\node_modules\pnpm\dist\node_modules\node-gyp\src\win_delay_load_hook.cc">
+      <Filter>C:\Users\showlotus\AppData\Roaming\npm\node_modules\pnpm\dist\node_modules\node-gyp\src</Filter>
     </ClCompile>
     <None Include="..\binding.gyp">
       <Filter>..</Filter>

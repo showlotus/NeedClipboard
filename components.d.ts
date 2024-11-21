@@ -11,7 +11,6 @@ declare module 'vue' {
     CodeBlock: typeof import('./src/components/CodeBlock.vue')['default']
     ColorBlock: typeof import('./src/components/ColorBlock.vue')['default']
     ColorView: typeof import('./src/components/view/ColorView.vue')['default']
-    Copy: typeof import('./src/components/Copy.vue')['default']
     CustomInput: typeof import('./src/components/CustomInput.vue')['default']
     CustomSelect: typeof import('./src/components/CustomSelect.vue')['default']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']

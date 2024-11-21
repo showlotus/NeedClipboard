@@ -48,8 +48,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\NeedClipboard\native\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/Zc:__cplusplus -std:c++17 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\NeedClipboard\native\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:__cplusplus -std:c++20 %(AdditionalOptions)</AdditionalOptions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -61,7 +61,7 @@
       <OmitFramePointers>false</OmitFramePointers>
       <Optimization>Disabled</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=native-clipboard;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;NAPI_DISABLE_CPP_EXCEPTIONS;NAPI_CPP_EXCEPTIONS;_HAS_EXCEPTIONS=1;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=native-clipboard;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;ELECTRON_ENSURE_CONFIG_GYPI;USING_ELECTRON_CONFIG_GYPI;V8_COMPRESS_POINTERS;V8_COMPRESS_POINTERS_IN_ISOLATE_CAGE;V8_31BIT_SMIS_ON_64BIT_ARCH;V8_ENABLE_SANDBOX;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;OPENSSL_NO_ASM;NAPI_DISABLE_CPP_EXCEPTIONS;NAPI_CPP_EXCEPTIONS;_HAS_EXCEPTIONS=1;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <StringPooling>true</StringPooling>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -73,7 +73,7 @@
       <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\showlotus\\AppData\\Local\\node-gyp\\Cache\\20.18.0\\x64\\node.lib&quot;</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\showlotus\\AppData\\Local\\node-gyp\\Cache\\33.2.0\\x64\\node.lib&quot;</AdditionalDependencies>
       <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>node.exe;%(DelayLoadDLLs)</DelayLoadDLLs>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -85,14 +85,14 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\NeedClipboard\native\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=native-clipboard;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;NAPI_DISABLE_CPP_EXCEPTIONS;NAPI_CPP_EXCEPTIONS;_HAS_EXCEPTIONS=1;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\NeedClipboard\native\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=native-clipboard;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;ELECTRON_ENSURE_CONFIG_GYPI;USING_ELECTRON_CONFIG_GYPI;V8_COMPRESS_POINTERS;V8_COMPRESS_POINTERS_IN_ISOLATE_CAGE;V8_31BIT_SMIS_ON_64BIT_ARCH;V8_ENABLE_SANDBOX;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;OPENSSL_NO_ASM;NAPI_DISABLE_CPP_EXCEPTIONS;NAPI_CPP_EXCEPTIONS;_HAS_EXCEPTIONS=1;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\NeedClipboard\native\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/Zc:__cplusplus -std:c++17 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\NeedClipboard\native\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:__cplusplus -std:c++20 %(AdditionalOptions)</AdditionalOptions>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <DisableSpecificWarnings>4351;4355;4800;4251;4275;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -106,7 +106,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <Optimization>Full</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=native-clipboard;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;NAPI_DISABLE_CPP_EXCEPTIONS;NAPI_CPP_EXCEPTIONS;_HAS_EXCEPTIONS=1;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=native-clipboard;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;ELECTRON_ENSURE_CONFIG_GYPI;USING_ELECTRON_CONFIG_GYPI;V8_COMPRESS_POINTERS;V8_COMPRESS_POINTERS_IN_ISOLATE_CAGE;V8_31BIT_SMIS_ON_64BIT_ARCH;V8_ENABLE_SANDBOX;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;OPENSSL_NO_ASM;NAPI_DISABLE_CPP_EXCEPTIONS;NAPI_CPP_EXCEPTIONS;_HAS_EXCEPTIONS=1;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <StringPooling>true</StringPooling>
@@ -119,7 +119,7 @@
       <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\showlotus\\AppData\\Local\\node-gyp\\Cache\\20.18.0\\x64\\node.lib&quot;</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\showlotus\\AppData\\Local\\node-gyp\\Cache\\33.2.0\\x64\\node.lib&quot;</AdditionalDependencies>
       <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>node.exe;%(DelayLoadDLLs)</DelayLoadDLLs>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -131,8 +131,8 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\20.18.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\NeedClipboard\native\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=native-clipboard;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;NAPI_DISABLE_CPP_EXCEPTIONS;NAPI_CPP_EXCEPTIONS;_HAS_EXCEPTIONS=1;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\include\node;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\src;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\openssl\config;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\openssl\openssl\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\uv\include;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\zlib;C:\Users\showlotus\AppData\Local\node-gyp\Cache\33.2.0\deps\v8\include;C:\Users\showlotus\Desktop\WinCode\NeedClipboard\native\native-clipboard\node_modules\node-addon-api;..\node_modules\node-addon-api;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=native-clipboard;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;ELECTRON_ENSURE_CONFIG_GYPI;USING_ELECTRON_CONFIG_GYPI;V8_COMPRESS_POINTERS;V8_COMPRESS_POINTERS_IN_ISOLATE_CAGE;V8_31BIT_SMIS_ON_64BIT_ARCH;V8_ENABLE_SANDBOX;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;OPENSSL_NO_ASM;NAPI_DISABLE_CPP_EXCEPTIONS;NAPI_CPP_EXCEPTIONS;_HAS_EXCEPTIONS=1;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -142,7 +142,7 @@
     <ClCompile Include="..\lib\main.cpp">
       <ObjectFileName>$(IntDir)\lib\main.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="C:\Users\showlotus\Desktop\WinCode\NeedClipboard\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
+    <ClCompile Include="C:\Users\showlotus\AppData\Roaming\npm\node_modules\pnpm\dist\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="node_modules\node-addon-api\node_addon_api_except.vcxproj">

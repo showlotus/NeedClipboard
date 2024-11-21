@@ -50,6 +50,10 @@ npm install --global --production windows-build-tools@4.0.0
 
 ## log
 
+## 11/22
+
+- 使用 `pnpm` 打包时，总是报错，最后选择使用 `yarn`，打包就成功了！
+
 ## 11/19
 
 - `electron-rebuild` 打包报错 `ModuleNotFoundError: No module named 'distutils'`

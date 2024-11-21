@@ -7,7 +7,7 @@
   "scripts": {
     "install": "npm run build && npm run rebuild",
     "build:node": "node-gyp configure build",
-    "rebuild": "node-gyp rebuild --runtime=electron --target=20.18.0",
+    "rebuild": "node-gyp rebuild --target=33.2.0 --arch=x64 --dist-url=https://electronjs.org/headers",
     "test": "node ./test/index.js",
     "build": "tsc -p .",
     "watch": "tsc --watch -p .",

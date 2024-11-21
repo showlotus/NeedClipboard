@@ -6,7 +6,6 @@
   "author": "showlotus <showlotus2000@gmail.com>",
   "license": "MIT",
   "private": true,
-  "packageManager": "pnpm@8.10.0",
   "keywords": [
     "electron",
     "rollup",
@@ -28,6 +27,7 @@
     "lint": "eslint \"src/**/*.{js,ts,vue}\" \"electron/**/*.ts\"",
     "prettier": "prettier --write \"src/**/*.{js,ts,vue}\" \"electron/**/*.ts\"",
     "refresh": "npx rifraf ./node_modules && pnpm i --offline",
+    "postinstall": "electron-builder install-app-deps",
     "rebuild-native": "set DEBUG=electron-rebuild && electron-rebuild -v 33.2.0 -a x64"
   },
   "devDependencies": {

@@ -160,7 +160,7 @@
     <DEFECTCODE>6244</DEFECTCODE>
     <DESCRIPTION>“tsfn”的局部声明遮蔽了此前位于“21”行(“c:\users\showlotus\desktop\wincode\needclipboard\native\native-clipboard\lib\main.cpp”中)的声明。</DESCRIPTION>
     <FUNCTION>Napi::ThreadSafeFunction::New</FUNCTION>
-    <DECORATED>??$New@PEBDXV&lt;lambda_eb981a1dd1025b8bfef4a1ab2294faff&gt;@@X@ThreadSafeFunction@Napi@@CA?AV01@PEAUnapi_env__@@AEBVFunction@1@AEBVObject@1@PEBD_K4PEAXV&lt;lambda_eb981a1dd1025b8bfef4a1ab2294faff&gt;@@5P6AX055@Z@Z</DECORATED>
+    <DECORATED>??$New@PEBDXV&lt;lambda_1&gt;@?1???$New@PEBDX@ThreadSafeFunction@Napi@@SA?AV23@PEAUnapi_env__@@AEBVFunction@3@AEBVObject@3@PEBD_K4PEAX@Z@X@ThreadSafeFunction@Napi@@CA?AV01@PEAUnapi_env__@@AEBVFunction@1@AEBVObject@1@PEBD_K4PEAXV&lt;lambda_1&gt;@?1???$New@PEBDX@01@SA?AV01@0123445@Z@5P6AX055@Z@Z</DECORATED>
     <FUNCLINE>6278</FUNCLINE>
     <PATH>
       <SFA>
