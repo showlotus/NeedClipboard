@@ -39,6 +39,10 @@ describe('test hex', () => {
   test('#ggg', () => {
     expect(isValidColorString('#ggg')).toBe(false)
   })
+
+  test('#fffe', () => {
+    expect(isValidColorString('#fffe')).toBe(true)
+  })
 })
 
 describe('test hsl', () => {

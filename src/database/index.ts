@@ -1,5 +1,6 @@
 import pkg from '$/package.json'
 import Dexie, { EntityTable } from 'dexie'
+import { App } from 'vue'
 
 import { ClipboardType } from '@/hooks/useTypeOptions'
 
@@ -38,7 +39,11 @@ type DataBaseType = Dexie & {
   ClipboardTable: EntityTable<ClipboardTableType, 'id'>
 }
 
-export function createDatabase() {
+export function createDatabase(): DataBaseType {
+  if (createDatabase.prototype._DB) {
+    return createDatabase.prototype._DB
+  }
+
   // 创建数据库
   const DB = new Dexie(pkg.name) as DataBaseType
 
@@ -48,5 +53,8 @@ export function createDatabase() {
       '++id,type,content,application,createTime, url,width,height,size, subType,path,files'
   })
 
-  return DB
+  // TODO can use install register in the app
+  // DB.install = function (app: App, ...options: unknown[]) {}
+
+  return (createDatabase.prototype._DB = DB)
 }

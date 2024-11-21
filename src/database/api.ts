@@ -58,12 +58,6 @@ export async function fetchDelete(id: number) {
   return db.ClipboardTable.delete(id)
 }
 
-/**
- * TODO 什么时候需要更新记录：
- *
- * 1. 当剪贴板中最新的一条记录与当前即将要入库的数据一致时，如何判断数据一致？
- * 2. 当前即将入库的数据已存在数据库中，
- */
 export function fetchUpdate(id: number, createTime?: string) {
   const db = createDatabase()
   return db.ClipboardTable.where('id')
