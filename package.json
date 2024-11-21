@@ -27,8 +27,7 @@
     "lint": "eslint \"src/**/*.{js,ts,vue}\" \"electron/**/*.ts\"",
     "prettier": "prettier --write \"src/**/*.{js,ts,vue}\" \"electron/**/*.ts\"",
     "refresh": "npx rifraf ./node_modules && pnpm i --offline",
-    "postinstall": "electron-builder install-app-deps",
-    "rebuild-native": "set DEBUG=electron-rebuild && electron-rebuild -v 33.2.0 -a x64"
+    "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
