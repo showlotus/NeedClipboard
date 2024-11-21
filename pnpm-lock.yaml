@@ -13,6 +13,9 @@ importers:
 
   .:
     dependencies:
+      clipboard-files:
+        specifier: file:native\clipboard-files
+        version: link:native/clipboard-files
       extract-file-icon:
         specifier: file:native\extract-file-icon
         version: link:native/extract-file-icon
@@ -125,6 +128,15 @@ importers:
       vue-tsc:
         specifier: ^2.0.6
         version: 2.1.10(typescript@5.6.3)
+
+  native/clipboard-files:
+    dependencies:
+      bindings:
+        specifier: ~1.2.1
+        version: 1.2.1
+      node-addon-api:
+        specifier: ^1.0.0
+        version: 1.7.1
 
   native/extract-file-icon:
     dependencies:
@@ -1183,6 +1195,9 @@ packages:
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
     engines: {node: '>=8'}
+
+  bindings@1.2.1:
+    resolution: {integrity: sha512-u4cBQNepWxYA55FunZSM7wMi55yQaN0otnhhilNoWHq0MfOfJeQx0v0mRRpolGOExPjZcl6FtB0BB8Xkb88F0g==}
 
   bindings@1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
@@ -4772,6 +4787,8 @@ snapshots:
   base64-js@1.5.1: {}
 
   binary-extensions@2.3.0: {}
+
+  bindings@1.2.1: {}
 
   bindings@1.5.0:
     dependencies:

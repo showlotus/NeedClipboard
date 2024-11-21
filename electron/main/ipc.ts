@@ -4,8 +4,9 @@ import { createRequire } from 'node:module'
 import { getWinWebContents, toggleWindowVisible } from '.'
 import { pastActiveApp, writeClipboard } from './clipboard'
 import { SettingsStore, store } from './store'
+import getFileIcon from 'extract-file-icon'
 
-const getFileIcon = createRequire(import.meta.url)('extract-file-icon')
+// const getFileIcon = createRequire(import.meta.url)('extract-file-icon')
 
 ipcMain.handle('toggle-visible', () => {
   toggleWindowVisible()

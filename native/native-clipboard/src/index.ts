@@ -6,7 +6,7 @@ if (platform() === 'win32') {
   NativeClipboard = require('../build/Release/native-clipboard.node')
 }
 
-export interface NativeClipboardType {
+const nc = {
   /**
    * 监听剪贴板变化
    * @param {function(type, data, source, app): void} callback - 回调函数
@@ -22,39 +22,33 @@ export interface NativeClipboardType {
       source: string,
       app: string
     ) => void
-  ): void
+  ): void {
+    return NativeClipboard.watch(callback)
+  },
   /**
    * 停止监听剪贴板
    */
-  unwatch(): void
-  /**
-   * 获取当前窗口句柄
-   */
-  getCurrentWindowHandle(): string
-  /**
-   * 根据句柄激活窗口
-   */
-  activateWindowByHandle(hwnd: string): void
-  /**
-   * 根据句柄获取应用名称
-   */
-  getAppNameByHandle(hwnd: string): string
-}
-
-export default {
-  watch(callback): void {
-    return NativeClipboard.watch(callback)
-  },
   unwatch(): void {
     return NativeClipboard.unwatch()
   },
+  /**
+   * 获取当前窗口句柄
+   */
   getCurrentWindowHandle(): string {
     return NativeClipboard.getCurrentWindowHandle()
   },
+  /**
+   * 根据句柄激活窗口
+   */
   activateWindowByHandle(hwnd: string): void {
     return NativeClipboard.activateWindowByHandle(hwnd)
   },
+  /**
+   * 根据句柄获取应用名称
+   */
   getAppNameByHandle(hwnd: string): string {
     return NativeClipboard.getAppNameByHandle(hwnd)
   }
-} as NativeClipboardType
+}
+
+module.exports = exports = nc

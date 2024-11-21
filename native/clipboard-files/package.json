@@ -1,0 +1,38 @@
+{
+	"name": "clipboard-files",
+	"version": "2.0.1",
+	"description": "A nodejs addon, read or write file paths for clipboard, supports win32 and mac osx",
+	"main": "./lib/index.js",
+	"types": "./lib/index.d.ts",
+	"files": [
+		"lib",
+		"src",
+		"binding.gyp"	
+	],
+	"binary": {
+		"module_name": "binding",
+		"module_path": "./lib/binding/{node_abi}-{platform}-{arch}/",
+		"package_name": "{node_abi}-{platform}-{arch}.tar.gz",
+		"host": "https://github.com/alex8088/clipboard-files/releases/download/",
+		"remote_path": "v{version}"
+	},
+	"keywords": [
+		"clipboard",
+		"files",
+		"electron"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/alex8088/clipboard-files.git"
+	},
+	"scripts": {
+		"test": "node test"
+	},
+	"author": "bubuzi",
+	"license": "MIT",
+	"gypfile": true,
+	"dependencies": {
+		"bindings": "~1.2.1",
+    	"node-addon-api": "^1.0.0"
+	}
+}

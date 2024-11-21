@@ -68,6 +68,7 @@
     "vue-tsc": "^2.0.6"
   },
   "dependencies": {
+    "clipboard-files": "file:native\\clipboard-files",
     "extract-file-icon": "file:native\\extract-file-icon",
     "native-clipboard": "file:native\\native-clipboard"
   },

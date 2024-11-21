@@ -250,6 +250,8 @@ ipcOnUpdateClipboard(async (_, clipboardData) => {
       res.size = calculateBase64Size(data.url)
       Object.assign(res, data)
     } else if (type === 'FILE') {
+      res.type = 'File'
+      Object.assign(res, data)
     }
     console.log(type, data, source, app)
     if (!res.type) return

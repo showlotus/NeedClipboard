@@ -1,15 +1,8 @@
+import clipboardFiles from 'clipboard-files'
 import { clipboard, nativeImage } from 'electron'
-import { encode } from 'iconv-lite'
-import { exec } from 'node:child_process'
-import type { NativeClipboardType } from 'native-clipboard'
-import { createRequire } from 'node:module'
-import path from 'node:path'
+import NativeClipboard from 'native-clipboard'
 
 import { getWinWebContents, toggleWindowVisible } from '.'
-
-export const NativeClipboard: NativeClipboardType = createRequire(
-  import.meta.url
-)('native-clipboard').default
 
 let shouldUpdateHistory = true
 let currActiveWindowHandle = ''
@@ -36,7 +29,8 @@ export function writeClipboard(data: any) {
     console.log('write image')
     clipboard.writeImage(nativeImage.createFromDataURL(data.url))
   } else if (data.type === 'File') {
-    console.log('write file')
+    console.log('write file', data)
+    clipboardFiles.writeFiles(data.files)
   }
   updateShouldUpdateHistory(true)
   toggleWindowVisible()
@@ -68,19 +62,14 @@ NativeClipboard.watch((type, data, source, app) => {
       content: ''
     } as any
   } else if (type === 'FILE') {
-    console.log(clipboard.readBuffer('FileNameW').toString('utf-8'))
-    console.log(clipboard.readBuffer('CD_HDROP').toString('ucs2'))
-    console.log(
-      clipboard
-        .readBuffer('FileNameW')
-        .toString('ucs2')
-        .replace(RegExp(String.fromCharCode(0), 'g'), '')
-    )
-    // exec(
-    //   `chcp 65001;Get-Content -Encoding Byte ${encode(clipboard.readBuffer('FileNameW').toString('utf-8'), 'utf8').toString()} | Set-Clipboard`,
-    //   { shell: 'powershell.exe' },
-    //   () => {}
-    // )
+    console.log(clipboardFiles.readFiles())
+    const files = clipboardFiles.readFiles()
+    data = {
+      files,
+      path: '/xxxx',
+      content: files[0],
+      subType: 'folder,file'
+    } as any
   }
 
   getWinWebContents().send('update-clipboard', {

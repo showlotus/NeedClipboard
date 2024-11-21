@@ -6,12 +6,12 @@ import {
   screen,
   shell
 } from 'electron'
+import NativeClipboard from 'native-clipboard'
 import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import {
-  NativeClipboard,
   getCurrActiveWindowHandle,
   updateCurrActiveWindowHandle
 } from './clipboard'

@@ -434,7 +434,6 @@
     "node_gyp": "C:\\Program Files\\nodejs\\node_modules\\npm\\node_modules\\node-gyp\\bin\\node-gyp.js",
     "node_linker": "hoisted",
     "npm_version": "10.7.0",
-    "offline": "true",
     "prefix": "C:\\Users\\showlotus\\AppData\\Roaming\\npm",
     "registry": "https://registry.npmmirror.com/",
     "shamefully_hoist": "true",
