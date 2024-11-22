@@ -33,6 +33,4 @@ yarn.lock
 # vscode
 .vscode/c_cpp_properties.json
 
-c/*.exe
-
 release/*
