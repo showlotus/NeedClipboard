@@ -17,7 +17,7 @@
       "@/*": ["src/*"],
       "$/*": ["./*"]
     },
-    "types": ["vue", "vue-i18n", "./native/native-clipboard"]
+    "types": ["vue", "vue-i18n"]
   },
   "include": ["src", "test"],
   "references": [{ "path": "./tsconfig.node.json" }]
