@@ -10,9 +10,7 @@
     "rebuild": "node-gyp rebuild --target=33.2.0 --arch=x64 --dist-url=https://electronjs.org/headers",
     "test": "node ./test/index.js",
     "build": "tsc -p .",
-    "watch": "tsc --watch -p .",
-    "rebuild2": "electron-rebuild",
-    "1postinstall": "electron-builder install-app-deps"
+    "watch": "tsc --watch -p ."
   },
   "keywords": [],
   "author": "showlotus",

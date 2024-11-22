@@ -432,13 +432,21 @@
     "standalone_static_library": 1,
     "msbuild_path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin\\MSBuild.exe",
     "target": "33.2.0",
+    "cache": "C:\\Users\\showlotus\\AppData\\Local\\npm-cache",
     "electron_builder_binaries_mirror": "https://npmmirror.com/mirrors/electron-builder-binaries/",
     "electron_mirror": "https://npmmirror.com/mirrors/electron/",
     "frozen_lockfile": "",
-    "node_gyp": "C:\\Users\\showlotus\\AppData\\Roaming\\npm\\node_modules\\pnpm\\dist\\node_modules\\node-gyp\\bin\\node-gyp.js",
+    "globalconfig": "C:\\Users\\showlotus\\AppData\\Roaming\\npm\\etc\\npmrc",
+    "global_prefix": "C:\\Users\\showlotus\\AppData\\Roaming\\npm",
+    "init_module": "C:\\Users\\showlotus\\.npm-init.js",
+    "local_prefix": "C:\\Users\\showlotus\\Desktop\\WinCode\\NeedClipboard",
+    "node_gyp": "C:\\Program Files\\nodejs\\node_modules\\npm\\node_modules\\node-gyp\\bin\\node-gyp.js",
     "node_linker": "hoisted",
-    "registry": "https://registry.npmmirror.com",
+    "npm_version": "10.7.0",
+    "prefix": "C:\\Users\\showlotus\\AppData\\Roaming\\npm",
+    "registry": "https://registry.npmmirror.com/",
     "shamefully_hoist": "true",
+    "userconfig": "C:\\Users\\showlotus\\.npmrc",
     "user_agent": "pnpm/9.11.0 npm/? node/v20.15.0 win32 x64"
   }
 }

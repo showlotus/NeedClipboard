@@ -171,7 +171,7 @@ async function createWindow() {
 
   // 窗口失焦时，隐藏窗口
   win.on('blur', () => {
-    win.hide()
+    // win.hide()
   })
 
   if (VITE_DEV_SERVER_URL) {

@@ -1,20 +1,22 @@
 <template>
   <el-tooltip
     :visible="visible"
-    :content="value"
     :effect="theme"
     :show-arrow="false"
     placement="top"
   >
     <div
       ref="wrapEl"
-      class="text-[--el-color-primary] text-xs flex-1 text-right text-ellipsis overflow-hidden"
+      class="text-[--el-color-primary] text-xs flex-1 text-right text-ellipsis overflow-hidden whitespace-nowrap"
       @mouseenter="handleMouseEnter"
       @mouseleave="handleMouseLeave"
     >
       <span v-if="!ellipsisText">{{ value }}</span>
       {{ ellipsisText }}
     </div>
+    <template #content>
+      <div class="max-w-xl">{{ value }}</div>
+    </template>
   </el-tooltip>
 </template>
 

@@ -22,7 +22,7 @@
           <FileSvg v-if="checkPathIsFile(f)" class="w-4" />
           <FolderSvg v-else class="w-5" />
         </div>
-        <span>
+        <span class="whitespace-nowrap">
           {{ f }}
         </span>
       </div>

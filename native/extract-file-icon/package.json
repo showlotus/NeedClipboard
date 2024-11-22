@@ -24,9 +24,7 @@
     "rebuild": "node-gyp rebuild --target=33.2.0 --arch=x64 --dist-url=https://electronjs.org/headers",
     "build": "tsc -p .",
     "watch": "tsc --watch -p .",
-    "prepublishOnly": "npm run build && npm run rebuild",
-    "rebuild2": "electron-rebuild",
-    "1postinstall": "electron-builder install-app-deps"
+    "prepublishOnly": "npm run build && npm run rebuild"
   },
   "dependencies": {
     "node-addon-api": "1.7.1"

@@ -253,7 +253,6 @@ ipcOnUpdateClipboard(async (_, clipboardData) => {
       res.type = 'File'
       Object.assign(res, data)
     }
-    console.log(type, data, source, app)
     if (!res.type) return
     const id = await fetchIsExistInDB(res)
     if (id) {
