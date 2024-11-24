@@ -51,7 +51,7 @@
     "prettier": "^3.3.3",
     "sass": "^1.77.8",
     "tailwindcss": "^3.4.4",
-    "typescript": "^5.4.2",
+    "typescript": "5.6.2",
     "typescript-eslint": "^7.16.1",
     "unplugin-auto-import": "^0.18.2",
     "unplugin-vue-components": "^0.27.3",
@@ -63,7 +63,7 @@
     "vitest": "^2.0.4",
     "vue": "^3.4.21",
     "vue-i18n": "^9.13.1",
-    "vue-tsc": "^2.0.6"
+    "vue-tsc": "2.0.29"
   },
   "dependencies": {
     "clipboard-files": "file:native\\clipboard-files",
@@ -74,8 +74,5 @@
     "patchedDependencies": {
       "conf@13.0.1": "patches/conf@13.0.1.patch"
     }
-  },
-  "workspaces": [
-    "native/*"
-  ]
+  }
 }
