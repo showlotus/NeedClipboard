@@ -76,7 +76,7 @@ describe('test this week', () => {
     expect(
       isThisWeek(
         dayjs()
-          .subtract(dayjs().get('day') - 1, 'day')
+          .subtract((dayjs().get('day') - 1 + 7) % 7, 'day')
           .set('hour', 0)
           .set('minute', 0)
           .set('second', 0)
@@ -88,7 +88,7 @@ describe('test this week', () => {
     expect(
       isThisWeek(
         dayjs()
-          .add(7 - dayjs().get('day'), 'day')
+          .add((7 - dayjs().get('day') + 7) % 7, 'day')
           .set('hour', 23)
           .set('minute', 59)
           .set('second', 59)
@@ -100,7 +100,7 @@ describe('test this week', () => {
     expect(
       isThisWeek(
         dayjs()
-          .subtract(dayjs().get('day'), 'day')
+          .subtract(dayjs().get('day') || 7, 'day')
           .set('hour', 23)
           .set('minute', 59)
           .set('second', 59)
@@ -126,7 +126,7 @@ describe('test last week', () => {
     expect(
       isLastWeek(
         dayjs()
-          .subtract(dayjs().get('day'), 'day')
+          .subtract(dayjs().get('day') || 7, 'day')
           .set('hour', 23)
           .set('minute', 59)
           .set('second', 59)
@@ -138,7 +138,7 @@ describe('test last week', () => {
     expect(
       isLastWeek(
         dayjs()
-          .subtract(dayjs().get('day') - 1 + 7, 'day')
+          .subtract((dayjs().get('day') || 7) + 6, 'day')
           .set('hour', 0)
           .set('minute', 0)
           .set('second', 0)
@@ -150,7 +150,7 @@ describe('test last week', () => {
     expect(
       isLastWeek(
         dayjs()
-          .subtract(dayjs().get('day'), 'day')
+          .subtract(dayjs().get('day') || 7, 'day')
           .set('hour', 23)
           .set('minute', 59)
           .set('second', 59)

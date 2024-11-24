@@ -12,12 +12,12 @@ export const isYesterday: ValidateDate = (date) => {
 
 export const isThisWeek: ValidateDate = (date) => {
   const start = dayjs()
-    .subtract(dayjs().get('day') - 1, 'day')
+    .subtract((dayjs().get('day') - 1 + 7) % 7, 'day')
     .set('hour', 0)
     .set('minute', 0)
     .set('second', 0)
   const end = dayjs()
-    .add(7 - dayjs().get('day'), 'day')
+    .add((7 - dayjs().get('day') + 7) % 7, 'day')
     .set('hour', 23)
     .set('minute', 59)
     .set('second', 59)
@@ -27,12 +27,12 @@ export const isThisWeek: ValidateDate = (date) => {
 
 export const isLastWeek: ValidateDate = (date) => {
   const start = dayjs()
-    .subtract(dayjs().get('day') - 1 + 7, 'day')
+    .subtract(dayjs().get('day') || 7 + 6, 'day')
     .set('hour', 0)
     .set('minute', 0)
     .set('second', 0)
   const end = dayjs()
-    .subtract(dayjs().get('day'), 'day')
+    .subtract(dayjs().get('day') + 7, 'day')
     .set('hour', 23)
     .set('minute', 59)
     .set('second', 59)
