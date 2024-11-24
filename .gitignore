@@ -33,5 +33,7 @@ package-lock.json
 # vscode
 .vscode/c_cpp_properties.json
 
-release/*
-build/*
+release/
+native/clipboard-files/build/
+native/extract-file-icon/build/
+native/native-clipboard/build/

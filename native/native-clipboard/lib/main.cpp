@@ -477,6 +477,35 @@ Napi::Value getCurrentWindowHandle(const Napi::CallbackInfo& info) {
     return Napi::String::New(env, oss.str());
 }
 
+// 触发粘贴
+Napi::Value triggerPaste(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+
+    // Simulate CTRL+V key press
+    INPUT inputs[4] = {};
+
+    // Press CTRL
+    inputs[0].type = INPUT_KEYBOARD;
+    inputs[0].ki.wVk = VK_CONTROL;
+
+    // Press V
+    inputs[1].type = INPUT_KEYBOARD;
+    inputs[1].ki.wVk = 'V';
+
+    // Release V
+    inputs[2].type = INPUT_KEYBOARD;
+    inputs[2].ki.wVk = 'V';
+    inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+
+    // Release CTRL
+    inputs[3].type = INPUT_KEYBOARD;
+    inputs[3].ki.wVk = VK_CONTROL;
+    inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+
+    SendInput(4, inputs, sizeof(INPUT));
+    return env.Undefined();
+}
+
 // 初始化模块
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
     exports.Set(Napi::String::New(env, "watch"), Napi::Function::New(env, watch));
@@ -484,6 +513,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports) {
     exports.Set(Napi::String::New(env, "getCurrentWindowHandle"), Napi::Function::New(env, getCurrentWindowHandle));
     exports.Set(Napi::String::New(env, "activateWindowByHandle"), Napi::Function::New(env, activateWindowByHandle));
     exports.Set(Napi::String::New(env, "getAppNameByHandle"), Napi::Function::New(env, getAppNameByHandle));
+    exports.Set(Napi::String::New(env, "triggerPaste"), Napi::Function::New(env, triggerPaste));
     return exports;
 }
 

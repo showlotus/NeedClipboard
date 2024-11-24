@@ -48,6 +48,12 @@ const nc = {
    */
   getAppNameByHandle(hwnd: string): string {
     return NativeClipboard.getAppNameByHandle(hwnd)
+  },
+  /**
+   * 触发粘贴
+   */
+  triggerPaste(): void {
+    return NativeClipboard.triggerPaste()
   }
 }
 
