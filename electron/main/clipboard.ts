@@ -7,6 +7,7 @@ import { getWinWebContents, toggleWindowVisible } from '.'
 
 let shouldUpdateHistory = true
 let currActiveWindowHandle = ''
+let shouldPaste = false
 
 export function updateShouldUpdateHistory(val: boolean) {
   shouldUpdateHistory = val
@@ -20,6 +21,15 @@ export function updateCurrActiveWindowHandle(handle: string) {
   currActiveWindowHandle = handle
 }
 
+export function getShouldPaste() {
+  return shouldPaste
+}
+
+export function setShouldPaste(val: boolean) {
+  shouldPaste = val
+}
+
+// 写入剪贴板
 export function writeClipboard(data: any) {
   updateShouldUpdateHistory(false)
   if (['Text', 'Link', 'Color'].includes(data.type)) {
@@ -34,14 +44,10 @@ export function writeClipboard(data: any) {
   getWinWebContents().send('update-clipboard')
 }
 
-// TODO
+// 粘贴到活动应用
 export function pastActiveApp(data: any) {
-  const handle = getCurrActiveWindowHandle()
-  if (handle) {
-    console.log('pastActiveApp', NativeClipboard.getAppNameByHandle(handle))
-  }
-  toggleWindowVisible()
-  getWinWebContents().send('update-clipboard')
+  shouldPaste = true
+  writeClipboard(data)
 }
 
 function getFileName(filePath: string) {

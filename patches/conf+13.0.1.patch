@@ -1,7 +1,7 @@
-diff --git a/package.json b/package.json
-index 2153c3c93e9a48c36c043bdb51b9e6f5cbb91b2d..6dfdde4773b24a833dec5bacc3fd80cb068c866f 100644
---- a/package.json
-+++ b/package.json
+diff --git a/node_modules/conf/package.json b/node_modules/conf/package.json
+index c684520..7cbc221 100644
+--- a/node_modules/conf/package.json
++++ b/node_modules/conf/package.json
 @@ -11,6 +11,7 @@
  		"url": "https://sindresorhus.com"
  	},

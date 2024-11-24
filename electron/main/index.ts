@@ -13,6 +13,8 @@ import { fileURLToPath } from 'node:url'
 
 import {
   getCurrActiveWindowHandle,
+  getShouldPaste,
+  setShouldPaste,
   updateCurrActiveWindowHandle
 } from './clipboard'
 import './clipboard'
@@ -100,6 +102,13 @@ function activateSourceWindow() {
     console.log('Activate window')
     NativeClipboard.activateWindowByHandle(handle)
   }
+
+  if (getShouldPaste()) {
+    setTimeout(() => {
+      NativeClipboard.triggerPaste()
+      setShouldPaste(false)
+    })
+  }
 }
 
 export function toggleWindowVisible() {
@@ -171,7 +180,7 @@ async function createWindow() {
 
   // 窗口失焦时，隐藏窗口
   win.on('blur', () => {
-    // win.hide()
+    win.hide()
   })
 
   if (VITE_DEV_SERVER_URL) {

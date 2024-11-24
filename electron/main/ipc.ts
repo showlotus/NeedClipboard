@@ -1,5 +1,4 @@
 import { globalShortcut, ipcMain, nativeTheme } from 'electron'
-import { createRequire } from 'node:module'
 
 import { getWinWebContents, toggleWindowVisible } from '.'
 import { pastActiveApp, writeClipboard } from './clipboard'

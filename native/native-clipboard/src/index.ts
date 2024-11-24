@@ -57,4 +57,4 @@ const nc = {
   }
 }
 
-module.exports = exports = nc
+export = nc

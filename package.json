@@ -1,8 +1,8 @@
 {
-  "name": "NeedClipboard",
-  "version": "0.1.0-beta.2",
+  "name": "need-clipboard",
+  "version": "0.1.0-beta.3",
   "main": "dist-electron/main/index.js",
-  "description": "Really simple Electron + Vue + Vite boilerplate.",
+  "description": "A clipboard widget for windows.",
   "author": "showlotus <showlotus2000@gmail.com>",
   "license": "MIT",
   "private": true,
@@ -27,7 +27,11 @@
     "lint": "eslint \"src/**/*.{js,ts,vue}\" \"electron/**/*.ts\"",
     "prettier": "prettier --write \"src/**/*.{js,ts,vue}\" \"electron/**/*.ts\"",
     "refresh": "npx rifraf ./node_modules && pnpm i --offline",
-    "postinstall": "electron-builder install-app-deps"
+    "install:clipboard-files": "cd .\\native\\clipboard-files && yarn",
+    "install:extract-file-icon": "cd .\\native\\extract-file-icon && yarn",
+    "install:native-clipboard": "cd .\\native\\native-clipboard && yarn",
+    "install:native": "npm-run-all --serial install:clipboard-files install:extract-file-icon install:native-clipboard",
+    "postinstall": "patch-package && electron-builder install-app-deps"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
@@ -46,6 +50,7 @@
     "fake-indexeddb": "^6.0.0",
     "hotkeys-js": "^3.13.7",
     "jsdom": "^24.1.1",
+    "patch-package": "^8.0.0",
     "pinia": "^2.2.0",
     "postcss": "^8.4.39",
     "prettier": "^3.3.3",
