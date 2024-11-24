@@ -19,7 +19,6 @@ jobs:
           # 根据需要设置 Node.js 版本
           # node-version: lts/*
           node-version: '18.x'
-          cache: npm
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
