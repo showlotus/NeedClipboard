@@ -97,6 +97,7 @@
     "HDROP",
     "hwnd",
     "HWND",
+    "indexeddb",
     "LPARAM",
     "lpfn",
     "lpsz",

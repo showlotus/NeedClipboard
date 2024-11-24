@@ -48,9 +48,9 @@ export async function fetchSearch(params: SearchParams) {
   return { result: data, totals }
 }
 
-export async function fetchInsert(data: InsertDataType) {
+export async function fetchInsert(...data: Array<InsertDataType>) {
   const db = createDatabase()
-  return db.ClipboardTable.add(data)
+  return db.ClipboardTable.bulkAdd(data)
 }
 
 export async function fetchDelete(id: number) {
@@ -106,6 +106,16 @@ export async function fetchIsExistInDB(
     }).first()
   }
   return target?.id
+}
+
+export async function fetchDeleteExpired(day: number) {
+  const db = createDatabase()
+  const data = await db.ClipboardTable.toArray()
+  const now = dayjs()
+  const expiredData = data.filter((v) => {
+    return now.diff(v.createTime, 'day') > day
+  })
+  await db.ClipboardTable.bulkDelete(expiredData.map((v) => v.id))
 }
 
 ;(window as any).__NeedClipboard__TEST__API = {
