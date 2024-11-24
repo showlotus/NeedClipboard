@@ -10,7 +10,7 @@ export let tray: Tray | null
 
 export function initTray() {
   // TODO 托盘图标替换
-  tray = new Tray(path.join(process.env.VITE_PUBLIC, 'tray-light.png'))
+  tray = new Tray(path.join(process.env.VITE_PUBLIC, 'tray-dark@256x256.png'))
   tray.setToolTip(pkg.name + ' ' + pkg.version)
 
   const updateMenu = () => {
