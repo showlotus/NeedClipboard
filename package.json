@@ -31,7 +31,6 @@
     "install:extract-file-icon": "cd .\\native\\extract-file-icon && yarn",
     "install:native-clipboard": "cd .\\native\\native-clipboard && yarn",
     "install:native": "npm-run-all --serial install:clipboard-files install:extract-file-icon install:native-clipboard",
-    "preinstall": "yarn install:native",
     "postinstall": "patch-package && electron-builder install-app-deps"
   },
   "devDependencies": {
