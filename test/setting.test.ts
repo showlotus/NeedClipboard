@@ -31,10 +31,52 @@ describe('test keep days is 7', () => {
     expect(totals).toBe(2)
   })
 
-  // test('equal 7', async () => {
-  //   const db = createDatabase()
-  //   await db.ClipboardTable.clear()
-  // })
+  test('equal 7', async () => {
+    const db = createDatabase()
+    await db.ClipboardTable.clear()
+    await fetchInsert({
+      type: 'Text',
+      content: '',
+      characters: 0,
+      createTime: dayjs().subtract(7, 'day').format(DATE_TEMPLATE)
+    })
+    await fetchDeleteExpired(7)
+    const { totals } = await fetchSearchAll()
+    expect(totals).toBe(1)
+  })
+
+  test('more than 7', async () => {
+    const db = createDatabase()
+    await db.ClipboardTable.clear()
+    await fetchInsert(
+      {
+        type: 'Text',
+        content: '',
+        characters: 0,
+        createTime: dayjs()
+          .subtract(8, 'day')
+          .set('hour', 0)
+          .set('minute', 0)
+          .set('second', 0)
+          .format(DATE_TEMPLATE)
+      },
+      {
+        type: 'Text',
+        content: '',
+        characters: 0,
+        createTime: dayjs()
+          .subtract(9, 'day')
+          .set('hour', 23)
+          .set('minute', 59)
+          .set('second', 59)
+          .format(DATE_TEMPLATE)
+      }
+    )
+    await fetchDeleteExpired(7)
+    const { totals, result } = await fetchSearchAll()
+    console.log(result)
+    expect(totals).toBe(0)
+  })
 })
 
 // describe('test keep days is 30', () => {})
