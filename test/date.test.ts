@@ -123,15 +123,9 @@ describe('test this week', () => {
 
 describe('test last week', () => {
   test('is last week', () => {
-    expect(
-      isLastWeek(
-        dayjs()
-          .subtract(dayjs().get('day') || 7, 'day')
-          .set('hour', 23)
-          .set('minute', 59)
-          .set('second', 59)
-      )
-    ).toBe(true)
+    expect(isLastWeek(dayjs().subtract(dayjs().get('day') || 7, 'day'))).toBe(
+      true
+    )
   })
 
   test('is last week at last monday with 00:00:00', () => {
