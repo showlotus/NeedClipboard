@@ -118,6 +118,15 @@ export async function fetchDeleteExpired(day: number) {
   await db.ClipboardTable.bulkDelete(expiredData.map((v) => v.id))
 }
 
+export function fetchSearchAll() {
+  return fetchSearch({
+    keyword: '',
+    type: 'All',
+    currPage: 1,
+    pageSize: 1
+  })
+}
+
 ;(window as any).__NeedClipboard__TEST__API = {
   fetchInsert,
   fetchDelete,

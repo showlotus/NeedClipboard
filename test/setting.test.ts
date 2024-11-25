@@ -6,16 +6,7 @@ import { describe, expect, test } from 'vitest'
 
 import { DATE_TEMPLATE } from '@/constants/date'
 import { createDatabase } from '@/database'
-import { fetchDeleteExpired, fetchInsert, fetchSearch } from '@/database/api'
-
-const searchAll = () => {
-  return fetchSearch({
-    keyword: '',
-    type: 'All',
-    currPage: 1,
-    pageSize: 1
-  })
-}
+import { fetchDeleteExpired, fetchInsert, fetchSearchAll } from '@/database/api'
 
 describe('test keep days is 7', () => {
   test('less than 7', async () => {
@@ -36,7 +27,7 @@ describe('test keep days is 7', () => {
       }
     )
     await fetchDeleteExpired(7)
-    const { totals } = await searchAll()
+    const { totals } = await fetchSearchAll()
     expect(totals).toBe(2)
   })
 

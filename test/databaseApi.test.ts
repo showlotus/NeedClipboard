@@ -14,9 +14,11 @@ import {
 import {
   InsertDataType,
   fetchDelete,
+  fetchDeleteExpired,
   fetchInsert,
   fetchIsExistInDB,
   fetchSearch,
+  fetchSearchAll,
   fetchUpdate
 } from '@/database/api'
 
@@ -501,5 +503,95 @@ describe('test fetchUpdate', () => {
     const createTime = dayjs().add(1, 'h').format(DATE_TEMPLATE)
     await fetchUpdate(id, createTime)
     expect((await db.ClipboardTable.get(id))?.createTime).toBe(createTime)
+  })
+})
+
+describe('test fetchDeleteExpired', () => {
+  test('delete all expired', async () => {
+    const db = createDatabase()
+    await db.ClipboardTable.clear()
+    await fetchInsert(
+      {
+        type: 'Text',
+        content: '',
+        characters: 0,
+        createTime: dayjs().format(DATE_TEMPLATE)
+      },
+      {
+        type: 'Text',
+        content: '',
+        characters: 0,
+        createTime: dayjs().subtract(6, 'day').format(DATE_TEMPLATE)
+      }
+    )
+    await fetchDeleteExpired(-1)
+    const { totals } = await fetchSearchAll()
+    expect(totals).toBe(0)
+  })
+
+  test('delete none expired', async () => {
+    const db = createDatabase()
+    await db.ClipboardTable.clear()
+    await fetchInsert(
+      {
+        type: 'Text',
+        content: '',
+        characters: 0,
+        createTime: dayjs().add(2, 'day').format(DATE_TEMPLATE)
+      },
+      {
+        type: 'Text',
+        content: '',
+        characters: 0,
+        createTime: dayjs().add(6, 'day').format(DATE_TEMPLATE)
+      }
+    )
+    await fetchDeleteExpired(-1)
+    const { totals } = await fetchSearchAll()
+    expect(totals).toBe(2)
+  })
+
+  test('delete none expired', async () => {
+    const db = createDatabase()
+    await db.ClipboardTable.clear()
+    await fetchInsert(
+      {
+        type: 'Text',
+        content: '',
+        characters: 0,
+        createTime: dayjs().add(2, 'day').format(DATE_TEMPLATE)
+      },
+      {
+        type: 'Text',
+        content: '',
+        characters: 0,
+        createTime: dayjs().add(6, 'day').format(DATE_TEMPLATE)
+      }
+    )
+    await fetchDeleteExpired(-1)
+    const { totals } = await fetchSearchAll()
+    expect(totals).toBe(2)
+  })
+
+  test('delete one expired and remain one', async () => {
+    const db = createDatabase()
+    await db.ClipboardTable.clear()
+    await fetchInsert(
+      {
+        type: 'Text',
+        content: '',
+        characters: 0,
+        createTime: dayjs().add(2, 'day').format(DATE_TEMPLATE)
+      },
+      {
+        type: 'Text',
+        content: '',
+        characters: 0,
+        createTime: dayjs().format(DATE_TEMPLATE)
+      }
+    )
+    await fetchDeleteExpired(-1)
+    const { totals } = await fetchSearchAll()
+    expect(totals).toBe(1)
   })
 })
