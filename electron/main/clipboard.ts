@@ -5,24 +5,16 @@ import fs from 'node:fs'
 
 import { getWinWebContents, toggleWindowVisible } from '.'
 
-let shouldUpdateHistory = true
-let currActiveWindowHandle = ''
-let shouldPaste = false
+export let shouldUpdateHistory = true
+export let currActiveWindowHandle = ''
+export let shouldPaste = false
 
 export function updateShouldUpdateHistory(val: boolean) {
   shouldUpdateHistory = val
 }
 
-export function getCurrActiveWindowHandle() {
-  return currActiveWindowHandle
-}
-
 export function updateCurrActiveWindowHandle(handle: string) {
   currActiveWindowHandle = handle
-}
-
-export function getShouldPaste() {
-  return shouldPaste
 }
 
 export function setShouldPaste(val: boolean) {
