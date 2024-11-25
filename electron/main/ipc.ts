@@ -1,11 +1,9 @@
 import { globalShortcut, ipcMain, nativeTheme } from 'electron'
+import getFileIcon from 'extract-file-icon'
 
 import { getWinWebContents, toggleWindowVisible } from '.'
 import { pastActiveApp, writeClipboard } from './clipboard'
 import { SettingsStore, store } from './store'
-import getFileIcon from 'extract-file-icon'
-
-// const getFileIcon = createRequire(import.meta.url)('extract-file-icon')
 
 ipcMain.handle('toggle-visible', () => {
   toggleWindowVisible()

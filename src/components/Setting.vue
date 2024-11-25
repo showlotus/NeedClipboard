@@ -7,7 +7,10 @@
         class="py-1 px-1 flex items-center rounded hover:bg-[--nc-item-color-hover]"
         @click="handleToggleSettingPanel"
       >
-        <LogoFilledSvg v-if="isDark" class="w-5 h-5 text-[--el-text-color-regular]" />
+        <LogoFilledSvg
+          v-if="isDark"
+          class="w-5 h-5 text-[--el-text-color-regular]"
+        />
         <LogoRegularSvg v-else class="w-5 h-5 text-[--el-text-color-regular]" />
         <div class="ml-2 pr-1 text-sm mt-0.5 font-mono">
           {{ appName }}
@@ -49,8 +52,8 @@ import hotkeys from 'hotkeys-js'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import LogoRegularSvg from '@/assets/1/logo-regular.svg'
 import LogoFilledSvg from '@/assets/1/logo-filled.svg'
+import LogoRegularSvg from '@/assets/1/logo-regular.svg'
 import { HOTKEY } from '@/constants/hotkey'
 import { fetchUpdate } from '@/database/api'
 import { useMainStore } from '@/stores/main'

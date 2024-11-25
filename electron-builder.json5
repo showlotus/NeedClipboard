@@ -27,7 +27,13 @@
         ]
       }
     ],
-    "artifactName": "${productName}-Windows-${version}-${arch}-Setup.${ext}"
+    "artifactName": "${productName}-Windows-${version}-${arch}-Setup.${ext}",
+    "publish": {
+      "provider": "github",
+      "releaseType": "release",
+      "owner": "showlotus",
+      "repo": "NeedClipboard"
+    }
   },
   "nsis": {
     "oneClick": false,

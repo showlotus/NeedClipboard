@@ -12,9 +12,9 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import {
-  getCurrActiveWindowHandle,
-  getShouldPaste,
+  currActiveWindowHandle,
   setShouldPaste,
+  shouldPaste,
   updateCurrActiveWindowHandle
 } from './clipboard'
 import './clipboard'
@@ -97,13 +97,12 @@ function updateActiveApp() {
 
 // 激活来源窗口
 function activateSourceWindow() {
-  const handle = getCurrActiveWindowHandle()
-  if (handle) {
+  if (currActiveWindowHandle) {
     console.log('Activate window')
-    NativeClipboard.activateWindowByHandle(handle)
+    NativeClipboard.activateWindowByHandle(currActiveWindowHandle)
   }
 
-  if (getShouldPaste()) {
+  if (shouldPaste) {
     setTimeout(() => {
       NativeClipboard.triggerPaste()
       setShouldPaste(false)

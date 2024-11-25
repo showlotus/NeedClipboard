@@ -1,6 +1,6 @@
 {
   "name": "NeedClipboard",
-  "version": "0.1.0-beta.4",
+  "version": "0.1.0-beta.5",
   "main": "dist-electron/main/index.js",
   "description": "A clipboard widget for windows.",
   "author": "showlotus <showlotus2000@gmail.com>",
@@ -74,10 +74,5 @@
     "clipboard-files": "file:native\\clipboard-files",
     "extract-file-icon": "file:native\\extract-file-icon",
     "native-clipboard": "file:native\\native-clipboard"
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "conf@13.0.1": "patches/conf@13.0.1.patch"
-    }
   }
 }
