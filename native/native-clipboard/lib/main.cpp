@@ -117,7 +117,7 @@ std::string removeExeSuffix(const std::string& str) {
 
 // 获取进程名称
 std::string GetProcessNameByPID(DWORD processID) {
-    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
+    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ | PROCESS_QUERY_LIMITED_INFORMATION, FALSE, processID);
     if (NULL == hProcess) {
         return "";
     }
@@ -135,7 +135,7 @@ std::string GetProcessNameByPID(DWORD processID) {
 // 获取进程可执行文件的路径
 std::string GetProcessPath(DWORD processID) {
     char processPath[MAX_PATH] = {0};
-    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
+    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ | PROCESS_QUERY_LIMITED_INFORMATION, FALSE, processID);
     if (hProcess) {
         if (GetModuleFileNameExA(hProcess, NULL, processPath, MAX_PATH)) {
             CloseHandle(hProcess);
@@ -148,7 +148,7 @@ std::string GetProcessPath(DWORD processID) {
 
 // 获取进程可执行文件的绝对路径
 std::string GetProcessAbsolutePathByPID(DWORD processID) {
-    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
+    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ | PROCESS_QUERY_LIMITED_INFORMATION, FALSE, processID);
     if (NULL == hProcess) {
         return "";
     }

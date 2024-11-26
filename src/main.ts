@@ -14,19 +14,7 @@ import './style/theme.css'
 // If you want use Node.js, the`nodeIntegration` needs to be enabled in the Main process.
 // import './demos/node'
 
-// hotkeys.unbind()
 createDatabase()
-// db.ClipboardTable.clear()
-// TEST local dev
-// Promise.all(genMockData(20)).then((res) => {
-//   console.log(res)
-//   res.forEach((v) => {
-//     delete v.id
-//     fetchInsert(v)
-//   })
-//   console.log('database init...')
-// })
-
 const pinia = createPinia()
 const i18n = createI18n({
   legacy: false,

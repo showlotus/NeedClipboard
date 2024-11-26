@@ -57,5 +57,12 @@ body {
   -webkit-app-region: no-drag;
 }
 
+.preload-loading {
+  background-color: #121212;
+}
+
 @media (prefers-color-scheme: light) {
+  .preload-loading {
+    background-color: #ffffff;
+  }
 }

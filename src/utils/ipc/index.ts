@@ -1,9 +1,5 @@
 import { Setting } from '@/stores/main'
 
-export function ipcGetActiveApp() {
-  return window.ipcRenderer.invoke('get-active-app')
-}
-
 export function ipcOnUpdateActiveApp(callback: (...args: any[]) => void) {
   window.ipcRenderer.on('update-active-app', callback)
 }

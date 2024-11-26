@@ -1,4 +1,4 @@
-import { globalShortcut } from 'electron'
+import { app, globalShortcut } from 'electron'
 import ElectronStore from 'electron-store'
 
 import { toggleWindowVisible } from '.'
@@ -29,4 +29,10 @@ export function registerShortcut(key: string) {
 SettingsStore.onDidChange('shortcutKey', (val) => {
   globalShortcut.unregisterAll()
   registerShortcut(val)
+})
+
+SettingsStore.onDidChange('startup', (val) => {
+  app.setLoginItemSettings({
+    openAtLogin: val
+  })
 })

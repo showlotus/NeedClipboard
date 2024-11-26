@@ -24,8 +24,6 @@ import { initTray } from './tray'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-console.log('process.versions.node', process.versions.node)
-
 // The built directory structure
 //
 // ├─┬ dist-electron
@@ -46,8 +44,6 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   ? path.join(process.env.APP_ROOT, 'public')
   : RENDERER_DIST
 
-process.argv.push('--openAsHidden')
-
 // Disable GPU Acceleration for Windows 7
 if (os.release().startsWith('6.1')) app.disableHardwareAcceleration()
 
@@ -63,25 +59,12 @@ let win: BrowserWindow | null = null
 const preload = path.join(__dirname, '../preload/index.mjs')
 const indexHtml = path.join(RENDERER_DIST, 'index.html')
 
-// TODO 设置开机自启
+// 设置开机自启
 if (app.isPackaged) {
   app.setLoginItemSettings({
-    openAtLogin: true,
-    args: ['--openAsHidden']
+    openAtLogin: true
   })
 }
-
-if (app.isPackaged) {
-  const { openAtLogin } = app.getLoginItemSettings({
-    args: ['--openAsHidden']
-  })
-  console.log('openAtLogin', openAtLogin, process.argv)
-}
-
-// TODO 获取当前活动应用，监听当前活动应用是否更新，通知视图层更新
-ipcMain.handle('get-active-app', (_event) => {
-  return Promise.resolve('Google Chrome')
-})
 
 export function getWinWebContents() {
   return win?.webContents
@@ -126,18 +109,10 @@ export function toggleWindowVisible() {
 
 async function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
-  console.log(width, height)
-  const winWidth = width * 0.4
-  const winHeight = height * 1
-  const IS_DEV = !false
-  const wh =
-    VITE_DEV_SERVER_URL && IS_DEV
-      ? { width: winWidth, height: winHeight }
-      : { width: width * 0.4, height: height * 0.5 }
   win = new BrowserWindow({
     title: 'Main window',
-    ...wh,
-    // icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'),
+    width: width * 0.4,
+    height: height * 0.5,
     webPreferences: {
       preload,
       // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
@@ -152,8 +127,6 @@ async function createWindow() {
       backgroundThrottling: false
     },
     // transparent: true,
-    // TODO publish 时需要隐藏标题栏
-    // titleBarStyle: 'hidden',
     // 无边框窗口，隐藏标题和菜单栏
     frame: false
     // 设置高斯模糊
@@ -161,18 +134,9 @@ async function createWindow() {
     // backgroundMaterial: 'mica' // mica acrylic
   })
 
-  // TEST 靠右显示
-  // win.setPosition(width - winWidth, 0)
-
-  // 隐藏菜单栏
-  // Menu.setApplicationMenu(null)
-  // for mac
-  // Menu.setApplicationMenu(Menu.buildFromTemplate([]))
-
   // 禁用手动最大化
   win.setMaximizable(false)
   win.setMinimizable(false)
-  // win.setMovable(false)
   // 禁用手动调整窗口大小
   win.setResizable(false)
   win.setSkipTaskbar(true)
@@ -187,6 +151,8 @@ async function createWindow() {
     win.loadURL(VITE_DEV_SERVER_URL)
     // Open devTool if the app is not packaged
     win.webContents.openDevTools()
+    win.setSize(width * 0.4, height)
+    win.setResizable(true)
   } else {
     win.loadFile(indexHtml)
   }
@@ -217,18 +183,10 @@ async function createWindow() {
     win.webContents.send('hide-win')
   })
 
-  // TODO 开机启动时隐藏窗口
-  // TODO 打包时，改为 once
-  const eventType = VITE_DEV_SERVER_URL ? 'on' : 'once'
-  win[eventType]('ready-to-show', () => {
-    console.log(process.argv.includes('--openAsHidden'))
-    if (!process.argv.includes('--openAsHidden')) {
-      updateActiveApp()
-      win.show()
-    }
+  win.once('ready-to-show', () => {
+    updateActiveApp()
+    win.show()
   })
-
-  console.log(app.getPath('userData'))
 
   return win
 }
