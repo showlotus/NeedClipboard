@@ -113,7 +113,7 @@ export async function fetchDeleteExpired(day: number) {
   const data = await db.ClipboardTable.toArray()
   const now = dayjs()
   const expiredData = data.filter((v) => {
-    return now.diff(v.createTime, 'day') > day
+    return now.diff(v.createTime, 'seconds') > day * 24 * 60 * 60
   })
   await db.ClipboardTable.bulkDelete(expiredData.map((v) => v.id))
 }

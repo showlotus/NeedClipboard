@@ -63,6 +63,7 @@ import { DATE_TEMPLATE } from '@/constants/date'
 import { HOTKEY } from '@/constants/hotkey'
 import {
   fetchDelete,
+  fetchDeleteExpired,
   fetchInsert,
   fetchIsExistInDB,
   fetchUpdate
@@ -259,6 +260,7 @@ ipcOnUpdateClipboard(async (_, clipboardData) => {
       await fetchUpdate(id)
     } else {
       await fetchInsert(res)
+      await fetchDeleteExpired(mainStore.setting.keepDays)
     }
   }
 
