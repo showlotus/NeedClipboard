@@ -14,7 +14,7 @@ boolean isFirst = true;
 // 获取进程可执行文件的路径
 std::string GetProcessPath(DWORD processID) {
     char processPath[MAX_PATH] = {0};
-    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
+    HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, processID);
     if (hProcess) {
         if (GetModuleFileNameExA(hProcess, NULL, processPath, MAX_PATH)) {
             CloseHandle(hProcess);
@@ -30,11 +30,12 @@ std::string getAppInfo(LPCVOID info, WORD language, WORD codePage, std::string f
     char* str = nullptr;
     UINT strLen = 0;
     sprintf(query, "\\StringFileInfo\\%04x%04x\\%s", language, codePage, field.c_str());
-    std::cout << query << std::endl;
+    std::cout << "getAppInfo-query: " << query << std::endl;
     char* res = nullptr;
     UINT resLen = 0;
     if (VerQueryValueA(info, query, (LPVOID*)&res, &resLen)) {
-        return std::string(res, resLen);
+        std::cout << "getAppInfo: " << std::string(res, resLen + 1) << std::endl;
+        return std::string(res, resLen + 1);
     }
     return "";
 }
@@ -88,12 +89,14 @@ std::string GetAppNameFromFile(const std::string& filePath) {
                     // 1. 获取应用程序的产品名称
                     std::string productName = getAppInfo(verData.data(), lpTranslate->wLanguage, lpTranslate->wCodePage, "ProductName");
                     if (!productName.empty()) {
+                        std::cout << "productName: " << productName << std::endl;
                         return productName;
                     }
 
                     // 2. 获取应用程序的描述
                     std::string fileDescription = getAppInfo(verData.data(), lpTranslate->wLanguage, lpTranslate->wCodePage, "FileDescription");
                     if (!fileDescription.empty()) {
+                        std::cout << "fileDescription: " << fileDescription << std::endl;
                         return fileDescription;
                     }
                 }
@@ -122,7 +125,7 @@ std::string removeExeSuffix(const std::string& str) {
 
 // 获取进程名称
 std::string GetProcessNameByPID(DWORD processID) {
-    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
+    HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, processID);
     if (NULL == hProcess) {
         return "";
     }
@@ -139,7 +142,7 @@ std::string GetProcessNameByPID(DWORD processID) {
 
 // 获取进程可执行文件的绝对路径
 std::string GetProcessAbsolutePathByPID(DWORD processID) {
-    HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
+    HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, processID);
     if (NULL == hProcess) {
         return "";
     }
@@ -256,13 +259,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     }
                     // HWND hwndParent = GetParent(clipboardOwner);
                     // DWORD parentProcessId;
+                    std::cout << "Process ID: " << processId << std::endl;
+
                     std::string processPath = GetProcessAbsolutePathByPID(processId);
+                    std::cout << "Process Path: " << processPath << std::endl;
+
                     std::string processName = GetProcessNameByPID(processId);
                     std::string appName = GetAppNameFromFile(processPath);
                     std::string applicationName = !appName.empty() ? appName : processName;
-                    std::cout << "Process ID: " << processId << std::endl;
-                    std::cout << "Process Path: " << processPath << std::endl;
                     // std::cout << "Process Name: " << processName << std::endl;
+                    std::cout << "appName: " << appName << std::endl;
                     std::cout << "Application Name: " << applicationName << std::endl;
                     std::cout << "-------------------" << std::endl;
                 }

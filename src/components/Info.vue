@@ -48,6 +48,8 @@ const mainStore = useMainStore()
 const activeRecord = computed(() => mainStore.activeRecord)
 const isFile = computed(() => activeRecord.value.type === TYPE_VALUE.file)
 const genSource = (data: ClipboardTableType) => {
+  // when the source app is empty, hide the source info
+  if (!data.application?.name) return ''
   return /* html */ `
     <img src="${data.application!.icon}" />
     ${data.application!.name}

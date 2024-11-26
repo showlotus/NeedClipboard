@@ -75,7 +75,12 @@
     "xloctime": "cpp",
     "chrono": "cpp",
     "forward_list": "cpp",
-    "iomanip": "cpp"
+    "iomanip": "cpp",
+    "deque": "cpp",
+    "map": "cpp",
+    "queue": "cpp",
+    "set": "cpp",
+    "xtree": "cpp"
   },
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
