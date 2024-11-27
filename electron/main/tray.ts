@@ -29,14 +29,14 @@ export function initTray() {
 }
 
 function getTrayIcon() {
-  const size = 256
+  const size = 48
   const darkIcon = path.join(
     process.env.VITE_PUBLIC,
-    `tray-dark@${size}x${size}.png`
+    `icon/tray/dark/icon@${size}x${size}.png`
   )
   const lightIcon = path.join(
     process.env.VITE_PUBLIC,
-    `tray-light@${size}x${size}.png`
+    `icon/tray/light/icon@${size}x${size}.png`
   )
   return nativeTheme.shouldUseDarkColors ? lightIcon : darkIcon
 }

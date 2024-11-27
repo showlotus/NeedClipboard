@@ -1,6 +1,6 @@
 {
   "name": "NeedClipboard",
-  "version": "0.1.0-beta.6",
+  "version": "0.1.0-beta.7",
   "main": "dist-electron/main/index.js",
   "description": "A clipboard widget for windows.",
   "author": "showlotus <showlotus2000@gmail.com>",
@@ -22,6 +22,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build && electron-builder",
+    "build:light-icon": "vue-tsc --noEmit && vite build && electron-builder --config light-electron-builder.json5",
+    "build:dark-icon": "vue-tsc --noEmit && vite build && electron-builder --config dark-electron-builder.json5",
     "preview": "vite preview",
     "test": "vitest",
     "lint": "eslint \"src/**/*.{js,ts,vue}\" \"electron/**/*.ts\"",
