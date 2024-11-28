@@ -2,6 +2,10 @@
 
 A clipboard app for windows.
 
+![](./res/demo-light.png)
+
+![](./res/demo-dark.png)
+
 ## Shortcut Keys
 
 | Keys                        | Usage                             |
