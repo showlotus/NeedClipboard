@@ -1,0 +1,12 @@
+diff --git a/node_modules/conf/package.json b/node_modules/conf/package.json
+index c684520..7cbc221 100644
+--- a/node_modules/conf/package.json
++++ b/node_modules/conf/package.json
+@@ -11,6 +11,7 @@
+ 		"url": "https://sindresorhus.com"
+ 	},
+ 	"type": "module",
++	"types": "./dist/source/index.d.ts",
+ 	"exports": {
+ 		"types": "./dist/source/index.d.ts",
+ 		"default": "./dist/source/index.js"

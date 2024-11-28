@@ -1,0 +1,230 @@
+{
+  "NC.today": {
+    "zh_CN": "今天",
+    "en_US": "Today"
+  },
+  "NC.yesterday": {
+    "zh_CN": "昨天",
+    "en_US": "Yesterday"
+  },
+  "NC.thisWeek": {
+    "zh_CN": "这周",
+    "en_US": "This Week"
+  },
+  "NC.lastWeek": {
+    "zh_CN": "上周",
+    "en_US": "Last Week"
+  },
+  "NC.thisMonth": {
+    "zh_CN": "本月",
+    "en_US": "This Month"
+  },
+  "NC.lastMonth": {
+    "zh_CN": "上个月",
+    "en_US": "Last Month"
+  },
+  "NC.thisYear": {
+    "zh_CN": "今年",
+    "en_US": "This Year"
+  },
+  "NC.lastYear": {
+    "zh_CN": "去年",
+    "en_US": "Last Year"
+  },
+  "NC.longAgo": {
+    "zh_CN": "很久以前",
+    "en_US": "Long Ago"
+  },
+  "NC.setting": {
+    "zh_CN": "设置",
+    "en_US": "Setting"
+  },
+  "NC.primaryAction": {
+    "zh_CN": "首选行为",
+    "en_US": "Primary Action"
+  },
+  "NC.startup": {
+    "zh_CN": "开机启动",
+    "en_US": "Start on boot"
+  },
+  "NC.themeMode": {
+    "zh_CN": "主题模式",
+    "en_US": "Theme Mode"
+  },
+  "NC.language": {
+    "zh_CN": "语言",
+    "en_US": "Language"
+  },
+  "NC.keepHistoryFor": {
+    "zh_CN": "保留历史记录",
+    "en_US": "Keep History For"
+  },
+  "NC.activateHotkey": {
+    "zh_CN": "激活快捷键",
+    "en_US": "Activate HotKey"
+  },
+  "NC.copyToClipboard": {
+    "zh_CN": "复制到剪贴板",
+    "en_US": "Copy to Clipboard"
+  },
+  "NC.pasteToActiveApp": {
+    "zh_CN": "粘贴到活动应用",
+    "en_US": "Paste to Active App"
+  },
+  "NC.pasteToSomeApp": {
+    "zh_CN": "粘贴到 {0}",
+    "en_US": "Paste to {0}"
+  },
+  "NC.english": {
+    "zh_CN": "英文",
+    "en_US": "English"
+  },
+  "NC.chinese": {
+    "zh_CN": "中文",
+    "en_US": "Chinese"
+  },
+  "NC.system": {
+    "zh_CN": "跟随系统",
+    "en_US": "System"
+  },
+  "NC.light": {
+    "zh_CN": "浅色",
+    "en_US": "Light"
+  },
+  "NC.dark": {
+    "zh_CN": "深色",
+    "en_US": "Dark"
+  },
+  "NC.sevenDays": {
+    "zh_CN": "7 天",
+    "en_US": "7 Days"
+  },
+  "NC.thirtyDays": {
+    "zh_CN": "30 天",
+    "en_US": "30 Days"
+  },
+  "NC.threeMonths": {
+    "zh_CN": "3 个月",
+    "en_US": "3 Months"
+  },
+  "NC.sixMonths": {
+    "zh_CN": "6 个月",
+    "en_US": "6 Months"
+  },
+  "NC.oneYear": {
+    "zh_CN": "1 年",
+    "en_US": "1 Year"
+  },
+  "NC.unlimited": {
+    "zh_CN": "无限制",
+    "en_US": "Unlimited"
+  },
+  "NC.typeAll": {
+    "zh_CN": "所有类型",
+    "en_US": "All Types"
+  },
+  "NC.typeText": {
+    "zh_CN": "仅文本",
+    "en_US": "Text Only"
+  },
+  "NC.typeImage": {
+    "zh_CN": "仅图片",
+    "en_US": "Images Only"
+  },
+  "NC.typeFile": {
+    "zh_CN": "仅文件",
+    "en_US": "Files Only"
+  },
+  "NC.typeLink": {
+    "zh_CN": "仅链接",
+    "en_US": "Links Only"
+  },
+  "NC.typeColor": {
+    "zh_CN": "仅颜色",
+    "en_US": "Colors Only"
+  },
+  "NC.inTheEnd": {
+    "zh_CN": "到底了",
+    "en_US": "In the end"
+  },
+  "NC.noResults": {
+    "zh_CN": "无结果",
+    "en_US": "No Results"
+  },
+  "NC.delete": {
+    "zh_CN": "删除",
+    "en_US": "Delete"
+  },
+  "NC.spin": {
+    "zh_CN": "收藏",
+    "en_US": "Spin"
+  },
+  "NC.information": {
+    "zh_CN": "信息",
+    "en_US": "Information"
+  },
+  "NC.source": {
+    "zh_CN": "来源",
+    "en_US": "Source"
+  },
+  "NC.type": {
+    "zh_CN": "类型",
+    "en_US": "Content Type"
+  },
+  "NC.path": {
+    "zh_CN": "路径",
+    "en_US": "Path"
+  },
+  "NC.characters": {
+    "zh_CN": "字符数",
+    "en_US": "Characters"
+  },
+  "NC.copied": {
+    "zh_CN": "复制于",
+    "en_US": "Copied"
+  },
+  "NC.dimensions": {
+    "zh_CN": "尺寸",
+    "en_US": "Dimensions"
+  },
+  "NC.imageSize": {
+    "zh_CN": "图片大小",
+    "en_US": "Image Size"
+  },
+  "NC.fileSize": {
+    "zh_CN": "文件大小",
+    "en_US": "File Size"
+  },
+  "NC.fileCount": {
+    "zh_CN": "文件数量",
+    "en_US": "File Count"
+  },
+  "NC.text": {
+    "zh_CN": "文本",
+    "en_US": "Text"
+  },
+  "NC.color": {
+    "zh_CN": "颜色",
+    "en_US": "Color"
+  },
+  "NC.link": {
+    "zh_CN": "链接",
+    "en_US": "Link"
+  },
+  "NC.image": {
+    "zh_CN": "图片",
+    "en_US": "Image"
+  },
+  "NC.file": {
+    "zh_CN": "文件",
+    "en_US": "File"
+  },
+  "NC.conflictShortcut": {
+    "zh_CN": "快捷键冲突",
+    "en_US": "The hotkey is conflicted."
+  },
+  "NC.inputPlaceholder": {
+    "zh_CN": "输入关键词来筛选记录...",
+    "en_US": "Enter keywords to filter entries..."
+  }
+}

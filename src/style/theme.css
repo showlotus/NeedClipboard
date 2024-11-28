@@ -1,0 +1,72 @@
+:root {
+  /* background-color: #f1f1f1; */
+  /* --nc-item-color-hover: #eee;
+  --nc-item-color-active: #e0e0e0; */
+  --nc-bg-color: #f1f1f1;
+  --nc-bg-color: #fff;
+  --nc-item-color-hover: #f3f3f3;
+  --nc-item-color-active: #e7e7e7;
+  --nc-group-label-color: #696969;
+  --nc-info-border-color: #ddd;
+  --nc-code-font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+  --nc-code-bg-color: var(--nc-item-color-active);
+  --nc-code-bg-active-color: #e1e1e1;
+  --nc-code-color: #656565;
+  --nc-color-block-border-color: #ddd;
+  --nc-color-block-border-active-color: #bcbcbc;
+
+  --el-color-primary: #333;
+  --el-border-color: #cbcbca;
+  --el-border-color-hover: var(--el-border-color);
+  --el-fill-color-light: var(--nc-item-color-active);
+  --el-text-color-regular: #212121;
+  --el-border-color-light: var(--el-border-color);
+  --el-input-bg-color: var(--nc-bg-color);
+  --el-fill-color-blank: var(--nc-bg-color);
+  --el-bg-color-overlay: var(--nc-bg-color);
+  /* --el-bg-color-overlay: #e8e8e8; */
+
+  color: var(--el-text-color-regular);
+  background-color: var(--nc-bg-color);
+
+  .el-popper {
+    color: var(--el-color-primary);
+    background: var(--nc-bg-color);
+    border: 1px solid var(--el-border-color);
+    box-shadow: var(--el-box-shadow-light);
+  }
+}
+
+html.dark {
+  /* color: #f2f2f2; */
+  --nc-bg-color: #121212;
+  --nc-item-color-hover: #222;
+  --nc-item-color-active: #333;
+  --nc-group-label-color: #9d9d9d;
+  --nc-info-border-color: #2a2a2a;
+  --nc-code-bg-active-color: #3f3f3f;
+  --nc-code-color: #a4a4a4;
+  --nc-color-block-border-color: #515151;
+  --nc-color-block-border-active-color: #555;
+
+  --el-color-primary: #f2f2f2;
+  --el-border-color-hover: #4c4d4f;
+  --el-bg-color-overlay: var(--nc-bg-color);
+  --el-fill-color-light: var(--nc-item-color-active);
+  --el-text-color-regular: #f2f2f2;
+
+  .el-switch__core .el-switch__action {
+    background-color: var(--nc-bg-color);
+  }
+
+  .el-popper.is-dark {
+    color: var(--el-color-primary);
+    background: var(--nc-bg-color);
+    border: 1px solid var(--el-border-color);
+    box-shadow: 0px 0px 12px #000;
+  }
+
+  .el-message.is-plain {
+    border-color: rgb(76, 77, 79, 0.5);
+  }
+}
