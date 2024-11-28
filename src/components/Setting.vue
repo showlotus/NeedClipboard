@@ -7,8 +7,8 @@
         class="py-1 px-1 flex items-center rounded hover:bg-[--nc-item-color-hover]"
         @click="handleToggleSettingPanel"
       >
-        <LogoDarkSvg v-if="isDark" class="w-5 h-5" />
-        <LogoLightSvg v-else class="w-5 h-5" />
+        <LogoDarkSvg v-if="isDark" class="w-4 h-4" />
+        <LogoLightSvg v-else class="w-4 h-4" />
         <div class="ml-2 pr-1 text-sm mt-0.5 font-mono">
           {{ appName }}
         </div>

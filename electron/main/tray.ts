@@ -8,16 +8,17 @@ import { SettingsStore } from './store'
 export let tray: Tray | null
 
 export function initTray() {
-  let currIconTheme = ''
-  nativeTheme.on('updated', () => {
+  let currIconTheme: 'light' | 'dark' = 'light'
+  const updateIcon = () => {
     const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
     if (theme === currIconTheme) return
     currIconTheme = theme
-    tray?.setImage(getTrayIcon())
-  })
+    tray?.setImage(getTrayIcon(theme))
+  }
+  nativeTheme.on('updated', updateIcon)
+  updateIcon()
 
-  // TODO 托盘图标替换
-  tray = new Tray(getTrayIcon())
+  tray = new Tray(getTrayIcon(currIconTheme))
   tray.setToolTip(pkg.name + ' ' + pkg.version)
 
   const updateMenu = () => {
@@ -28,7 +29,7 @@ export function initTray() {
   SettingsStore.onDidChange('shortcutKey', updateMenu)
 }
 
-function getTrayIcon() {
+function getTrayIcon(theme: 'light' | 'dark') {
   const size = 48
   const darkIcon = path.join(
     process.env.VITE_PUBLIC,
@@ -38,7 +39,7 @@ function getTrayIcon() {
     process.env.VITE_PUBLIC,
     `icon/tray/light/icon@${size}x${size}.png`
   )
-  return nativeTheme.shouldUseDarkColors ? lightIcon : darkIcon
+  return theme === 'light' ? darkIcon : lightIcon
 }
 
 function genMenu(shortcutAccelerator: string) {
