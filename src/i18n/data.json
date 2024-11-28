@@ -45,7 +45,7 @@
   },
   "NC.startup": {
     "zh_CN": "开机启动",
-    "en_US": "Startup"
+    "en_US": "Start on boot"
   },
   "NC.themeMode": {
     "zh_CN": "主题模式",
