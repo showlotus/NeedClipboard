@@ -1,6 +1,6 @@
 # NeedClipboard
 
-A clipboard widget for windows.
+A clipboard app for windows.
 
 ## Shortcut Keys
 
