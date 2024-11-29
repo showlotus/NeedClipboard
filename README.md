@@ -1,6 +1,6 @@
 # NeedClipboard
 
-A clipboard app for windows.
+A clipboard app for windows. UI refers to Clipboard in Raycast. Keyboard-first is also supported, it can be operated without using the mouse.
 
 ![](./res/demo-light.png)
 
