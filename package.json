@@ -1,6 +1,6 @@
 {
   "name": "NeedClipboard",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist-electron/main/index.js",
   "description": "A clipboard app for windows.",
   "author": "showlotus <showlotus2000@gmail.com>",
