@@ -6,13 +6,14 @@
   "author": "showlotus <showlotus2000@gmail.com>",
   "license": "MIT",
   "private": true,
-  "keywords": [
-    "electron",
-    "rollup",
-    "vite",
-    "vue3",
-    "vue"
-  ],
+  "homepage": "https://github.com/showlotus/NeedClipboard#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/showlotus/NeedClipboard"
+  },
+  "bugs": {
+    "url": "https://github.com/showlotus/NeedClipboard/issues"
+  },
   "debug": {
     "env": {
       "VITE_DEV_SERVER_URL": "http://127.0.0.1:3344/"

@@ -1,4 +1,4 @@
-import { Menu, Tray, nativeTheme } from 'electron'
+import { Menu, Tray, nativeTheme, shell } from 'electron'
 import path from 'node:path'
 
 import { toggleWindowVisible } from '.'
@@ -75,6 +75,14 @@ function genMenu(shortcutAccelerator: string) {
         checkUpdate()
       }
     },
+    {
+      label: 'Feedback',
+      type: 'normal',
+      click() {
+        shell.openExternal(pkg.bugs.url)
+      }
+    },
+    { label: '', type: 'separator' },
     {
       label: 'Quit',
       type: 'normal',
