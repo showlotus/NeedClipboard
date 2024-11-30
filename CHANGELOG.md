@@ -1,3 +1,12 @@
+## [0.1.2](https://github.com/showlotus/NeedClipboard/compare/0.1.1...0.1.2) (2024-11-30)
+
+
+### Features
+
+* add log ([65c3b97](https://github.com/showlotus/NeedClipboard/commit/65c3b976da9e066154de2af1b8062f387548eb8a))
+
+
+
 ## [0.1.1](https://github.com/showlotus/NeedClipboard/compare/0.1.0...0.1.1) (2024-11-29)
 
 
