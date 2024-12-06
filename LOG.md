@@ -11,6 +11,7 @@
 
 > - Node Addon Api: https://github.com/nodejs/node-addon-api/blob/main/doc/README.md
 > - 微软剪贴板 Api: https://learn.microsoft.com/zh-cn/windows/win32/dataxchg/clipboard
+> - Windows 使用剪贴板: https://learn.microsoft.com/zh-cn/windows/win32/dataxchg/using-the-clipboard
 
 > - [如何更新](https://www.electronjs.org/zh/docs/latest/tutorial/%E6%8E%A8%E9%80%81%E6%9B%B4%E6%96%B0%E6%95%99%E7%A8%8B)
 
