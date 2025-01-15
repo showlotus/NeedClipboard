@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url'
 
 import {
   currActiveWindowHandle,
+  registerWatch,
   setShouldPaste,
   shouldPaste,
   updateCurrActiveWindowHandle
@@ -195,6 +196,7 @@ async function createWindow() {
 app.whenReady().then(() => {
   createWindow()
   checkUpdate()
+  registerWatch()
 })
 
 app.on('window-all-closed', () => {

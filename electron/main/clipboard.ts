@@ -50,50 +50,57 @@ function getPublicDirectoryPath(files: string[]) {
   return files[0].split('\\').slice(0, -1).join('\\')
 }
 
-NativeClipboard.watch(
-  (type: 'TEXT' | 'IMAGE' | 'FILE', data: any, source: string, app: string) => {
-    if (!shouldUpdateHistory) return
-    if (type === 'IMAGE') {
-      const img = clipboard.readImage()
-      const { width, height } = img.getSize()
-      data = {
-        url: img.toDataURL(),
-        width,
-        height,
-        content: ''
-      } as any
-    } else if (type === 'FILE') {
-      const files = clipboardFiles.readFiles()
-      if (files.length === 1) {
-        const stat = fs.lstatSync(files[0])
-        if (stat.isFile()) {
-          data = {
-            subType: 'file',
-            content: getFileName(files[0]),
-            path: files[0]
-          }
-        } else if (stat.isDirectory()) {
-          data = {
-            subType: 'folder',
-            content: getFileName(files[0]),
-            path: files[0]
-          }
-        }
-      } else {
+export function registerWatch() {
+  NativeClipboard.watch(
+    (
+      type: 'TEXT' | 'IMAGE' | 'FILE',
+      data: any,
+      source: string,
+      app: string
+    ) => {
+      if (!shouldUpdateHistory) return
+      if (type === 'IMAGE') {
+        const img = clipboard.readImage()
+        const { width, height } = img.getSize()
         data = {
-          files,
-          path: getPublicDirectoryPath(files),
-          content: getFileName(getPublicDirectoryPath(files)),
-          subType: 'folder,file'
+          url: img.toDataURL(),
+          width,
+          height,
+          content: ''
         } as any
+      } else if (type === 'FILE') {
+        const files = clipboardFiles.readFiles()
+        if (files.length === 1) {
+          const stat = fs.lstatSync(files[0])
+          if (stat.isFile()) {
+            data = {
+              subType: 'file',
+              content: getFileName(files[0]),
+              path: files[0]
+            }
+          } else if (stat.isDirectory()) {
+            data = {
+              subType: 'folder',
+              content: getFileName(files[0]),
+              path: files[0]
+            }
+          }
+        } else {
+          data = {
+            files,
+            path: getPublicDirectoryPath(files),
+            content: getFileName(getPublicDirectoryPath(files)),
+            subType: 'folder,file'
+          } as any
+        }
       }
-    }
 
-    getWinWebContents().send('update-clipboard', {
-      type,
-      data,
-      source,
-      app
-    })
-  }
-)
+      getWinWebContents().send('update-clipboard', {
+        type,
+        data,
+        source,
+        app
+      })
+    }
+  )
+}
