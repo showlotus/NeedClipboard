@@ -1,3 +1,12 @@
+## [0.1.3](https://github.com/showlotus/NeedClipboard/compare/0.1.2...0.1.3) (2025-01-15)
+
+
+### Bug Fixes
+
+* after the system restarts, the watching not works ([fd9bf39](https://github.com/showlotus/NeedClipboard/commit/fd9bf3964c9b21c30c6c93d2d1dbfc300a23a07d))
+
+
+
 ## [0.1.2](https://github.com/showlotus/NeedClipboard/compare/0.1.1...0.1.2) (2024-11-30)
 
 
